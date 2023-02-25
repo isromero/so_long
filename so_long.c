@@ -177,53 +177,33 @@ void    parse_objects(t_map **map, size_t number_line, size_t number_col)
     }
 }
 
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
+void	movements(t_player *player, int key)
 {
-	char	*dst;
-
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-	*(unsigned int*)dst = color;
+    if (key == 'W')
+        player->y--;
+    if (key == 'A')
+        player->x--;
+    if (key == 'S')
+        player->y++;
+    if (key == 'D')
+        player->x++;
 }
+
 
 int main(int argc, char **argv)
 {
     read_map(argv[1]);
-    t_map   **map;
-    int x;
-    int y;
-	void	*mlx;
-	void	*mlx_win;
-	t_data	img;
+    void    *mlx_ptr;
+    void    *win_ptr;
+    void    *img;
+    t_player    player;
 
-	mlx = mlx_init();
-    mlx_loop(mlx);
-	mlx_win = mlx_new_window(mlx, 1920, 1080, "Hello world!");
-	img.img = mlx_new_image(mlx, 1920, 1080);
-	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
-								&img.endian);
-	my_mlx_pixel_put(&img, 5, 5, 0x00FF0000);
-	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
-	
+    mlx_ptr = mlx_init();
+    win_ptr = mlx_new_windows(mlx_ptr, 800, 600, "so_long");
+    mlx_loop(mlx_ptr);
 
-    x = 0;
-    y = 0;
-    //moves
-    char    input;
-
-    while(1)
-    {
-        read(STDIN_FILENO, &input, 1);
-
-        if (input == 'w')
-            map[y--];
-        else if (input == 'a')
-            map[x--];
-        else if (input == 's')
-            map[y++];
-        else if (input == 'd')
-            map[x++];
-        else
-            printf("error");
-    }
+    mlx_destroy_window(mlx_ptr, win_ptr);
+    mlx_destroy_display(mlx_ptr);
+    free(mlx_ptr);
     return (0);
 }

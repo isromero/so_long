@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/21 20:27:51 by marvin            #+#    #+#             */
-/*   Updated: 2023/02/21 20:27:51 by marvin           ###   ########.fr       */
+/*   Created: 2023/02/25 12:19:56 by marvin            #+#    #+#             */
+/*   Updated: 2023/02/25 12:19:56 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,6 @@
 #include <stdbool.h>
 #include "mlx.h"
 #include "get_next_line.h"
-# if defined(__APPLE__)
-#  include <key_macos.h>
-# else
-#  include <key_linux.h>
-# endif
 
 typedef struct s_data 
 {
@@ -41,6 +36,13 @@ typedef enum object_type {
     EXIT,
     INITIAL_POSITION
 } object_type_t;
+
+typedef struct s_player
+{
+    int x;
+    int y;
+} t_player;
+
 
 typedef struct s_map
 {
