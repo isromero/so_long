@@ -10,92 +10,117 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
+#include "so_long.h"
+#include "get_next_line.h"
 
-void validating_chars(char **map, int number_lines);
-void    validating_walls(char **map, int number_lines);
+void    validating_chars(t_map **map, size_t number_line, size_t number_col);
+void    validating_walls(t_map **map, size_t number_line, size_t number_col);
+void    parse_objects(t_map **map, size_t number_line, size_t number_col);
 
-void    read_map(char *filename, static char **map)
+void    read_map(char *filename)
 {
-    int     fd;
+    t_map **map;
+    size_t     fd;
     char    *line;
-    int     number_line;
+    size_t  number_line;
+    size_t  number_col;
+    size_t     y;
 
     line = NULL;
     number_line = 0;
+    y = 0;
     fd = open(filename, O_RDONLY);
     if (fd < 0)
     {
         printf("Error al abrir el archivo\n");
-        return ;
     }
+
+    // Contamos el número de líneas en el archivo
+    while ((line = get_next_line(fd)) != NULL)
+    {
+        number_col = strlen(line);
+        number_line++;
+        free(line);
+    }
+
+    //Alojamos memoria 
+    map = malloc(number_line * sizeof(t_map *)); // Con esto alojamos a map[y][x] 
+    while(y < number_line)
+    {
+        map[y] = malloc(number_col * sizeof(t_map));
+        memset(map[y], 0, number_col * sizeof(t_map));
+        y++;
+    }
+    close (fd);
+    fd = open(filename, O_RDONLY);
+
+    y = 0;
     while(((line = get_next_line(fd))) != NULL) //Se seguirá ejecutando hasta que termine el archivo ya que gnl devuelve todo el rato una línea hasta el final
     {
-        strcpy(map[number_line], line);
+        for (int x = 0; x < number_col; x++) 
+        {
+            map[y][x].type = line[x];
+        }
         free(line);
-        number_line++;
+        y++;
     }
-    validating_walls(map, number_line);
-    validating_chars(map, number_line);
     close(fd);
+    validating_walls(map, number_line, number_col);
+    validating_chars(map, number_line, number_col);
+    parse_objects(map, number_line, number_col);
 }
 
-void    validating_walls(char **map, int number_lines)
+void    validating_walls(t_map **map, size_t number_line, size_t number_col)
 {
-    int     len_x;
-    int     x;
-    int     y;
-    int     i;
+    size_t     x;
+    size_t     y;
 
-    len_x = strlen(map[0]);
     x = 0;
     y = 0;
-    while(y < number_lines) 
+    while(y < number_line) 
     {
-        if(strlen(map[y] != len_x)) //Si encontramos una línea con longitud diferente a la primera significa que no es rectangular
+        if (map[y][0].type != '1')
         {
-            printf("Not rectangular\n");
-            return ;
+            printf("Not walls on the left\n");
+            break ;
         }
-        if (maps[y][0] != '1' || map[y][len_x - 1] != '1')
+        if (map[y][number_col - 1].type != '1')
         {
-            printf("Not walls on the left/right");
-            return ;
+            printf("Not walls on the right\n");
+            break ;
         }
         y++;
     }
-    while(x < len_x)
+    while(x < number_col)
     {
-        if (map[0][x] != '1' || map[number_lines - 1][x] != '1')
+        if (map[0][x].type != '1' || map[number_line - 1][x].type != '1')
         {
-            printf("Not walls on the top/bottom");
-            return ;
+            printf("Not walls on the top/bottom\n");
+            break ;
         }
         x++;
     }
     printf("Valid walls...\n");
 }
 
-void validating_chars(char **map, int number_lines) 
+void validating_chars(t_map **map, size_t number_line, size_t number_col) 
 {
-    int x, y;
-    int len_x = strlen(map[0]);
+    size_t x, y;
     bool found_c = false, found_e = false, found_p = false;
 
     x = 0;
     y = 0;
     // Recorrer el mapa para encontrar C, E, y P
-    while (y < number_lines) 
+    while (y < number_line) 
     {
-        while (x < len_x) 
+        x = 0;
+        while (x < number_col) 
         {
-            if (map[y][x] == 'C') 
+            if (map[y][x].type == 'C') 
                 found_c = true;
-            else if (map[y][x] == 'E')
+            else if (map[y][x].type == 'E')
                 found_e = true;
-            else if (map[y][x] == 'P')
+            else if (map[y][x].type == 'P')
                 found_p = true;
             x++;
         }
@@ -104,12 +129,101 @@ void validating_chars(char **map, int number_lines)
     // Comprobar si se encontraron todas las letras
     if (found_c && found_e && found_p)
         printf("Valid chars...\n");
-    else
+    if (found_c != true && found_e != true && found_p != true)
         printf("Doesn't have 'C', 'E', 'P'\n");
+}
+
+void    parse_objects(t_map **map, size_t number_line, size_t number_col)
+{
+    size_t x, y;
+
+    x = 0;
+    y = 0;
+    // Recorrer el mapa para encontrar C, E, y P
+    while (y < number_line) 
+    {
+        x = 0;
+        while (x < number_col) 
+        {
+            if (map[y][x].type == '0')
+            {
+                map[y][x].type = EXIT;
+                printf("%c", '0');
+            }
+            else if (map[y][x].type == '1')
+            {
+                map[y][x].type = WALL;
+                printf("%c", '1');
+            }
+            else if (map[y][x].type == 'C')
+            {
+                map[y][x].type = COLLECTABLE;
+                printf("%c", 'C');
+            }
+            else if (map[y][x].type == 'E')
+            {
+                map[y][x].type = EXIT;
+                printf("%c", 'E');
+            }
+            else if (map[y][x].type == 'P')
+            {
+                map[y][x].type = INITIAL_POSITION;
+                printf("%c", 'P');
+            }
+            x++;
+        }
+        y++;
+        printf("\n");
+    }
+}
+
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
+{
+	char	*dst;
+
+	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+	*(unsigned int*)dst = color;
 }
 
 int main(int argc, char **argv)
 {
-    read_map(argv[2], argv);
+    read_map(argv[1]);
+    t_map   **map;
+    int x;
+    int y;
+	void	*mlx;
+	void	*mlx_win;
+	t_data	img;
+
+	mlx = mlx_init();
+    mlx_loop(mlx);
+	mlx_win = mlx_new_window(mlx, 1920, 1080, "Hello world!");
+	img.img = mlx_new_image(mlx, 1920, 1080);
+	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
+								&img.endian);
+	my_mlx_pixel_put(&img, 5, 5, 0x00FF0000);
+	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
+	
+
+    x = 0;
+    y = 0;
+    //moves
+    char    input;
+
+    while(1)
+    {
+        read(STDIN_FILENO, &input, 1);
+
+        if (input == 'w')
+            map[y--];
+        else if (input == 'a')
+            map[x--];
+        else if (input == 's')
+            map[y++];
+        else if (input == 'd')
+            map[x++];
+        else
+            printf("error");
+    }
     return (0);
 }
