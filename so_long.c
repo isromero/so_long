@@ -180,13 +180,13 @@ void    parse_objects(t_map **map, size_t number_line, size_t number_col)
 int	handle_keyrelease(int key, t_data *data)
 {
     if (key == 'W')
-        player->y = 0;
+        data->y = 0;
     if (key == 'A')
-        player->x = 0;
+        data->x = 0;
     if (key == 'S')
-        player->y = 0;
+        data->y = 0;
     if (key == 'D')
-        player->x = 0;
+        data->x = 0;
     return (0);
 }
 
@@ -195,13 +195,13 @@ int	handle_keypress(int key, t_data *data)
     if (key == XK_Escape)
 		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
     if (key == 'W')
-        player->y--;
+        data->y--;
     if (key == 'A')
-        player->x--;
+        data->x--;
     if (key == 'S')
-        player->y++;
+        data->y++;
     if (key == 'D')
-        player->x++;
+        data->x++;
     return (0);
 }
 
