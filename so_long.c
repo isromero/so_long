@@ -177,8 +177,23 @@ void    parse_objects(t_map **map, size_t number_line, size_t number_col)
     }
 }
 
-void	movements(t_player *player, int key)
+int	handle_keyrelease(int key, t_data *data)
 {
+    if (key == 'W')
+        player->y = 0;
+    if (key == 'A')
+        player->x = 0;
+    if (key == 'S')
+        player->y = 0;
+    if (key == 'D')
+        player->x = 0;
+    return (0);
+}
+
+int	handle_keypress(int key, t_data *data)
+{
+    if (key == XK_Escape)
+		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
     if (key == 'W')
         player->y--;
     if (key == 'A')
@@ -187,23 +202,26 @@ void	movements(t_player *player, int key)
         player->y++;
     if (key == 'D')
         player->x++;
+    return (0);
 }
 
+int handle_no_event(t_data *data)
+{
+    return (0);
+}
 
 int main(int argc, char **argv)
 {
     read_map(argv[1]);
-    void    *mlx_ptr;
-    void    *win_ptr;
-    void    *img;
-    t_player    player;
+    t_data   data;
 
-    mlx_ptr = mlx_init();
-    win_ptr = mlx_new_windows(mlx_ptr, 800, 600, "so_long");
-    mlx_loop(mlx_ptr);
+    data.mlx_ptr = mlx_init();
+    data.win_ptr = mlx_new_window(data.mlx_ptr, 800, 600, "so_long");
 
-    mlx_destroy_window(mlx_ptr, win_ptr);
-    mlx_destroy_display(mlx_ptr);
-    free(mlx_ptr);
+    mlx_loop_hook(data.mlx_ptr, &handle_no_event, &data); //espera a recibir un evento
+    mlx_hook(data.win_ptr, KeyPress, KeyPressMask, &handle_keypress, &data);
+    mlx_hook(data.win_ptr, KeyRelease, KeyReleaseMask, &handle_keyrelease, &data);
+
+    mlx_loop(data.mlx_ptr);
     return (0);
 }

@@ -20,14 +20,9 @@
 #include "mlx.h"
 #include "get_next_line.h"
 
-typedef struct s_data 
-{
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-} t_data;
+#define RED_PIXEL 0xFF0000
+#define GREEN_PIXEL 0xFF00
+#define WHITE_PIXEL 0xFFFFFF
 
 typedef enum object_type {
     EMPTY,
@@ -37,11 +32,11 @@ typedef enum object_type {
     INITIAL_POSITION
 } object_type_t;
 
-typedef struct s_player
+typedef struct s_data
 {
-    int x;
-    int y;
-} t_player;
+    void    *mlx_ptr;
+    void    *win_ptr;
+} t_data;
 
 
 typedef struct s_map
