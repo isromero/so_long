@@ -210,6 +210,11 @@ int handle_no_event(t_data *data)
     return (0);
 }
 
+int render(t_data *data)
+{
+    return (0);
+}
+
 int main(int argc, char **argv)
 {
     read_map(argv[1]);
@@ -218,9 +223,17 @@ int main(int argc, char **argv)
     data.mlx_ptr = mlx_init();
     data.win_ptr = mlx_new_window(data.mlx_ptr, 800, 600, "so_long");
 
+    //movements
     mlx_loop_hook(data.mlx_ptr, &handle_no_event, &data); //espera a recibir un evento
     mlx_hook(data.win_ptr, KeyPress, KeyPressMask, &handle_keypress, &data);
     mlx_hook(data.win_ptr, KeyRelease, KeyReleaseMask, &handle_keyrelease, &data);
+
+    //drawing
+    data.img.mlx_img = mlx_new_image(data.mlx_ptr, 800, 600);
+    data.img.addr = mlx_get_data_addr(data.img.mlx_img, &data.img.bpp,
+			&data.img.line_len, &data.img.endian);
+    mlx_loop_hook(data.mlx_ptr, &render, &data);
+    mlx_hook(data.win_ptr, KeyPress, KeyPressMask, &handle_keypress, &data);
 
     mlx_loop(data.mlx_ptr);
     return (0);

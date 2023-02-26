@@ -34,10 +34,22 @@ typedef enum object_type {
     INITIAL_POSITION
 } object_type_t;
 
+typedef struct s_img
+{
+    void	*mlx_img;
+	char	*addr; //puntero al 1er byte de la imagen en la memoria de la gráfica
+	int		bpp; //bits por pixel
+	int		line_len; //nº de bytes q ocupa cada línea de la imagen en la memoria de la gráfica
+	int		endian; //orden en el que se almacenan bytes en la memoria de la gráfica
+} t_img;
+
+
 typedef struct s_data
 {
     void    *mlx_ptr;
     void    *win_ptr;
+    t_img   img;
+    int     current_img;
     int     x;
     int     y;
 } t_data;
