@@ -210,15 +210,54 @@ int handle_no_event(t_data *data)
     return (0);
 }
 
+int clear_background(t_img *img, int color)
+{
+    int x;
+    int y;
+
+    x = 0;
+    y = 0;
+    while(y < 600)
+    {
+        while(x < 800)
+        {
+            mlx_pixel_put(data.mlx_ptr, data.win_ptr, x, y, color);
+            x++;
+        }
+        y++;
+    }
+}
+
+int render_rect(t_img *img, t_rect rect)
+{
+	int	i;
+	int j;
+
+	i = rect.y;
+	while (i < rect.y + rect.height)
+	{
+		j = rect.x;
+		while (j < rect.x + rect.width)
+			img_pix_put(img, j++, i, rect.color);
+		++i;
+	}
+	return (0);
+}
+
 int render(t_data *data)
 {
+    clear_background(data->img, WHITE_PIXEL);
+    render_rect(&data->img, (t_rect){WINDOW_WIDTH - 100, WINDOW_HEIGHT - 100, 100, 100, GREEN_PIXEL});
+	render_rect(&data->img, (t_rect){0, 0, 100, 100, RED_PIXEL});
+
+    mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.mlx_img, 0, 0); //ponemos la imagen en pantalla
     return (0);
 }
 
 int main(int argc, char **argv)
 {
     read_map(argv[1]);
-    t_data   data;
+    t_data   data; //si solo necesitas leer los datos dentro de la función, puedes pasar la estructura sin utilizar un puntero. Pero si necesitas modificar los datos dentro de la función, es necesario pasar la estructura a través de un puntero
 
     data.mlx_ptr = mlx_init();
     data.win_ptr = mlx_new_window(data.mlx_ptr, 800, 600, "so_long");
@@ -229,9 +268,9 @@ int main(int argc, char **argv)
     mlx_hook(data.win_ptr, KeyRelease, KeyReleaseMask, &handle_keyrelease, &data);
 
     //drawing
-    data.img.mlx_img = mlx_new_image(data.mlx_ptr, 800, 600);
+    data.img.mlx_img = mlx_new_image(data.mlx_ptr, 800, 600); //crea una imagen en la memoria de video de la pantalla
     data.img.addr = mlx_get_data_addr(data.img.mlx_img, &data.img.bpp,
-			&data.img.line_len, &data.img.endian);
+			&data.img.line_len, &data.img.endian); //se devuelve un puntero al primer byte de la imagen donde se usa para escribir en ella pixel por pixel
     mlx_loop_hook(data.mlx_ptr, &render, &data);
     mlx_hook(data.win_ptr, KeyPress, KeyPressMask, &handle_keypress, &data);
 
