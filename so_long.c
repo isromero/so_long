@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "solong.h"
+#include "so_long.h"
 #include "get_next_line.h"
 
 void    validating_chars(t_map **map, size_t number_line, size_t number_col);
@@ -246,7 +246,7 @@ void    rectangle(t_img *img, int x1, int y1, int x2, int y2, t_data *data)
     }
 }
 
-int clear_background(t_img *img, int color, t_data *data)
+void clear_background(t_img *img, int color, t_data *data)
 {
     int x;
     int y;
@@ -257,7 +257,7 @@ int clear_background(t_img *img, int color, t_data *data)
     {
         while(x < 800)
         {
-            mlx_pixel_put(data->mlx_ptr, data->win_ptr, x, y, color);
+            mlx_pixel_put(data->mlx_ptr, img->mlx_img, x, y, color);
             x++;
         }
         y++;
@@ -267,9 +267,10 @@ int clear_background(t_img *img, int color, t_data *data)
 int render(t_data *data)
 {
     clear_background(&data->img, WHITE_PIXEL, data);
-    rectangle(&data->img, 100, 100, 100, 100, data);
+    rectangle(&data->img, 100, 100, 200, 200, data);
 
     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.mlx_img, 0, 0); //ponemos la imagen en pantalla
+
     return (0);
 }
 
