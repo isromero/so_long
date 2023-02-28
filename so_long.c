@@ -219,6 +219,34 @@ int handle_no_event(t_data *data)
     return (0);
 }
 
+void    rectangle(t_img *img, int x1, int y1, int x2, int y2)
+{
+    t_data  *data;
+
+    for (int x = x1; x <= x2; x++)
+    {
+        mlx_pixel_put(data->mlx_ptr, img->mlx_img, x, y1, RED_PIXEL);
+    }
+
+    // Dibujar línea inferior
+    for (int x = x1; x <= x2; x++)
+    {
+        mlx_pixel_put(data->mlx_ptr, img->mlx_img, x, y2, RED_PIXEL);
+    }
+
+    // Dibujar línea izquierda
+    for (int y = y1; y <= y2; y++)
+    {
+        mlx_pixel_put(data->mlx_ptr, img->mlx_img, x1, y, RED_PIXEL);
+    }
+
+    // Dibujar línea derecha
+    for (int y = y1; y <= y2; y++)
+    {
+        mlx_pixel_put(data->mlx_ptr, img->mlx_img, x2, y, RED_PIXEL);
+    }
+}
+
 int clear_background(t_img *img, int color)
 {
     t_data  *data;
@@ -241,6 +269,7 @@ int clear_background(t_img *img, int color)
 int render(t_data *data)
 {
     clear_background(&data->img, WHITE_PIXEL);
+    rectangle(&data->img, 100, 100, 100, 100);
 
     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.mlx_img, 0, 0); //ponemos la imagen en pantalla
     return (0);
