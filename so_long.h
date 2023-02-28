@@ -36,7 +36,7 @@ typedef enum object_type {
 
 typedef struct s_img
 {
-    void	*mlx_img;
+    void	*mlx_img; //apunta a la imagen que se ha creado
 	char	*addr; //puntero al 1er byte de la imagen en la memoria de la gráfica
 	int		bpp; //bits por pixel
 	int		line_len; //nº de bytes q ocupa cada línea de la imagen en la memoria de la gráfica
