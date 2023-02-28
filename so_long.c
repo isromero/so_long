@@ -219,9 +219,8 @@ int handle_no_event(t_data *data)
     return (0);
 }
 
-void    rectangle(t_img *img, int x1, int y1, int x2, int y2)
+void    rectangle(t_img *img, int x1, int y1, int x2, int y2, t_data *data)
 {
-    t_data  *data;
 
     for (int x = x1; x <= x2; x++)
     {
@@ -247,9 +246,8 @@ void    rectangle(t_img *img, int x1, int y1, int x2, int y2)
     }
 }
 
-int clear_background(t_img *img, int color)
+int clear_background(t_img *img, int color, t_data *data)
 {
-    t_data  *data;
     int x;
     int y;
 
@@ -268,8 +266,8 @@ int clear_background(t_img *img, int color)
 
 int render(t_data *data)
 {
-    clear_background(&data->img, WHITE_PIXEL);
-    rectangle(&data->img, 100, 100, 100, 100);
+    clear_background(&data->img, WHITE_PIXEL, data);
+    rectangle(&data->img, 100, 100, 100, 100, data);
 
     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.mlx_img, 0, 0); //ponemos la imagen en pantalla
     return (0);
