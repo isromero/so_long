@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "solong.h"
 #include "get_next_line.h"
 
 void    validating_chars(t_map **map, size_t number_line, size_t number_col);
