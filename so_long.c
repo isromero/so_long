@@ -224,25 +224,25 @@ void    rectangle(t_img *img, int x1, int y1, int x2, int y2, t_data *data)
 
     for (int x = x1; x <= x2; x++)
     {
-        mlx_pixel_put(data->mlx_ptr, img->mlx_img, x, y1, RED_PIXEL);
+        mlx_pixel_put(data->mlx_ptr, data->win_ptr, x, y1, RED_PIXEL);
     }
 
     // Dibujar línea inferior
     for (int x = x1; x <= x2; x++)
     {
-        mlx_pixel_put(data->mlx_ptr, img->mlx_img, x, y2, RED_PIXEL);
+        mlx_pixel_put(data->mlx_ptr, data->win_ptr, x, y2, RED_PIXEL);
     }
 
     // Dibujar línea izquierda
     for (int y = y1; y <= y2; y++)
     {
-        mlx_pixel_put(data->mlx_ptr, img->mlx_img, x1, y, RED_PIXEL);
+        mlx_pixel_put(data->mlx_ptr, data->win_ptr, x1, y, RED_PIXEL);
     }
 
     // Dibujar línea derecha
     for (int y = y1; y <= y2; y++)
     {
-        mlx_pixel_put(data->mlx_ptr, img->mlx_img, x2, y, RED_PIXEL);
+        mlx_pixel_put(data->mlx_ptr, data->win_ptr, x2, y, RED_PIXEL);
     }
 }
 
@@ -253,11 +253,12 @@ void clear_background(t_img *img, int color, t_data *data)
 
     x = 0;
     y = 0;
+    
     while(y < 600)
     {
         while(x < 800)
         {
-            mlx_pixel_put(data->mlx_ptr, img->mlx_img, x, y, color);
+                mlx_pixel_put(data->mlx_ptr, data->win_ptr, x, y, color);
             x++;
         }
         y++;
@@ -266,12 +267,12 @@ void clear_background(t_img *img, int color, t_data *data)
 
 int render(t_data *data)
 {
-    clear_background(&data->img, WHITE_PIXEL, data);
-    rectangle(&data->img, 100, 100, 200, 200, data);
+    t_img   *img;
+    
+    clear_background(img, WHITE_PIXEL, data);
+    rectangle(img, 100, 100, 200, 200, data);
+    mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, 0, 0); //ponemos la imagen en pantalla
 
-    mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.mlx_img, 0, 0); //ponemos la imagen en pantalla
-
-    return (0);
 }
 
 int main(int argc, char **argv)
@@ -291,8 +292,9 @@ int main(int argc, char **argv)
     //drawing
     img.mlx_img = mlx_new_image(data.mlx_ptr, 800, 600); //crea una imagen en la memoria de video de la pantalla
     img.addr = mlx_get_data_addr(img.mlx_img, &img.bpp, &img.line_len, &img.endian); //se devuelve un puntero al primer byte de la imagen donde se usa para escribir en ella pixel por pixel
-    mlx_loop_hook(data.mlx_ptr, &render, &data);
+   /*segmentatioooonnnnnnnjfffnkjfkjfkjdnfnnnn*/ mlx_loop_hook(data.mlx_ptr, &render, &data);
     mlx_hook(data.win_ptr, KeyPress, KeyPressMask, &handle_keypress, &data);
+
 
     mlx_loop(data.mlx_ptr);
     return (0);
