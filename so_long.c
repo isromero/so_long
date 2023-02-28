@@ -258,6 +258,7 @@ int main(int argc, char **argv)
 {
     read_map(argv[1]);
     t_data   data; //si solo necesitas leer los datos dentro de la función, puedes pasar la estructura sin utilizar un puntero. Pero si necesitas modificar los datos dentro de la función, es necesario pasar la estructura a través de un puntero
+    t_img   img;
 
     data.mlx_ptr = mlx_init();
     data.win_ptr = mlx_new_window(data.mlx_ptr, 800, 600, "so_long");
@@ -268,9 +269,8 @@ int main(int argc, char **argv)
     mlx_hook(data.win_ptr, KeyRelease, KeyReleaseMask, &handle_keyrelease, &data);
 
     //drawing
-    data.img.mlx_img = mlx_new_image(data.mlx_ptr, 800, 600); //crea una imagen en la memoria de video de la pantalla
-    data.img.addr = mlx_get_data_addr(data.img.mlx_img, &data.img.bpp,
-			&data.img.line_len, &data.img.endian); //se devuelve un puntero al primer byte de la imagen donde se usa para escribir en ella pixel por pixel
+    img.mlx_img = mlx_new_image(data.mlx_ptr, 800, 600); //crea una imagen en la memoria de video de la pantalla
+    img.addr = mlx_get_data_addr(img.mlx_img, &img.bpp, &img.line_len, &img.endian); //se devuelve un puntero al primer byte de la imagen donde se usa para escribir en ella pixel por pixel
     mlx_loop_hook(data.mlx_ptr, &render, &data);
     mlx_hook(data.win_ptr, KeyPress, KeyPressMask, &handle_keypress, &data);
 
