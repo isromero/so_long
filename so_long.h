@@ -18,8 +18,8 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "mlx.h"
-#include <X11/X.h>
-#include <X11/keysym.h>
+//#include <X11/X.h>
+//#include <X11/keysym.h>
 #include "get_next_line.h"
 
 #define RED_PIXEL 0xFF0000
@@ -48,7 +48,7 @@ typedef struct s_data
 {
     void    *mlx_ptr;
     void    *win_ptr;
-    t_img   img;
+    t_img   *img;
     int     current_img;
     int     x;
     int     y;
@@ -58,6 +58,8 @@ typedef struct s_data
 typedef struct s_map
 {
     object_type_t type;
+	size_t number_line;
+    size_t number_col;
     int len_x;
 } t_map;
 
