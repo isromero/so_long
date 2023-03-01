@@ -52,15 +52,14 @@ typedef struct s_data
     int     current_img;
     int     x;
     int     y;
+	size_t	map_width;
+	size_t	map_height;
 } t_data;
 
 
 typedef struct s_map
 {
     object_type_t type;
-	size_t number_line;
-    size_t number_col;
-    int len_x;
 } t_map;
 
 #endif

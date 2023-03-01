@@ -17,18 +17,19 @@ void    validating_chars(t_map **map, size_t number_line, size_t number_col);
 void    validating_walls(t_map **map, size_t number_line, size_t number_col);
 void    parse_objects(t_map **map, size_t number_line, size_t number_col);
 
-typedef struct s_rect
+/*typedef struct s_rect
 {
 	int	x;
 	int	y;
 	int width;
 	int height;
 	int color;
-}	t_rect;
+}	t_rect;*/
 
 void    read_map(char *filename)
 {
     t_map **map;
+	t_data	data;
     size_t     fd;
     char    *line;
     size_t  number_line;
@@ -48,6 +49,7 @@ void    read_map(char *filename)
     while ((line = get_next_line(fd)) != NULL)
     {
         number_col = strlen(line);
+		data.map_width = number_col;
         number_line++;
         free(line);
     }
@@ -60,6 +62,7 @@ void    read_map(char *filename)
         memset(map[y], 0, number_col * sizeof(t_map));
         y++;
     }
+	data.map_height = number_line;
     close (fd);
     fd = open(filename, O_RDONLY);
 
@@ -249,7 +252,7 @@ void    rectangle(t_img *img, int x1, int y1, int x2, int y2, t_data *data)
     }
 }
 
-void clear_background(t_img *img, int color, t_data *data)
+void clear_background(int color, t_data *data)
 {
     int x;
     int y;
@@ -262,18 +265,40 @@ void clear_background(t_img *img, int color, t_data *data)
 		x = 0;
         while(x < 800)
         {
-                mlx_pixel_put(data->mlx_ptr, data->win_ptr, x, y, color);
+            mlx_pixel_put(data->mlx_ptr, data->win_ptr, x, y, color);
             x++;
         }
         y++;
     }
 }
 
-int render(t_data *data, t_img *img)
+void draw(t_data *data, t_map **map)
+{
+	int x;
+    int y;
+
+    x = 0;
+    y = 0;
+    
+    while(y < (data->map_height))
+    {
+		x = 0;
+        while(x < (data->map_width))
+        {
+			if(map[y][x].type == WALL)
+            	mlx_pixel_put(data->mlx_ptr, data->win_ptr, x, y, RED_PIXEL);
+            x++;
+        }
+        y++;
+    }
+}
+
+int render(t_data *data, t_img *img, t_map **map)
 {
     //utilizo data e img como argumentos ya que al pasarlos como variables locales de la función al acceder a ellas a través de un puntro daría seg fault.
-    clear_background(img, WHITE_PIXEL, data);
+    clear_background(WHITE_PIXEL, data);
     //rectangle(img, 100, 100, 200, 200, data); prueba rectangulo;
+	draw(data, map);
     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, 0, 0); //ponemos la imagen en pantalla
 	return(0);
 }
