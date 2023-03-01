@@ -26,13 +26,17 @@ typedef struct s_rect
 	int color;
 }	t_rect;
 
-void    read_map(char *filename, t_map **map)
+void    read_map(char *filename)
 {
+    t_map **map;
     size_t     fd;
     char    *line;
+    size_t  number_line;
+    size_t  number_col;
     size_t     y;
 
     line = NULL;
+    number_line = 0;
     y = 0;
     fd = open(filename, O_RDONLY);
     if (fd < 0)
@@ -43,17 +47,17 @@ void    read_map(char *filename, t_map **map)
     // Contamos el número de líneas en el archivo
     while ((line = get_next_line(fd)) != NULL)
     {
-        (*map)->number_col = strlen(line);
-        (*map)->number_line++;
+        number_col = strlen(line);
+        number_line++;
         free(line);
     }
 
     //Alojamos memoria 
-    map = malloc((*map)->number_line * sizeof(t_map *)); // Con esto alojamos a map[y][x] 
-    while(y < (*map)->number_line)
+    map = malloc(number_line * sizeof(t_map *)); // Con esto alojamos a map[y][x] 
+    while(y < number_line)
     {
-        map[y] = malloc((*map)->number_col * sizeof(t_map));
-        memset(map[y], 0, (*map)->number_col * sizeof(t_map));
+        map[y] = malloc(number_col * sizeof(t_map));
+        memset(map[y], 0, number_col * sizeof(t_map));
         y++;
     }
     close (fd);
@@ -62,7 +66,7 @@ void    read_map(char *filename, t_map **map)
     y = 0;
     while(((line = get_next_line(fd))) != NULL) //Se seguirá ejecutando hasta que termine el archivo ya que gnl devuelve todo el rato una línea hasta el final
     {
-        for (int x = 0; x < (*map)->number_col; x++) 
+        for (int x = 0; x < number_col; x++) 
         {
             map[y][x].type = line[x];
         }
@@ -70,9 +74,9 @@ void    read_map(char *filename, t_map **map)
         y++;
     }
     close(fd);
-    validating_walls(map, (*map)->number_line,(*map)->number_col);
-    validating_chars(map, (*map)->number_line, (*map)->number_col);
-    parse_objects(map, (*map)->number_line, (*map)->number_col);
+    validating_walls(map, number_line, number_col);
+    validating_chars(map, number_line, number_col);
+    parse_objects(map, number_line, number_col);
 }
 
 void    validating_walls(t_map **map, size_t number_line, size_t number_col)
@@ -245,7 +249,7 @@ void    rectangle(t_img *img, int x1, int y1, int x2, int y2, t_data *data)
     }
 }
 
-void clear_background(int color, t_data *data)
+void clear_background(t_img *img, int color, t_data *data)
 {
     int x;
     int y;
@@ -265,39 +269,18 @@ void clear_background(int color, t_data *data)
     }
 }
 
-void draw_map(t_map **map, int color, t_data *data)
-{
-    int x;
-    int y;
-
-    x = 0;
-    y = 0;
-    
-    while(y < (*map)->number_line)
-    {
-		x = 0;
-        while(x < (*map)->number_col)
-        {
-                mlx_pixel_put(data->mlx_ptr, data->win_ptr, (*map)->number_line, (*map)->number_col, map[y][x].type);
-            x++;
-        }
-        y++;
-    }
-}
-int render(t_map **map, t_data *data, t_img *img)
+int render(t_data *data, t_img *img)
 {
     //utilizo data e img como argumentos ya que al pasarlos como variables locales de la función al acceder a ellas a través de un puntro daría seg fault.
-    clear_background(WHITE_PIXEL, data);
+    clear_background(img, WHITE_PIXEL, data);
     //rectangle(img, 100, 100, 200, 200, data); prueba rectangulo;
-	//draw_map(map, map[(*map)->number_line][(*map)->number_col].type, data);
     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, 0, 0); //ponemos la imagen en pantalla
 	return(0);
 }
 
 int main(int argc, char **argv)
 {
-	t_map	**map;
-    read_map(argv[1], map);
+    read_map(argv[1]);
     t_data   data; //si solo necesitas leer los datos dentro de la función, puedes pasar la estructura sin utilizar un puntero. Pero si necesitas modificar los datos dentro de la función, es necesario pasar la estructura a través de un puntero
     t_img   img;
 
