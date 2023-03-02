@@ -48,12 +48,11 @@ typedef struct s_data
 {
     void    *mlx_ptr;
     void    *win_ptr;
-    t_img   *img;
     int     current_img;
     int     x;
     int     y;
-	size_t	map_width;
-	size_t	map_height;
+	int 	map_width;
+	int 	map_height;
 } t_data;
 
 

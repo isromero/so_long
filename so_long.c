@@ -204,10 +204,10 @@ int	handle_keyrelease(int key, t_data *data)
 
 int	handle_keypress(int key, t_data *data)
 {
-    if (key == 53)
+    if (key == XK_Escape)
 	{
 		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
-		exit (0);
+		exit (1);
 	}
     if (key == 'W')
         data->y--;
@@ -260,10 +260,10 @@ void clear_background(int color, t_data *data)
     x = 0;
     y = 0;
     
-    while(y < 600)
+    while(y < 800)
     {
 		x = 0;
-        while(x < 800)
+        while(x < 600)
         {
             mlx_pixel_put(data->mlx_ptr, data->win_ptr, x, y, color);
             x++;
@@ -274,6 +274,7 @@ void clear_background(int color, t_data *data)
 
 void draw(t_data *data, t_map **map)
 {
+    t_img   *img;
 	int x;
     int y;
 
@@ -286,7 +287,10 @@ void draw(t_data *data, t_map **map)
         while(x < (data->map_width))
         {
 			if(map[y][x].type == WALL)
-            	mlx_pixel_put(data->mlx_ptr, data->win_ptr, x, y, RED_PIXEL);
+            {
+                mlx_pixel_put(data->mlx_ptr, data->win_ptr, x, y, RED_PIXEL);
+                img->addr[(y * img->line_len) + (x * (img->bpp / 8))] == RED_PIXEL;
+            }
             x++;
         }
         y++;
@@ -296,9 +300,9 @@ void draw(t_data *data, t_map **map)
 int render(t_data *data, t_img *img, t_map **map)
 {
     //utilizo data e img como argumentos ya que al pasarlos como variables locales de la función al acceder a ellas a través de un puntro daría seg fault.
-    clear_background(WHITE_PIXEL, data);
+    //clear_background(WHITE_PIXEL, &data);
     //rectangle(img, 100, 100, 200, 200, data); prueba rectangulo;
-	draw(data, map);
+	//draw(&data, &map);
     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, 0, 0); //ponemos la imagen en pantalla
 	return(0);
 }
@@ -310,7 +314,7 @@ int main(int argc, char **argv)
     t_img   img;
 
     data.mlx_ptr = mlx_init();
-    data.win_ptr = mlx_new_window(data.mlx_ptr, data.map_height, data.map_width, "so_long");
+    data.win_ptr = mlx_new_window(data.mlx_ptr, 800, 600, "so_long");
 
     //movements
     mlx_loop_hook(data.mlx_ptr, &handle_no_event, &data); //espera a recibir un evento
@@ -318,9 +322,15 @@ int main(int argc, char **argv)
     mlx_hook(data.win_ptr, KeyRelease, KeyReleaseMask, &handle_keyrelease, &data); //3 = KeyRelease, 1L<<1 KeyReleaseMask
 
     //drawing
-    img.mlx_img = mlx_new_image(data.mlx_ptr, data.map_height, data.map_width); //crea una imagen en la memoria de video de la pantalla
+    img.mlx_img = mlx_new_image(data.mlx_ptr, 800, 600); //crea una imagen en la memoria de video de la pantalla
+    if (!img.mlx_img)
+    {
+        printf("error printing img\n");
+        exit (1);
+    }
     img.addr = mlx_get_data_addr(img.mlx_img, &img.bpp, &img.line_len, &img.endian); //se devuelve un puntero al primer byte de la imagen donde se usa para escribir en ella pixel por pixel
-	mlx_loop_hook(data.mlx_ptr, &render, &data);
+	//printf("bpp: %d, line_len, %d, endian: %d\n", img.bpp, img.line_len, img.endian);
+    mlx_loop_hook(data.mlx_ptr, &render, &data);
     mlx_hook(data.win_ptr, KeyPress, KeyPressMask, &handle_keypress, &data);
 
 
