@@ -314,14 +314,14 @@ int main(int argc, char **argv)
 
     //movements
     mlx_loop_hook(data.mlx_ptr, &handle_no_event, &data); //espera a recibir un evento
-    mlx_hook(data.win_ptr, 2, 1<<0, &handle_keypress, &data); //2 = KeyPress, 1<<0= KeyPressMask
-    mlx_hook(data.win_ptr, 3, 1L<<1, &handle_keyrelease, &data); //3 = KeyRelease, 1L<<1 KeyReleaseMask
+    mlx_hook(data.win_ptr, KeyPress, KeyPressMask, &handle_keypress, &data); //2 = KeyPress, 1<<0= KeyPressMask
+    mlx_hook(data.win_ptr, KeyRelease, KeyReleaseMask, &handle_keyrelease, &data); //3 = KeyRelease, 1L<<1 KeyReleaseMask
 
     //drawing
     img.mlx_img = mlx_new_image(data.mlx_ptr, data.map_height, data.map_width); //crea una imagen en la memoria de video de la pantalla
     img.addr = mlx_get_data_addr(img.mlx_img, &img.bpp, &img.line_len, &img.endian); //se devuelve un puntero al primer byte de la imagen donde se usa para escribir en ella pixel por pixel
 	mlx_loop_hook(data.mlx_ptr, &render, &data);
-    mlx_hook(data.win_ptr, 2, 1<<0, &handle_keypress, &data);
+    mlx_hook(data.win_ptr, KeyPress, KeyPressMask, &handle_keypress, &data);
 
 
     mlx_loop(data.mlx_ptr);

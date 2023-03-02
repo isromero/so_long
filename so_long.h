@@ -18,8 +18,8 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "mlx.h"
-//#include <X11/X.h>
-//#include <X11/keysym.h>
+#include <X11/X.h>
+#include <X11/keysym.h>
 #include "get_next_line.h"
 
 #define RED_PIXEL 0xFF0000
