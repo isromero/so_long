@@ -30,11 +30,11 @@ void    read_map(char *filename)
 {
     t_map **map;
 	t_data	data;
-    size_t     fd;
+    int    fd;
     char    *line;
-    size_t  number_line;
-    size_t  number_col;
-    size_t     y;
+    int   number_line;
+    int   number_col;
+    int     y;
 
     line = NULL;
     number_line = 0;
@@ -255,16 +255,18 @@ void    rectangle(t_img *img, int x1, int y1, int x2, int y2, t_data *data)
 
 void clear_background(int color, t_data *data)
 {
+    int screen_height;
+    int screen_width;
     int x;
     int y;
 
     x = 0;
     y = 0;
     
-    while(y < (data->map_height))
+    while(y < 1000)
     {
-		x = 0;
-        while(x < (data->map_width))
+        x = 0;
+        while(x < 1000)
         {
             mlx_pixel_put(data->mlx_ptr, data->win_ptr, x, y, color);
             x++;
@@ -275,19 +277,18 @@ void clear_background(int color, t_data *data)
 
 void draw(t_data *data, t_map **map)
 {
-    t_img   *img;
 	int x;
     int y;
 
     x = 0;
     y = 0;
     
-    while(y < (data->map_height))
+    while(y < 1000)
     {
 		x = 0;
-        while(x < (data->map_width))
+        while(x < 1000)
         {
-			if(map[y][x].type == WALL)
+			if(map[y][x].type == WALL) 
             {
                 mlx_pixel_put(data->mlx_ptr, data->win_ptr, x, y, RED_PIXEL);
             }
@@ -303,7 +304,7 @@ int render(t_data *data, t_map **map, t_img *img)
 
     //utilizo data e img como argumentos ya que al pasarlos como variables locales de la función al acceder a ellas a través de un puntro daría seg fault.
     clear_background(WHITE_PIXEL, data);
-    rectangle(img, 100, 100, 200, 200, data); //prueba rectangulo
+    //rectangle(img, 100, 100, 200, 200, data); //prueba rectangulo
 	draw(data, map);
     
 	return(0);
@@ -311,12 +312,18 @@ int render(t_data *data, t_map **map, t_img *img)
 
 int main(int argc, char **argv)
 {
+    static int screen_width;
+    static int screen_height;
+    
     read_map(argv[1]);
     t_data   data; //si solo necesitas leer los datos dentro de la función, puedes pasar la estructura sin utilizar un puntero. Pero si necesitas modificar los datos dentro de la función, es necesario pasar la estructura a través de un puntero
     t_img   img;
 
+   
+   
     data.mlx_ptr = mlx_init();
-    data.win_ptr = mlx_new_window(data.mlx_ptr, 400, 300, "so_long");
+    //mlx_get_screen_size(data.mlx_ptr, &screen_width, &screen_height);
+    data.win_ptr = mlx_new_window(data.mlx_ptr, 1000, 1000, "so_long");
 
     //movements
     mlx_loop_hook(data.mlx_ptr, &handle_no_event, &data); //espera a recibir un evento
@@ -324,7 +331,7 @@ int main(int argc, char **argv)
     mlx_hook(data.win_ptr, KeyRelease, KeyReleaseMask, &handle_keyrelease, &data); //3 = KeyRelease, 1L<<1 KeyReleaseMask
 
     //drawing
-    img.mlx_img = mlx_new_image(data.mlx_ptr, 400, 300); //crea una imagen en la memoria de video de la pantalla
+    img.mlx_img = mlx_new_image(data.mlx_ptr, 1000, 1000); //crea una imagen en la memoria de video de la pantalla
     img.addr = mlx_get_data_addr(img.mlx_img, &img.bpp, &img.line_len, &img.endian); //se devuelve un puntero al primer byte de la imagen donde se usa para escribir en ella pixel por pixel
 	//printf("bpp: %d, line_len, %d, endian: %d\n", img.bpp, img.line_len, img.endian);
     mlx_loop_hook(data.mlx_ptr, &render, &data);
@@ -344,3 +351,5 @@ int main(int argc, char **argv)
 //ser ajustadas a la pantalla dependiendo el tamaño del mapa
 //pero al asignar el tamaño del mapa para crear la ventana(imagen)
 //ni siquiera se abre la nueva ventana
+
+//quiero conseguir q pinte el muro por ahora  solo da seg fault
