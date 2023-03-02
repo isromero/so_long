@@ -82,6 +82,7 @@ void    read_map(char *filename)
     parse_objects(map, number_line, number_col);
 }
 
+//tal vez deba cambiar esta función de validar ya que el return ; hace q con encontrarse uno ya no muestra si no es valido en otros
 void    validating_walls(t_map **map, size_t number_line, size_t number_col)
 {
     size_t     x;
@@ -93,13 +94,13 @@ void    validating_walls(t_map **map, size_t number_line, size_t number_col)
     {
         if (map[y][0].type != '1')
         {
-            printf("Not walls on the left\n");
-            break ;
+            printf("Not valid walls on the left\n");
+            return ;
         }
         if (map[y][number_col - 1].type != '1')
         {
-            printf("Not walls on the right\n");
-            break ;
+            printf("Not valid walls on the right\n");
+            return ;
         }
         y++;
     }
@@ -107,8 +108,8 @@ void    validating_walls(t_map **map, size_t number_line, size_t number_col)
     {
         if (map[0][x].type != '1' || map[number_line - 1][x].type != '1')
         {
-            printf("Not walls on the top/bottom\n");
-            break ;
+            printf("Not valid walls on the top or/and bottom\n");
+            return ;
         }
         x++;
     }
@@ -139,7 +140,7 @@ void validating_chars(t_map **map, size_t number_line, size_t number_col)
         y++;
     }
     // Comprobar si se encontraron todas las letras
-    if (found_c && found_e && found_p)
+    if (found_c == true && found_e == true && found_p == true)
         printf("Valid chars...\n");
     if (found_c != true && found_e != true && found_p != true)
         printf("Doesn't have 'C', 'E', 'P'\n");
@@ -297,13 +298,15 @@ void draw(t_data *data, t_map **map)
     }
 }
 
-int render(t_data *data, t_img *img, t_map **map)
+int render(t_data *data, t_map **map, t_img *img)
 {
+    //render no funciona si modifico datos de las estructuras como data o img... con mlx_put_image_to_window
+
     //utilizo data e img como argumentos ya que al pasarlos como variables locales de la función al acceder a ellas a través de un puntro daría seg fault.
-    //clear_background(WHITE_PIXEL, &data);
-    //rectangle(img, 100, 100, 200, 200, data); prueba rectangulo;
-	//draw(&data, &map);
-    mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, 0, 0); //ponemos la imagen en pantalla
+    clear_background(WHITE_PIXEL, data);
+    rectangle(img, 100, 100, 200, 200, data); //prueba rectangulo
+	draw(data, map);
+    
 	return(0);
 }
 
@@ -314,7 +317,7 @@ int main(int argc, char **argv)
     t_img   img;
 
     data.mlx_ptr = mlx_init();
-    data.win_ptr = mlx_new_window(data.mlx_ptr, 800, 600, "so_long");
+    data.win_ptr = mlx_new_window(data.mlx_ptr, 400, 300, "so_long");
 
     //movements
     mlx_loop_hook(data.mlx_ptr, &handle_no_event, &data); //espera a recibir un evento
@@ -322,19 +325,19 @@ int main(int argc, char **argv)
     mlx_hook(data.win_ptr, KeyRelease, KeyReleaseMask, &handle_keyrelease, &data); //3 = KeyRelease, 1L<<1 KeyReleaseMask
 
     //drawing
-    img.mlx_img = mlx_new_image(data.mlx_ptr, 800, 600); //crea una imagen en la memoria de video de la pantalla
-    if (!img.mlx_img)
-    {
-        printf("error printing img\n");
-        exit (1);
-    }
+    img.mlx_img = mlx_new_image(data.mlx_ptr, 400, 300); //crea una imagen en la memoria de video de la pantalla
     img.addr = mlx_get_data_addr(img.mlx_img, &img.bpp, &img.line_len, &img.endian); //se devuelve un puntero al primer byte de la imagen donde se usa para escribir en ella pixel por pixel
 	//printf("bpp: %d, line_len, %d, endian: %d\n", img.bpp, img.line_len, img.endian);
     mlx_loop_hook(data.mlx_ptr, &render, &data);
+    mlx_put_image_to_window(data.mlx_ptr, data.win_ptr, img.mlx_img, 0, 0); //ponemos la imagen en pantalla
     mlx_hook(data.win_ptr, KeyPress, KeyPressMask, &handle_keypress, &data);
 
 
     mlx_loop(data.mlx_ptr);
+
+    mlx_destroy_image(data.mlx_ptr, img.mlx_img);
+    mlx_destroy_display(data.mlx_ptr);
+    free(data.mlx_ptr);
     return (0);
 }
 
