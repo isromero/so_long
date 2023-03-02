@@ -261,10 +261,10 @@ void clear_background(int color, t_data *data)
     x = 0;
     y = 0;
     
-    while(y < 800)
+    while(y < (data->map_height))
     {
 		x = 0;
-        while(x < 600)
+        while(x < (data->map_width))
         {
             mlx_pixel_put(data->mlx_ptr, data->win_ptr, x, y, color);
             x++;
@@ -290,7 +290,6 @@ void draw(t_data *data, t_map **map)
 			if(map[y][x].type == WALL)
             {
                 mlx_pixel_put(data->mlx_ptr, data->win_ptr, x, y, RED_PIXEL);
-                img->addr[(y * img->line_len) + (x * (img->bpp / 8))] == RED_PIXEL;
             }
             x++;
         }
