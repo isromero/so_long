@@ -254,20 +254,25 @@ void    rectangle(t_img *img, int x1, int y1, int x2, int y2, t_data *data)
 
 void clear_background(int color, t_data *data)
 {
-    int screen_height;
-    int screen_width;
+    int width;
+    int height;
+    width = 0;
+    height = 0;
+
+    width = data->map_width * 32;
+    height = data->map_height * 32;
     int x;
     int y;
 
     x = 0;
     y = 0;
     
-    while(y < data->map_height)
+    while(y < height)
     {
         x = 0;
-        while(x < data->map_width)
+        while(x < width)
         {
-            mlx_pixel_put(data->mlx_ptr, data->win_ptr, x * 32, y * 32, color);
+            mlx_pixel_put(data->mlx_ptr, data->win_ptr, x, y, color);
             x++;
         }
         y++;
