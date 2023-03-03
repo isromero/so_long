@@ -25,6 +25,7 @@
 #define RED_PIXEL 0xFF0000
 #define GREEN_PIXEL 0xFF00
 #define WHITE_PIXEL 0xFFFFFF
+#define TILE_SIZE 32
 
 typedef enum object_type {
     EMPTY,

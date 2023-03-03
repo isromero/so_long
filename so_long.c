@@ -263,12 +263,12 @@ void clear_background(int color, t_data *data)
     x = 0;
     y = 0;
     
-    while(y < 1000)
+    while(y < data->map_height)
     {
         x = 0;
-        while(x < 1000)
+        while(x < data->map_width)
         {
-            mlx_pixel_put(data->mlx_ptr, data->win_ptr, x, y, color);
+            mlx_pixel_put(data->mlx_ptr, data->win_ptr, x * 32, y * 32, color);
             x++;
         }
         y++;
@@ -283,14 +283,14 @@ void draw(t_data *data, t_map **map)
     x = 0;
     y = 0;
     
-    while(y < 1000)
+    while(y < data->map_height)
     {
 		x = 0;
-        while(x < 1000)
+        while(x < data->map_width)
         {
 			if(map[y][x].type == WALL) 
             {
-                mlx_pixel_put(data->mlx_ptr, data->win_ptr, x, y, RED_PIXEL);
+                mlx_pixel_put(data->mlx_ptr, data->win_ptr, x * 32, y * 32, RED_PIXEL);
             }
             x++;
         }
@@ -312,18 +312,25 @@ int render(t_data *data, t_map **map, t_img *img)
 
 int main(int argc, char **argv)
 {
-    static int screen_width;
-    static int screen_height;
     
     read_map(argv[1]);
     t_data   data; //si solo necesitas leer los datos dentro de la función, puedes pasar la estructura sin utilizar un puntero. Pero si necesitas modificar los datos dentro de la función, es necesario pasar la estructura a través de un puntero
     t_img   img;
 
-   
-   
+    int width = data.map_width * 32;
+    int height = data.map_height * 32;
+    printf("window width : %d\n", width);
+    printf("Window height : %d\n", height);
+
     data.mlx_ptr = mlx_init();
-    //mlx_get_screen_size(data.mlx_ptr, &screen_width, &screen_height);
-    data.win_ptr = mlx_new_window(data.mlx_ptr, 1000, 1000, "so_long");
+    data.win_ptr = mlx_new_window(data.mlx_ptr, 416, 192, "so_long");
+
+    mlx_do_sync(data.mlx_ptr);
+    mlx_string_put(data.mlx_ptr, data.win_ptr, 0, 0, WHITE_PIXEL, "ajustando..");
+    mlx_do_sync(data.mlx_ptr);
+    mlx_clear_window(data.mlx_ptr, data.win_ptr);
+    data.win_ptr = mlx_new_window(data.mlx_ptr, width, height, "so_long");
+
 
     //movements
     mlx_loop_hook(data.mlx_ptr, &handle_no_event, &data); //espera a recibir un evento
@@ -331,7 +338,7 @@ int main(int argc, char **argv)
     mlx_hook(data.win_ptr, KeyRelease, KeyReleaseMask, &handle_keyrelease, &data); //3 = KeyRelease, 1L<<1 KeyReleaseMask
 
     //drawing
-    img.mlx_img = mlx_new_image(data.mlx_ptr, 1000, 1000); //crea una imagen en la memoria de video de la pantalla
+    img.mlx_img = mlx_new_image(data.mlx_ptr, 416, 192); //crea una imagen en la memoria de video de la pantalla
     img.addr = mlx_get_data_addr(img.mlx_img, &img.bpp, &img.line_len, &img.endian); //se devuelve un puntero al primer byte de la imagen donde se usa para escribir en ella pixel por pixel
 	//printf("bpp: %d, line_len, %d, endian: %d\n", img.bpp, img.line_len, img.endian);
     mlx_loop_hook(data.mlx_ptr, &render, &data);
