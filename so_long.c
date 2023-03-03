@@ -165,7 +165,7 @@ int handle_no_event(t_data *data)
     return (0);
 }
 
-void clear_background(int color, t_data *data, t_map **map)
+void clear_background(int color, t_data *data)
 {
     int width;
     int height;
@@ -206,8 +206,7 @@ void draw(t_data *data, t_map **map)
 
     x = 0;
     y = 0;
-    
-    printf("%c\n", map[0][0].type);
+
     while(y < height)
     {
 		x = 0;
@@ -215,7 +214,8 @@ void draw(t_data *data, t_map **map)
         {
 			if(map[y][x].type == WALL) 
             {
-                mlx_pixel_put(data->mlx_ptr, data->win_ptr, x, y, RED_PIXEL);
+                mlx_pixel_put(data->mlx_ptr, data->win_ptr, x * 32, y * 32, RED_PIXEL);
+                return ;
             }
             x++;
         }
@@ -223,14 +223,15 @@ void draw(t_data *data, t_map **map)
     }
 }
 
-int render(t_data *data, t_map **map)
+int render(t_data *data)
 {
+    t_map *map;
     //render no funciona si modifico datos de las estructuras como data o img... con mlx_put_image_to_window
 
     //utilizo data e img como argumentos ya que al pasarlos como variables locales de la función al acceder a ellas a través de un puntro daría seg fault.
-    clear_background(WHITE_PIXEL, data, map);
+    clear_background(WHITE_PIXEL, data);
     //rectangle(img, 100, 100, 200, 200, data); //prueba rectangulo
-	draw(data, map);
+	draw(data, &map);
     
 	return(0);
 }
@@ -256,7 +257,7 @@ void    creating_window(t_data *data, t_img *img, t_map **map)
     img->mlx_img = mlx_new_image(data->mlx_ptr, width, height); //crea una imagen en la memoria de video de la pantalla
     img->addr = mlx_get_data_addr(img->mlx_img, &img->bpp, &img->line_len, &img->endian); //se devuelve un puntero al primer byte de la imagen donde se usa para escribir en ella pixel por pixel
 	//printf("bpp: %d, line_len, %d, endian: %d\n", img->bpp, img->line_len, img->endian);
-    mlx_loop_hook(data->mlx_ptr, &render, &data);
+    mlx_loop_hook(data->mlx_ptr, &render, data);
     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, 0, 0); //ponemos la imagen en pantalla
     mlx_hook(data->win_ptr, KeyPress, KeyPressMask, &handle_keypress, &data);
 
