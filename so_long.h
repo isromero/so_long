@@ -44,6 +44,10 @@ typedef struct s_img
 	int		endian; //orden en el que se almacenan bytes en la memoria de la gráfica
 } t_img;
 
+typedef struct s_map
+{
+    object_type_t type;
+} t_map;
 
 typedef struct s_data
 {
@@ -51,16 +55,12 @@ typedef struct s_data
     void    *win_ptr;
     int     current_img;
     t_img   *img;
+    t_map   **map;
     int     x;
     int     y;
 	int 	map_width;
 	int 	map_height;
 } t_data;
 
-
-typedef struct s_map
-{
-    object_type_t type;
-} t_map;
 
 #endif

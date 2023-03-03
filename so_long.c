@@ -62,6 +62,7 @@ void    read_map(char *filename, t_data *data)
         y++;
     }
 	data->map_height = number_line;
+    data->map = map;
     close (fd);
     fd = open(filename, O_RDONLY);
 
@@ -279,7 +280,7 @@ void clear_background(int color, t_data *data)
     }
 }
 
-void draw(t_data *data, t_map **map)
+void draw(t_data *data)
 {
 	int x;
     int y;
@@ -292,7 +293,7 @@ void draw(t_data *data, t_map **map)
 		x = 0;
         while(x < data->map_width)
         {
-			if(map[y][x].type == WALL) 
+			if(data->map == WALL) 
             {
                 mlx_pixel_put(data->mlx_ptr, data->win_ptr, x * 32, y * 32, RED_PIXEL);
             }
@@ -302,14 +303,14 @@ void draw(t_data *data, t_map **map)
     }
 }
 
-int render(t_data *data, t_map **map, t_img *img)
+int render(t_data *data)
 {
     //render no funciona si modifico datos de las estructuras como data o img... con mlx_put_image_to_window
 
     //utilizo data e img como argumentos ya que al pasarlos como variables locales de la función al acceder a ellas a través de un puntro daría seg fault.
     clear_background(WHITE_PIXEL, data);
     //rectangle(img, 100, 100, 200, 200, data); //prueba rectangulo
-	draw(data, map);
+	draw(data);
     
 	return(0);
 }
