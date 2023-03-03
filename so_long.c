@@ -62,7 +62,7 @@ void    read_map(char *filename, t_data *data)
         y++;
     }
 	data->map_height = number_line;
-    data->map = map;
+    //data->map = map;
     close (fd);
     fd = open(filename, O_RDONLY);
 
@@ -282,20 +282,27 @@ void clear_background(int color, t_data *data)
 
 void draw(t_data *data)
 {
+    int width;
+    int height;
+    width = 0;
+    height = 0;
+
+    width = data->map_width * 32;
+    height = data->map_height * 32;
 	int x;
     int y;
 
     x = 0;
     y = 0;
     
-    while(y < data->map_height)
+    while(y < height)
     {
 		x = 0;
-        while(x < data->map_width)
+        while(x < width)
         {
-			if(data->map == WALL) 
+			if(data->map[y][x].type == WALL) 
             {
-                mlx_pixel_put(data->mlx_ptr, data->win_ptr, x * 32, y * 32, RED_PIXEL);
+                mlx_pixel_put(data->mlx_ptr, data->win_ptr, x, y, RED_PIXEL);
             }
             x++;
         }
