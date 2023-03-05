@@ -42,7 +42,11 @@ typedef struct s_img
 	int		bpp; //bits por pixel
 	int		line_len; //nº de bytes q ocupa cada línea de la imagen en la memoria de la gráfica
 	int		endian; //orden en el que se almacenan bytes en la memoria de la gráfica
+    int 	width;
+	int 	height;
+
 } t_img;
+
 
 typedef struct s_map
 {

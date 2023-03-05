@@ -21,6 +21,8 @@
 	int color;
 }	t_rect;*/
 
+
+
 //tal vez deba cambiar esta función de validar ya que el return ; hace q con encontrarse uno ya no muestra si no es valido en otros
 void    validating_walls(t_data *data, t_map **map)
 {
@@ -99,33 +101,28 @@ void    parse_objects(t_data *data, t_map **map)
         {
             if (map[y][x].type == '0')
             {
-                map[y][x].type = EXIT;
+                map[y][x].type = EMPTY;
                 printf("%c", '0');
-                return ;
             }
             else if (map[y][x].type == '1')
             {
                 map[y][x].type = WALL;
                 printf("%c", '1');
-                return ;
             }
             else if (map[y][x].type == 'C')
             {
                 map[y][x].type = COLLECTABLE;
                 printf("%c", 'C');
-                return ;
             }
             else if (map[y][x].type == 'E')
             {
                 map[y][x].type = EXIT;
                 printf("%c", 'E');
-                return ;
             }
             else if (map[y][x].type == 'P')
             {
                 map[y][x].type = INITIAL_POSITION;
                 printf("%c", 'P');
-                return ;
             }
             x++;
         }
@@ -205,8 +202,14 @@ void draw(t_data *data, t_map **map, t_img *img)
     width = 0;
     height = 0;
 
-    width = data->map_width * 32;
-    height = data->map_height * 32;
+    t_img obj_img;
+    t_img empty_img;
+    t_img wall_img;
+    t_img collectable_img;
+    t_img exit_img;
+    t_img initial_position_img;
+    //width = data->map_width * 32;
+    //height = data->map_height * 32;
 	int x;
     int y;
 
@@ -214,19 +217,45 @@ void draw(t_data *data, t_map **map, t_img *img)
     y = 0;
 
     //printf ("%c\n", map[1][1].type);
-    while(y < height)
+    while(y < data->map_height)
     {
         x = 0;
-        while(x < width)
+        while(x < data->map_width)
         {
-            if(map[y][x].type == WALL)
+             if (map[y][x].type == '0')
             {
-                img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, ".img/wall.png", &x, &y); //probar texturas
-                mlx_put_image_to_window (data->mlx_ptr, data->win_ptr, img->mlx_img, x, y);
+                map[y][x].type = EMPTY;
+                obj_img = empty_img;
+                printf("%c", '0');
+            }
+            else if (map[y][x].type == '1')
+            {
+                map[y][x].type = WALL;
+                obj_img = wall_img;
+                printf("%c", '1');
+            }
+            else if (map[y][x].type == 'C')
+            {
+                map[y][x].type = COLLECTABLE;
+                obj_img = collectable_img;
+                printf("%c", 'C');
+            }
+            else if (map[y][x].type == 'E')
+            {
+                map[y][x].type = EXIT;
+                obj_img = exit_img;
+                printf("%c", 'E');
+            }
+            else if (map[y][x].type == 'P')
+            {
+                map[y][x].type = INITIAL_POSITION;
+                obj_img = initial_position_img;
+                printf("%c", 'P');
             }
             x++;
         }
         y++;
+        printf("\n");
     }
 }
 
@@ -244,15 +273,13 @@ int render(t_data *data)
 	return(0);
 }
 
+
 void    creating_window(t_data *data, t_img *img, t_map **map)
 {
     int width = 0;
     width = data->map_width * 32;
     int height = 0;
     height = data->map_height * 32;
-    printf("window width : %d\n", width);
-    printf("Window height : %d\n", height);
-
     data->mlx_ptr = mlx_init();
     data->win_ptr = mlx_new_window(data->mlx_ptr, width, height, "so_long");
 
@@ -264,11 +291,27 @@ void    creating_window(t_data *data, t_img *img, t_map **map)
     //drawing
     img->mlx_img = mlx_new_image(data->mlx_ptr, width, height); //crea una imagen en la memoria de video de la pantalla
     img->addr = mlx_get_data_addr(img->mlx_img, &img->bpp, &img->line_len, &img->endian); //se devuelve un puntero al primer byte de la imagen donde se usa para escribir en ella pixel por pixel
-	//printf("bpp: %d, line_len, %d, endian: %d\n", img->bpp, img->line_len, img->endian);
-    printf ("map real: %c\n", map[1][1].type);
-    //mlx_loop_hook(data->mlx_ptr, &render, data);
-    //clear_background(WHITE_PIXEL, data);
-    //mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, 0, 0); //ponemos la imagen en pantalla
+    
+    // segmentation fault: mlx_loop_hook(data->mlx_ptr, &render, data);
+    //clear_background(WHITE_PIXEL, data, map);
+
+    t_img empty_img;
+    empty_img.mlx_img = mlx_png_file_to_image(data->mlx_ptr, "empty.xpm", &img.width, &img.height);
+
+    t_img wall_img;
+    wall_img.mlx_img = mlx_png_file_to_image(data->mlx_ptr, "wall.xpm", &wall_img.width, &wall_img.height);
+
+    t_img collectable_img;
+    collectable_img.mlx_img = mlx_png_file_to_image(data->mlx_ptr, "collectable.xpm", &collectable_img.width, &collectable_img.height);
+
+    t_img exit_img;
+    exit_img.mlx_img = mlx_png_file_to_image(data->mlx_ptr, "exit.xpm", &exit_img.width, &exit_img.height);
+
+    t_img initial_position_img;
+    initial_position_img.mlx_img = mlx_png_file_to_image(data->mlx_ptr, "initial_position.xpm", &initial_position_img.width, &initial_position_img.height);
+
+    mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, 0, 0); //ponemos la imagen en pantalla
+    draw(data, map, img);
     mlx_hook(data->win_ptr, KeyPress, KeyPressMask, &handle_keypress, &data);
 
 
@@ -283,7 +326,7 @@ void    so_long(t_data *data, t_img *img, t_map **map)
 {
     validating_walls(data, map);
     validating_chars(data, map);
-    parse_objects(data, map);
+    //parse_objects(data, map);
     creating_window(data, img, map);
 }
 
@@ -336,7 +379,7 @@ void just_read_and_info(char *filename, t_data *data, t_img *img, t_map **map)
         y++;
     }
     close(fd);
-    printf ("just read: %c\n", map[1][1].type);
+    //printf ("just read: %c\n", map[1][1].type);
     so_long(data, img, map);
 }
 
