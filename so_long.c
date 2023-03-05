@@ -195,6 +195,7 @@ void clear_background(int color, t_data *data, t_map **map)
     }
 }
 
+
 void draw(t_data *data, t_map **map, t_img *img)
 {
     int width;
@@ -202,12 +203,6 @@ void draw(t_data *data, t_map **map, t_img *img)
     width = 0;
     height = 0;
 
-    t_img obj_img;
-    t_img empty_img;
-    t_img wall_img;
-    t_img collectable_img;
-    t_img exit_img;
-    t_img initial_position_img;
     //width = data->map_width * 32;
     //height = data->map_height * 32;
 	int x;
@@ -215,7 +210,7 @@ void draw(t_data *data, t_map **map, t_img *img)
 
     x = 0;
     y = 0;
-
+    t_img   *wall;
     //printf ("%c\n", map[1][1].type);
     while(y < data->map_height)
     {
@@ -225,31 +220,36 @@ void draw(t_data *data, t_map **map, t_img *img)
              if (map[y][x].type == '0')
             {
                 map[y][x].type = EMPTY;
-                obj_img = empty_img;
+                wall->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/empty.xpm", &wall->img_width, &wall->img_height);
+                mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, wall->mlx_img, x * 32, y * 32);
                 printf("%c", '0');
             }
             else if (map[y][x].type == '1')
             {
                 map[y][x].type = WALL;
-                obj_img = wall_img;
                 printf("%c", '1');
+                wall->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/wall.xpm", &wall->img_width, &wall->img_height);
+                mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, wall->mlx_img, x * 32, y * 32);
             }
             else if (map[y][x].type == 'C')
             {
                 map[y][x].type = COLLECTABLE;
-                obj_img = collectable_img;
                 printf("%c", 'C');
+                wall->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/collectable.xpm", &wall->img_width, &wall->img_height);
+                mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, wall->mlx_img, x * 32, y * 32);
             }
             else if (map[y][x].type == 'E')
             {
                 map[y][x].type = EXIT;
-                obj_img = exit_img;
+                wall->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/exit.xpm", &wall->img_width, &wall->img_height);
+                mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, wall->mlx_img, x * 32, y * 32);
                 printf("%c", 'E');
             }
             else if (map[y][x].type == 'P')
             {
                 map[y][x].type = INITIAL_POSITION;
-                obj_img = initial_position_img;
+                wall->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/initial.xpm", &wall->img_width, &wall->img_height);
+                mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, wall->mlx_img, x * 32, y * 32);
                 printf("%c", 'P');
             }
             x++;
@@ -257,6 +257,7 @@ void draw(t_data *data, t_map **map, t_img *img)
         y++;
         printf("\n");
     }
+    
 }
 
 int render(t_data *data)
@@ -294,23 +295,6 @@ void    creating_window(t_data *data, t_img *img, t_map **map)
     
     // segmentation fault: mlx_loop_hook(data->mlx_ptr, &render, data);
     //clear_background(WHITE_PIXEL, data, map);
-
-    t_img empty_img;
-    empty_img.mlx_img = mlx_png_file_to_image(data->mlx_ptr, "empty.xpm", &img.width, &img.height);
-
-    t_img wall_img;
-    wall_img.mlx_img = mlx_png_file_to_image(data->mlx_ptr, "wall.xpm", &wall_img.width, &wall_img.height);
-
-    t_img collectable_img;
-    collectable_img.mlx_img = mlx_png_file_to_image(data->mlx_ptr, "collectable.xpm", &collectable_img.width, &collectable_img.height);
-
-    t_img exit_img;
-    exit_img.mlx_img = mlx_png_file_to_image(data->mlx_ptr, "exit.xpm", &exit_img.width, &exit_img.height);
-
-    t_img initial_position_img;
-    initial_position_img.mlx_img = mlx_png_file_to_image(data->mlx_ptr, "initial_position.xpm", &initial_position_img.width, &initial_position_img.height);
-
-    mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, 0, 0); //ponemos la imagen en pantalla
     draw(data, map, img);
     mlx_hook(data->win_ptr, KeyPress, KeyPressMask, &handle_keypress, &data);
 
