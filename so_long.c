@@ -146,13 +146,17 @@ int	handle_keyrelease(int key, t_data *data)
 
 int	handle_keypress(int key, t_data *data)
 {
+    t_img   *initial;
+
     if (key == XK_Escape)
 	{
 		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
 		exit (1);
 	}
     if (key == 'W')
+    {
         data->y--;
+    }
     if (key == 'A')
         data->x--;
     if (key == 'S')
