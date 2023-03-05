@@ -221,8 +221,8 @@ void draw(t_data *data, t_map **map, t_img *img)
         {
             if(map[y][x].type == WALL)
             {
-                mlx_pixel_put(data->mlx_ptr, data->win_ptr, x, y, RED_PIXEL); //probar texturas
-                mlx_put_image_to_window (data->mlx_ptr, data->win_ptr, img->mlx_img, x * 32, y * 32);
+                img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, ".img/wall.png", &x, &y); //probar texturas
+                mlx_put_image_to_window (data->mlx_ptr, data->win_ptr, img->mlx_img, x, y);
             }
             x++;
         }
