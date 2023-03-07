@@ -62,6 +62,8 @@ typedef struct s_data
     t_map   **map;
     int     x;
     int     y;
+    int     player_x;
+    int     player_y;
 	int 	map_width;
 	int 	map_height;
 } t_data;
