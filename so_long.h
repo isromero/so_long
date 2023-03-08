@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 12:19:56 by marvin            #+#    #+#             */
-/*   Updated: 2023/02/25 12:19:56 by marvin           ###   ########.fr       */
+/*   Updated: 2023/03/08 19:32:54 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "mlx.h"
-#include <X11/X.h>
-#include <X11/keysym.h>
+// #include <X11/X.h>
+// #include <X11/keysym.h>
 #include "get_next_line.h"
 
 #define RED_PIXEL 0xFF0000
@@ -38,13 +38,13 @@ typedef enum object_type {
 typedef struct s_img
 {
     void	*mlx_img; //apunta a la imagen que se ha creado
+	void	*wall;
 	char	*addr; //puntero al 1er byte de la imagen en la memoria de la gráfica
 	int		bpp; //bits por pixel
 	int		line_len; //nº de bytes q ocupa cada línea de la imagen en la memoria de la gráfica
 	int		endian; //orden en el que se almacenan bytes en la memoria de la gráfica
     int     img_width;
 	int 	img_height;
-
 } t_img;
 
 
@@ -59,11 +59,12 @@ typedef struct s_data
     void    *win_ptr;
     int     current_img;
     t_img   *img;
-    t_map   **map;
+   	char   	**map;
     int     x;
     int     y;
     int     player_x;
     int     player_y;
+	int		player_mov;
 	int 	map_width;
 	int 	map_height;
 } t_data;
