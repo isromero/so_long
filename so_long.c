@@ -22,6 +22,27 @@
 }	t_rect;*/
 
 
+void init_img(t_img *img)
+{
+    img->mlx_img = NULL;
+    img->img_width = 0;
+    img->img_height = 0;
+}
+
+void init_struct(t_data *data)
+{
+    data->mlx_ptr = 0;
+    data->win_ptr = 0;
+    data-> current_img = 0;
+   	data->map = 0;
+    data->x = 0;
+    data->y = 0;
+    data->player_x = 0;
+    data->player_y = 0;
+	data->player_mov = 0;
+	data->map_width = 0;
+    data->map_height = 0;
+}
 
 //tal vez deba cambiar esta función de validar ya que el return ; hace q con encontrarse uno ya no muestra si no es valido en otros
 void    validating_walls(t_data *data, t_map **map)
@@ -163,17 +184,6 @@ void    ft_initial(t_data *data, t_img *img)
 
 void draw(t_data *data, t_img *img)
 {
-    int width;
-    int height;
-    width = 0;
-    height = 0;
-	int	i;
-	i = 0;
-    //width = data->map_width * 32;
-    //height = data->map_height * 32;
-
-    data->x = 0;
-    data->y = 0;
     // t_img   **objs;
     // objs = malloc(sizeof(t_img *) * 5);
     // objs[EMPTY] = malloc(sizeof(t_img));
@@ -225,13 +235,6 @@ void draw(t_data *data, t_img *img)
         data->y++;
         printf("\n");
     }
-	// while (i < 5) 
-	// {
-    // 	mlx_destroy_image(data->mlx_ptr, objs[i]->mlx_img);
-    // 	free(objs[i]);
-	// 	i++;
-	// }
-	// free(objs);
 }
 
 void	move_up(t_data *data, t_img *img)
@@ -244,6 +247,12 @@ void	move_up(t_data *data, t_img *img)
 
 int	handle_keypress(int key, t_data *data, t_img *img)
 {
+    if (data->player_x < 0 || data->player_x >= data->map_height || data->player_y < 0 || data->player_y >= data->map_width)
+        printf("Error: las coordenadas del jugador están fuera de los límites del mapa\n");
+    if (!data)
+        printf("Error: data es un puntero nulo\n");
+    if (!data->map)
+        printf("Error: data->map es un puntero nulo\n");
     if (key == 53) //XK_Escape
 	{
 		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
@@ -255,12 +264,12 @@ int	handle_keypress(int key, t_data *data, t_img *img)
 		move_up(data, img);
         printf("Después: player_x=%d, player_y=%d\n", data->player_x, data->player_y);
     }
-    if (key == 97 && data->map[data->player_y - 1][data->player_x] != '1' && data->map[data->player_y - 1][data->player_x] != 'E')
-        data->player_x--;
-    if (key == 115 && data->map[data->player_y - 1][data->player_x] != '1' && data->map[data->player_y - 1][data->player_x] != 'E')
-        data->player_y++;
-    if (key == 100 && data->map[data->player_y - 1][data->player_x] != '1' && data->map[data->player_y - 1][data->player_x] != 'E')
-        data->player_x++;
+    // if (key == 97 && data->map[data->player_y - 1][data->player_x] != '1' && data->map[data->player_y - 1][data->player_x] != 'E')
+    //     data->player_x--;
+    // if (key == 115 && data->map[data->player_y - 1][data->player_x] != '1' && data->map[data->player_y - 1][data->player_x] != 'E')
+    //     data->player_y++;
+    // if (key == 100 && data->map[data->player_y - 1][data->player_x] != '1' && data->map[data->player_y - 1][data->player_x] != 'E')
+    //     data->player_x++;
     return (0);
 }
 
@@ -350,9 +359,9 @@ void    creating_window(t_data *data, t_img *img)
 
     //movements
 	
-    mlx_loop_hook(data->mlx_ptr, &handle_no_event, data); //espera a recibir un evento
-    mlx_hook(data->win_ptr, 2, 1<<0, &handle_keypress, data); //2 = KeyPress, 1<<0= KeyPressMask
-    mlx_hook(data->win_ptr, 3, 1L<<1, &handle_keyrelease, data); //3 = KeyRelease, 1L<<1 KeyReleaseMask
+    //mlx_loop_hook(data->mlx_ptr, &handle_no_event, data); //espera a recibir un evento
+    mlx_hook(data->win_ptr, KeyPress, KeyPressMask, &handle_keypress, data); //2 = KeyPress, 1<<0= KeyPressMask
+    //mlx_hook(data->win_ptr, KeyRelease, KeyReleaseMask, &handle_keyrelease, data); //3 = KeyRelease, 1L<<1 KeyReleaseMask
 	
 	
 	//mlx_hook(data->win_ptr, 2, 1<<0, &handle_keypress, &data);
@@ -360,9 +369,9 @@ void    creating_window(t_data *data, t_img *img)
 
     mlx_loop(data->mlx_ptr);
 
-    mlx_destroy_image(data->mlx_ptr, img->mlx_img);
+    //mlx_destroy_image(data->mlx_ptr, img->mlx_img);
     //mlx_destroy_display(data->mlx_ptr);
-    free(data->mlx_ptr);
+    //free(data->mlx_ptr);
 }
 
 void    so_long(t_data *data, t_img *img)
@@ -430,6 +439,7 @@ int main(int argc, char **argv)
     t_data  data;
 
     t_img   img;
+    init_struct(&data);
     just_read_and_info(argv[1], &data, &img);
     return (0);
 }
