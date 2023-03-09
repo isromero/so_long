@@ -59,7 +59,7 @@ typedef struct s_data
     void    *win_ptr;
     int     current_img;
     t_img   *img;
-   	char   	**map;
+   	char   **map;
     int     x;
     int     y;
     int     player_x;

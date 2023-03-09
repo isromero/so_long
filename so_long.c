@@ -130,8 +130,38 @@ void    parse_objects(t_data *data, t_map **map)
         printf("\n");
     }
 }
+void    ft_empty(t_data *data, t_img *img)
+{
+    img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/empty.xpm", &img->img_width, &img->img_height);
+    mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->x * 32, data->y * 32);
+}
 
-void draw(t_data *data, t_img *img, t_map **map)
+void    ft_wall(t_data *data, t_img *img)
+{
+    img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/wall.xpm", &img->img_width, &img->img_height);
+    mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->x * 32, data->y * 32);
+}
+
+void    ft_collectable(t_data *data, t_img *img)
+{
+    img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/collectable.xpm", &img->img_width, &img->img_height);
+    mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->x * 32, data->y * 32);
+}
+
+void    ft_exit(t_data *data, t_img *img)
+{
+    img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/exit.xpm", &img->img_width, &img->img_height);
+    mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->x * 32, data->y * 32);
+}
+
+void    ft_initial(t_data *data, t_img *img)
+{
+    img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/initial.xpm", &img->img_width, &img->img_height);
+    mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->x * 32, data->y * 32);
+}
+
+
+void draw(t_data *data, t_img *img)
 {
     int width;
     int height;
@@ -144,19 +174,19 @@ void draw(t_data *data, t_img *img, t_map **map)
 
     data->x = 0;
     data->y = 0;
-    t_img   **objs;
-    objs = malloc(sizeof(t_img *) * 5);
-    objs[EMPTY] = malloc(sizeof(t_img));
-    objs[WALL] = malloc(sizeof(t_img));
-    objs[COLLECTABLE] = malloc(sizeof(t_img));
-    objs[EXIT] = malloc(sizeof(t_img));
-    objs[INITIAL_POSITION] = malloc(sizeof(t_img));
+    // t_img   **objs;
+    // objs = malloc(sizeof(t_img *) * 5);
+    // objs[EMPTY] = malloc(sizeof(t_img));
+    // objs[WALL] = malloc(sizeof(t_img));
+    // objs[COLLECTABLE] = malloc(sizeof(t_img));
+    // objs[EXIT] = malloc(sizeof(t_img));
+    // objs[INITIAL_POSITION] = malloc(sizeof(t_img));
 
-    objs[EMPTY]->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/empty.xpm", &objs[EMPTY]->img_width, &objs[EMPTY]->img_height);
-    objs[WALL]->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/wall.xpm", &objs[WALL]->img_width, &objs[WALL]->img_height);
-    objs[COLLECTABLE]->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/collectable.xpm", &objs[COLLECTABLE]->img_width, &objs[COLLECTABLE]->img_height);
-    objs[EXIT]->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/exit.xpm", &objs[EXIT]->img_width, &objs[EXIT]->img_height);
-    objs[INITIAL_POSITION]->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/initial.xpm", &objs[INITIAL_POSITION]->img_width, &objs[INITIAL_POSITION]->img_height);
+    // objs[EMPTY]->mlx_img = 
+    // objs[WALL]->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/wall.xpm", &objs[WALL]->img_width, &objs[WALL]->img_height);
+    // objs[COLLECTABLE]->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/collectable.xpm", &objs[COLLECTABLE]->img_width, &objs[COLLECTABLE]->img_height);
+    // objs[EXIT]->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/exit.xpm", &objs[EXIT]->img_width, &objs[EXIT]->img_height);
+    // objs[INITIAL_POSITION]->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/initial.xpm", &objs[INITIAL_POSITION]->img_width, &objs[INITIAL_POSITION]->img_height);
 
     //objs = malloc(sizeof(t_img *));
     //printf ("%c\n", map[1][1].type);
@@ -165,29 +195,29 @@ void draw(t_data *data, t_img *img, t_map **map)
         data->x = 0;
         while(data->x < data->map_width)
         {
-             if (map[data->y][data->x].type == '0')
+            if (data->map[data->y][data->x] == '0')
             {
-                mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, objs[EMPTY]->mlx_img, data->x * 32, data->y * 32);
+                ft_empty(data, img);
                 printf("%c",'0');
             }
-            else if (map[data->y][data->x].type == '1')
+            if (data->map[data->y][data->x] == '1')
             {
+                ft_wall(data, img);
                 printf("%c",'1');
-                mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, objs[WALL]->mlx_img, data->x * 32, data->y * 32);
             }
-            else if (map[data->y][data->x].type == 'C')
+            if (data->map[data->y][data->x] == 'C')
             {
+                ft_collectable(data, img);
                 printf("%c",'C');
-                mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, objs[COLLECTABLE]->mlx_img, data->x * 32, data->y * 32);
             }
-            else if (map[data->y][data->x].type == 'E')
+            if (data->map[data->y][data->x] == 'E')
             {
-                mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, objs[EXIT]->mlx_img, data->x * 32, data->y * 32);
+                ft_exit(data, img);
                 printf("%c",'E');
             }
-            else if (map[data->y][data->x].type == 'P')
+            if (data->map[data->y][data->x] == 'P')
             {
-                mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, objs[INITIAL_POSITION]->mlx_img, data->x * 32, data->y * 32);
+                ft_initial(data, img);
                 printf("%c",'P');
             }
             data->x++;
@@ -195,42 +225,41 @@ void draw(t_data *data, t_img *img, t_map **map)
         data->y++;
         printf("\n");
     }
-	while (i < 5) 
-	{
-    	mlx_destroy_image(data->mlx_ptr, objs[i]->mlx_img);
-    	free(objs[i]);
-		i++;
-	}
-	free(objs);
+	// while (i < 5) 
+	// {
+    // 	mlx_destroy_image(data->mlx_ptr, objs[i]->mlx_img);
+    // 	free(objs[i]);
+	// 	i++;
+	// }
+	// free(objs);
 }
 
-void	move_up(t_data *data, t_img *img, t_map **map)
+void	move_up(t_data *data, t_img *img)
 {
-	data->y--;
-	map[data->y + 1][data->x].type = '0';
-	map[data->y][data->x].type = 'P';
+	data->map[data->player_y][data->player_x] = '0';
+	data->map[data->player_y - 1][data->player_x] = 'P';
 	//data->player_mov++;
-	draw(data, img, map);
+	draw(data, img);
  }
 
-int	handle_keypress(int key, t_data *data, t_img *img, t_map **map)
+int	handle_keypress(int key, t_data *data, t_img *img)
 {
     if (key == 53) //XK_Escape
 	{
 		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
 		exit (1);
 	}
-    if (key == 13) //probando solo W
+    if (key == 119 && data->map[data->player_y - 1][data->player_x] != '1' && data->map[data->player_y - 1][data->player_x] != 'E') //probando solo W
     {
 		printf("antes: player_x=%d, player_y=%d\n", data->player_x, data->player_y);
-		move_up(data, img, map);
+		move_up(data, img);
         printf("Después: player_x=%d, player_y=%d\n", data->player_x, data->player_y);
     }
-    if (key == 97)
+    if (key == 97 && data->map[data->player_y - 1][data->player_x] != '1' && data->map[data->player_y - 1][data->player_x] != 'E')
         data->player_x--;
-    if (key == 115)
+    if (key == 115 && data->map[data->player_y - 1][data->player_x] != '1' && data->map[data->player_y - 1][data->player_x] != 'E')
         data->player_y++;
-    if (key == 100)
+    if (key == 100 && data->map[data->player_y - 1][data->player_x] != '1' && data->map[data->player_y - 1][data->player_x] != 'E')
         data->player_x++;
     return (0);
 }
@@ -292,14 +321,14 @@ int render(t_data *data, t_img *img, t_map **map)
     //utilizo data e img como argumentos ya que al pasarlos como variables locales de la función al acceder a ellas a través de un puntro daría seg fault.
     //clear_background(WHITE_PIXEL, data, map);
     //rectangle(img, 100, 100, 200, 200, data); //prueba rectangulo
-	draw(data, img, map);
+	draw(data, img);
 
 	return(0);
 }
 
 
 
-void    creating_window(t_data *data, t_img *img, t_map **map)
+void    creating_window(t_data *data, t_img *img)
 {
     int width = 0;
     width = data->map_width * 32;
@@ -316,7 +345,7 @@ void    creating_window(t_data *data, t_img *img, t_map **map)
     
     //segmentation fault: mlx_loop_hook(data->mlx_ptr, &render, data);
     //clear_background(WHITE_PIXEL, data, map);
-    draw(data, img, map);
+    draw(data, img);
 
 
     //movements
@@ -336,15 +365,15 @@ void    creating_window(t_data *data, t_img *img, t_map **map)
     free(data->mlx_ptr);
 }
 
-void    so_long(t_data *data, t_img *img, t_map **map)
+void    so_long(t_data *data, t_img *img)
 {
-    validating_walls(data, map);
-    validating_chars(data, map);
+    // validating_walls(data, map);
+    // validating_chars(data, map);
     //parse_objects(data, map);
-    creating_window(data, img, map);
+    creating_window(data, img);
 }
 
-void just_read_and_info(char *filename, t_data *data, t_img *img, t_map **map)
+void just_read_and_info(char *filename, t_data *data, t_img *img)
 {
     int    fd;
     char    *line;
@@ -371,11 +400,11 @@ void just_read_and_info(char *filename, t_data *data, t_img *img, t_map **map)
     }
 
     //Alojamos memoria 
-    map = malloc(number_line * sizeof(t_map *)); // Con esto alojamos a map[y][x] 
+    data->map = malloc(number_line * sizeof(char *)); // Con esto alojamos a map[y][x] 
     while(y < number_line)
     {
-        map[y] = malloc(number_col * sizeof(t_map));
-        memset(map[y], 0, number_col * sizeof(t_map));
+        data->map[y] = malloc(number_col * sizeof(char));
+        memset(data->map[y], 0, number_col * sizeof(char));
         y++;
     }
 	data->map_height = number_line;
@@ -387,13 +416,13 @@ void just_read_and_info(char *filename, t_data *data, t_img *img, t_map **map)
     {
         for (int x = 0; x < number_col; x++) 
         {
-            map[y][x].type = line[x];
+            data->map[y][x] = line[x];
         }
         free(line);
         y++;
     }
     close(fd);
-    so_long(data, img, map);
+    so_long(data, img);
 }
 
 int main(int argc, char **argv)
@@ -401,8 +430,7 @@ int main(int argc, char **argv)
     t_data  data;
 
     t_img   img;
-    t_map  *map;
-    just_read_and_info(argv[1], &data, &img, &map);
+    just_read_and_info(argv[1], &data, &img);
     return (0);
 }
 
