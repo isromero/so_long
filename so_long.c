@@ -265,6 +265,7 @@ int	handle_keypress(int key, t_data *data, t_img *img)
     {
 		//printf("antes: x=%d, y=%d\n", data->x, data->y);
 		move_up(data, img);
+        
         printf("Después: x=%d, y=%d\n", data->player_x, data->player_y);
     }
     // if (key == 97 && data->map[data->player_y - 1][data->player_x] != '1' && data->map[data->player_y - 1][data->player_x] != 'E')
@@ -273,6 +274,7 @@ int	handle_keypress(int key, t_data *data, t_img *img)
     //     data->player_y++;
     // if (key == 100 && data->map[data->player_y - 1][data->player_x] != '1' && data->map[data->player_y - 1][data->player_x] != 'E')
     //     data->player_x++;
+    
     return (0);
 }
 
@@ -355,7 +357,7 @@ void    creating_window(t_data *data, t_img *img)
     img->mlx_img = mlx_new_image(data->mlx_ptr, width, height); //crea una imagen en la memoria de video de la pantalla
     img->addr = mlx_get_data_addr(img->mlx_img, &img->bpp, &img->line_len, &img->endian); //se devuelve un puntero al primer byte de la imagen donde se usa para escribir en ella pixel por pixel
     //clear_background(WHITE_PIXEL, data, map);
-    
+
     draw(data, img);
     //mlx_loop_hook(data->mlx_ptr, &render, &data);
     
@@ -365,6 +367,8 @@ void    creating_window(t_data *data, t_img *img)
 	
     //mlx_loop_hook(data->mlx_ptr, &handle_no_event, data); //espera a recibir un evento
     mlx_hook(data->win_ptr, KeyPress, KeyPressMask, &handle_keypress, data); //2 = KeyPress, 1<<0= KeyPressMask
+    
+   
     //mlx_hook(data->win_ptr, KeyRelease, KeyReleaseMask, &handle_keyrelease, data); //3 = KeyRelease, 1L<<1 KeyReleaseMask
 	
 	
