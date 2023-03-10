@@ -227,6 +227,8 @@ void draw(t_data *data, t_img *img)
             }
             if (data->map[data->y][data->x] == 'P')
             {
+                data->player_y = data->y;
+                data->player_x = data->x;
                 ft_initial(data, img);
                 printf("%c",'P');
             }
@@ -242,6 +244,7 @@ void	move_up(t_data *data, t_img *img)
 	data->map[data->player_y][data->player_x] = '0';
 	data->map[data->player_y - 1][data->player_x] = 'P';
 	//data->player_mov++;
+    data->player_y--;
 	draw(data, img);
  }
 
@@ -253,16 +256,16 @@ int	handle_keypress(int key, t_data *data, t_img *img)
         printf("Error: data es un puntero nulo\n");
     if (!data->map)
         printf("Error: data->map es un puntero nulo\n");
-    if (key == 53) //XK_Escape
+    if (key == XK_Escape) //XK_Escape, 59
 	{
 		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
 		exit (1);
 	}
-    if (key == 119 && data->map[data->player_y - 1][data->player_x] != '1' && data->map[data->player_y - 1][data->player_x] != 'E') //probando solo W
+    if (key == 119) //probando solo W
     {
-		printf("antes: player_x=%d, player_y=%d\n", data->player_x, data->player_y);
+		//printf("antes: x=%d, y=%d\n", data->x, data->y);
 		move_up(data, img);
-        printf("Después: player_x=%d, player_y=%d\n", data->player_x, data->player_y);
+        printf("Después: x=%d, y=%d\n", data->player_x, data->player_y);
     }
     // if (key == 97 && data->map[data->player_y - 1][data->player_x] != '1' && data->map[data->player_y - 1][data->player_x] != 'E')
     //     data->player_x--;
@@ -323,7 +326,7 @@ void clear_background(int color, t_data *data, t_map **map)
 
 
 
-int render(t_data *data, t_img *img, t_map **map)
+int render(t_data *data, t_img *img)
 {
     //render no funciona si modifico datos de las estructuras como data o img... con mlx_put_image_to_window
 
@@ -351,10 +354,11 @@ void    creating_window(t_data *data, t_img *img)
     //drawing
     img->mlx_img = mlx_new_image(data->mlx_ptr, width, height); //crea una imagen en la memoria de video de la pantalla
     img->addr = mlx_get_data_addr(img->mlx_img, &img->bpp, &img->line_len, &img->endian); //se devuelve un puntero al primer byte de la imagen donde se usa para escribir en ella pixel por pixel
-    
-    //segmentation fault: mlx_loop_hook(data->mlx_ptr, &render, data);
     //clear_background(WHITE_PIXEL, data, map);
+    
     draw(data, img);
+    //mlx_loop_hook(data->mlx_ptr, &render, &data);
+    
 
 
     //movements
