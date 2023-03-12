@@ -175,31 +175,48 @@ void    ft_exit(t_data *data, t_img *img)
     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->x * 32, data->y * 32);
 }
 
-void    ft_initial(t_data *data, t_img *img)
+void    ft_initial(int key, t_data *data, t_img *img)
 {
     img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/initial.xpm", &img->img_width, &img->img_height);
     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->x * 32, data->y * 32);
+
+    if (key == 119 && data->map[data->player_y - 1][data->player_x] != '1' && data->map[data->player_y - 1][data->player_x] != 'E') 
+    {
+        data->player_y--;
+        img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/initial.xpm", &img->img_width, &img->img_height);
+        mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->player_x * 32, data->player_y * 32);
+        img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/empty.xpm", &img->img_width, &img->img_height);
+        mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->player_x * 32, (data->player_y + 1) * 32);
+    }
+    if (key == 97 && data->map[data->player_y][data->player_x - 1] != '1' && data->map[data->player_y][data->player_x - 1] != 'E')
+    {
+        data->player_x--;
+        img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/initial.xpm", &img->img_width, &img->img_height);
+        mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->player_x * 32, data->player_y * 32);
+        img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/empty.xpm", &img->img_width, &img->img_height);
+        mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, (data->player_x + 1) * 32, data->player_y * 32);
+    }
+    if (key == 115 && data->map[data->player_y + 1][data->player_x] != '1' && data->map[data->player_y + 1][data->player_x] != 'E')
+    {
+        data->player_y++;
+        img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/initial.xpm", &img->img_width, &img->img_height);
+        mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->player_x * 32, data->player_y * 32);
+        img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/empty.xpm", &img->img_width, &img->img_height);
+        mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->player_x * 32, (data->player_y - 1) * 32);
+    }
+    if (key == 100 && data->map[data->player_y][data->player_x + 1] != '1' && data->map[data->player_y][data->player_x + 1] != 'E')
+    {
+        data->player_x++;
+        img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/initial.xpm", &img->img_width, &img->img_height);
+        mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->player_x * 32, data->player_y * 32);
+        img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/empty.xpm", &img->img_width, &img->img_height);
+        mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, (data->player_x - 1) * 32, data->player_y * 32);
+    }
 }
 
 
-void draw(t_data *data, t_img *img)
+void draw(int key, t_data *data, t_img *img)
 {
-    // t_img   **objs;
-    // objs = malloc(sizeof(t_img *) * 5);
-    // objs[EMPTY] = malloc(sizeof(t_img));
-    // objs[WALL] = malloc(sizeof(t_img));
-    // objs[COLLECTABLE] = malloc(sizeof(t_img));
-    // objs[EXIT] = malloc(sizeof(t_img));
-    // objs[INITIAL_POSITION] = malloc(sizeof(t_img));
-
-    // objs[EMPTY]->mlx_img = 
-    // objs[WALL]->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/wall.xpm", &objs[WALL]->img_width, &objs[WALL]->img_height);
-    // objs[COLLECTABLE]->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/collectable.xpm", &objs[COLLECTABLE]->img_width, &objs[COLLECTABLE]->img_height);
-    // objs[EXIT]->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/exit.xpm", &objs[EXIT]->img_width, &objs[EXIT]->img_height);
-    // objs[INITIAL_POSITION]->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/initial.xpm", &objs[INITIAL_POSITION]->img_width, &objs[INITIAL_POSITION]->img_height);
-
-    //objs = malloc(sizeof(t_img *));
-    //printf ("%c\n", map[1][1].type);
     while(data->y < data->map_height)
     {
         data->x = 0;
@@ -229,7 +246,7 @@ void draw(t_data *data, t_img *img)
             {
                 data->player_y = data->y;
                 data->player_x = data->x;
-                ft_initial(data, img);
+                ft_initial(key, data, img);
                 printf("%c",'P');
             }
             data->x++;
@@ -241,17 +258,12 @@ void draw(t_data *data, t_img *img)
 
 void	move_up(t_data *data, t_img *img)
 {
-	data->map[data->player_y][data->player_x] = '0';
-	data->map[data->player_y - 1][data->player_x] = 'P';
+	
 	//data->player_mov++;
-    data->player_y--;
-	draw(data, img);
  }
 
 int	handle_keypress(int key, t_data *data, t_img *img)
 {
-    if (data->player_x < 0 || data->player_x >= data->map_height || data->player_y < 0 || data->player_y >= data->map_width)
-        printf("Error: las coordenadas del jugador están fuera de los límites del mapa\n");
     if (!data)
         printf("Error: data es un puntero nulo\n");
     if (!data->map)
@@ -261,20 +273,15 @@ int	handle_keypress(int key, t_data *data, t_img *img)
 		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
 		exit (1);
 	}
-    if (key == 119) //probando solo W
-    {
-		//printf("antes: x=%d, y=%d\n", data->x, data->y);
-		move_up(data, img);
-        
-        printf("Después: x=%d, y=%d\n", data->player_x, data->player_y);
-    }
+	ft_initial(key, data, img);
+    printf("Después: x=%d, y=%d\n", data->player_x, data->player_y);
     // if (key == 97 && data->map[data->player_y - 1][data->player_x] != '1' && data->map[data->player_y - 1][data->player_x] != 'E')
     //     data->player_x--;
     // if (key == 115 && data->map[data->player_y - 1][data->player_x] != '1' && data->map[data->player_y - 1][data->player_x] != 'E')
     //     data->player_y++;
     // if (key == 100 && data->map[data->player_y - 1][data->player_x] != '1' && data->map[data->player_y - 1][data->player_x] != 'E')
     //     data->player_x++;
-    
+    //draw(data, img);
     return (0);
 }
 
@@ -328,22 +335,23 @@ void clear_background(int color, t_data *data, t_map **map)
 
 
 
-int render(t_data *data, t_img *img)
-{
-    //render no funciona si modifico datos de las estructuras como data o img... con mlx_put_image_to_window
+// int render(t_data *data, t_img *img)
+// {
+//     //render no funciona si modifico datos de las estructuras como data o img... con mlx_put_image_to_window
 
-    //utilizo data e img como argumentos ya que al pasarlos como variables locales de la función al acceder a ellas a través de un puntro daría seg fault.
-    //clear_background(WHITE_PIXEL, data, map);
-    //rectangle(img, 100, 100, 200, 200, data); //prueba rectangulo
-	draw(data, img);
+//     //utilizo data e img como argumentos ya que al pasarlos como variables locales de la función al acceder a ellas a través de un puntro daría seg fault.
+//     //clear_background(WHITE_PIXEL, data, map);
+//     //rectangle(img, 100, 100, 200, 200, data); //prueba rectangulo
+// 	draw(data, img);
 
-	return(0);
-}
+// 	return(0);
+// }
 
 
 
 void    creating_window(t_data *data, t_img *img)
 {
+    int key;
     int width = 0;
     width = data->map_width * 32;
     int height = 0;
@@ -358,7 +366,7 @@ void    creating_window(t_data *data, t_img *img)
     img->addr = mlx_get_data_addr(img->mlx_img, &img->bpp, &img->line_len, &img->endian); //se devuelve un puntero al primer byte de la imagen donde se usa para escribir en ella pixel por pixel
     //clear_background(WHITE_PIXEL, data, map);
 
-    draw(data, img);
+    draw(key, data, img);
     //mlx_loop_hook(data->mlx_ptr, &render, &data);
     
 
