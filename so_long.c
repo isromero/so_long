@@ -159,7 +159,7 @@ void    ft_empty(t_data *data, t_img *img)
 
 void    ft_wall(t_data *data, t_img *img)
 {
-    img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/wall.xpm", &img->img_width, &img->img_height);
+    img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/walls.xpm", &img->img_width, &img->img_height);
     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->x * 32, data->y * 32);
 }
 
@@ -167,12 +167,21 @@ void    ft_collectable(t_data *data, t_img *img)
 {
     img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/collectable.xpm", &img->img_width, &img->img_height);
     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->x * 32, data->y * 32);
+    
 }
 
 void    ft_exit(t_data *data, t_img *img)
 {
-    img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/exit.xpm", &img->img_width, &img->img_height);
-    mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->x * 32, data->y * 32);
+      if (data->num_collectable_map == 0)
+            {  
+                printf("CON DOS COJONES\n");
+                img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/exit_open.xpm", &img->img_width, &img->img_height);
+            }
+            else{
+    img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/exit_closed.xpm", &img->img_width, &img->img_height);
+            }
+       mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->x * 32, data->y * 32);       
+
 }
 
 void    ft_initial(int key, t_data *data, t_img *img)
@@ -212,6 +221,13 @@ void    ft_initial(int key, t_data *data, t_img *img)
         img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/empty.xpm", &img->img_width, &img->img_height);
         mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, (data->player_x - 1) * 32, data->player_y * 32);
     }
+        if (data->map[data->player_y][data->player_x] == 'C')
+        {
+            data->num_collectable_map--;
+            printf("guaccipinoooo\n");
+        }
+    printf("%d\n", data->num_collectable_map);
+
 }
 
 
@@ -234,8 +250,12 @@ void draw(int key, t_data *data, t_img *img)
             }
             if (data->map[data->y][data->x] == 'C')
             {
+                data->num_collectable_map++;
+                printf("AQUÏ ESTA: %d\n", data->num_collectable_map);
                 ft_collectable(data, img);
+                
                 printf("%c",'C');
+                
             }
             if (data->map[data->y][data->x] == 'E')
             {
@@ -249,11 +269,14 @@ void draw(int key, t_data *data, t_img *img)
                 ft_initial(key, data, img);
                 printf("%c",'P');
             }
+            
             data->x++;
         }
         data->y++;
         printf("\n");
+        
     }
+    //printf("%d\n", data->num_collectable_map);
 }
 
 void	move_up(t_data *data, t_img *img)

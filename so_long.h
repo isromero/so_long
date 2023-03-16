@@ -60,6 +60,8 @@ typedef struct s_data
     int     current_img;
     t_img   *img;
    	char   **map;
+    int     num_collectable_map;
+    int     num_collectable;
     int     x;
     int     y;
     int     player_x;
