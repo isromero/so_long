@@ -60,6 +60,8 @@ typedef struct s_data
     int     current_img;
     t_img   *img;
    	char   **map;
+    int     door_x;
+    int     door_y;
     int     num_collectable_map;
     int     num_collectable;
     int     x;

@@ -172,62 +172,67 @@ void    ft_collectable(t_data *data, t_img *img)
 
 void    ft_exit(t_data *data, t_img *img)
 {
-      if (data->num_collectable_map == 0)
-            {  
-                printf("CON DOS COJONES\n");
-                img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/exit_open.xpm", &img->img_width, &img->img_height);
-            }
-            else{
     img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/exit_closed.xpm", &img->img_width, &img->img_height);
-            }
-       mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->x * 32, data->y * 32);       
-
+    mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->x * 32, data->y * 32);       
 }
 
 void    ft_initial(int key, t_data *data, t_img *img)
 {
     img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/initial.xpm", &img->img_width, &img->img_height);
-    mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->x * 32, data->y * 32);
+    mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->player_x * 32, data->player_y * 32);
 
-    if (key == 119 && data->map[data->player_y - 1][data->player_x] != '1' && data->map[data->player_y - 1][data->player_x] != 'E') 
+    if (key == 119 && data->map[data->player_y - 1][data->player_x] != '1') 
     {
         data->player_y--;
         img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/initial.xpm", &img->img_width, &img->img_height);
         mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->player_x * 32, data->player_y * 32);
         img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/empty.xpm", &img->img_width, &img->img_height);
         mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->player_x * 32, (data->player_y + 1) * 32);
+        //data->map[data->player_y + 1][data->player_x] = '0'; INTENTO DE NO CONTAR COLLECTABLE
     }
-    if (key == 97 && data->map[data->player_y][data->player_x - 1] != '1' && data->map[data->player_y][data->player_x - 1] != 'E')
+    if (key == 97 && data->map[data->player_y][data->player_x - 1] != '1')
     {
         data->player_x--;
         img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/initial.xpm", &img->img_width, &img->img_height);
         mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->player_x * 32, data->player_y * 32);
         img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/empty.xpm", &img->img_width, &img->img_height);
         mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, (data->player_x + 1) * 32, data->player_y * 32);
+        //data->map[data->player_y][data->player_x + 1] = '0'; INTENTO DE NO CONTAR COLLECTABLE
     }
-    if (key == 115 && data->map[data->player_y + 1][data->player_x] != '1' && data->map[data->player_y + 1][data->player_x] != 'E')
+    if (key == 115 && data->map[data->player_y + 1][data->player_x] != '1')
     {
         data->player_y++;
         img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/initial.xpm", &img->img_width, &img->img_height);
         mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->player_x * 32, data->player_y * 32);
         img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/empty.xpm", &img->img_width, &img->img_height);
         mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->player_x * 32, (data->player_y - 1) * 32);
+        //data->map[data->player_y - 1][data->player_x] = '0'; INTENTO DE NO CONTAR COLLECTABLE
     }
-    if (key == 100 && data->map[data->player_y][data->player_x + 1] != '1' && data->map[data->player_y][data->player_x + 1] != 'E')
+    if (key == 100 && data->map[data->player_y][data->player_x + 1] != '1')
     {
         data->player_x++;
         img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/initial.xpm", &img->img_width, &img->img_height);
         mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->player_x * 32, data->player_y * 32);
         img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/empty.xpm", &img->img_width, &img->img_height);
         mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, (data->player_x - 1) * 32, data->player_y * 32);
+        // data->map[data->player_y][data->player_x - 1] = '0'; INTENTO DE NO CONTAR COLLECTABLE
     }
-        if (data->map[data->player_y][data->player_x] == 'C')
-        {
-            data->num_collectable_map--;
-            printf("guaccipinoooo\n");
-        }
-    printf("%d\n", data->num_collectable_map);
+    if (data->map[data->player_y][data->player_x] == 'C')
+    {
+        data->num_collectable++;
+        printf("cachonditoo\n");
 
+    }
+    if(data->num_collectable >= data->num_collectable_map)
+    {
+        img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/exit_open.xpm", &img->img_width, &img->img_height);
+        mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->door_x * 32, data->door_y * 32);
+        if(data->map[data->player_y][data->player_x] == 'E')
+        {
+            printf("%s\n", "YOU ARE SAFE!");
+            exit(0);
+        }
+    }
 }
 
 
@@ -251,16 +256,8 @@ void draw(int key, t_data *data, t_img *img)
             if (data->map[data->y][data->x] == 'C')
             {
                 data->num_collectable_map++;
-                printf("AQUÏ ESTA: %d\n", data->num_collectable_map);
-                ft_collectable(data, img);
-                
                 printf("%c",'C');
-                
-            }
-            if (data->map[data->y][data->x] == 'E')
-            {
-                ft_exit(data, img);
-                printf("%c",'E');
+                ft_collectable(data, img);
             }
             if (data->map[data->y][data->x] == 'P')
             {
@@ -269,14 +266,18 @@ void draw(int key, t_data *data, t_img *img)
                 ft_initial(key, data, img);
                 printf("%c",'P');
             }
-            
+            if (data->map[data->y][data->x] == 'E')
+            {
+                data->door_x = data->x;
+                data->door_y = data->y;
+                ft_exit(data, img);
+                printf("%c",'E');
+            }
             data->x++;
         }
         data->y++;
         printf("\n");
-        
     }
-    //printf("%d\n", data->num_collectable_map);
 }
 
 void	move_up(t_data *data, t_img *img)
@@ -305,21 +306,6 @@ int	handle_keypress(int key, t_data *data, t_img *img)
     // if (key == 100 && data->map[data->player_y - 1][data->player_x] != '1' && data->map[data->player_y - 1][data->player_x] != 'E')
     //     data->player_x++;
     //draw(data, img);
-    return (0);
-}
-
-int	handle_keyrelease(int key, t_data *data, t_img *img, t_map **map)
-{
-    // if (key == 119)
-    // {
-    //     data->y = 0;
-    // }
-    // if (key == 97)
-    //     data->x = 0;
-    // if (key == 115)
-    //     data->y = 0;
-    // if (key == 100)
-    //     data->x = 0;
     return (0);
 }
 
@@ -388,7 +374,6 @@ void    creating_window(t_data *data, t_img *img)
     img->mlx_img = mlx_new_image(data->mlx_ptr, width, height); //crea una imagen en la memoria de video de la pantalla
     img->addr = mlx_get_data_addr(img->mlx_img, &img->bpp, &img->line_len, &img->endian); //se devuelve un puntero al primer byte de la imagen donde se usa para escribir en ella pixel por pixel
     //clear_background(WHITE_PIXEL, data, map);
-
     draw(key, data, img);
     //mlx_loop_hook(data->mlx_ptr, &render, &data);
     
@@ -398,9 +383,6 @@ void    creating_window(t_data *data, t_img *img)
 	
     //mlx_loop_hook(data->mlx_ptr, &handle_no_event, data); //espera a recibir un evento
     mlx_hook(data->win_ptr, KeyPress, KeyPressMask, &handle_keypress, data); //2 = KeyPress, 1<<0= KeyPressMask
-    
-   
-    //mlx_hook(data->win_ptr, KeyRelease, KeyReleaseMask, &handle_keyrelease, data); //3 = KeyRelease, 1L<<1 KeyReleaseMask
 	
 	
 	//mlx_hook(data->win_ptr, 2, 1<<0, &handle_keypress, &data);
