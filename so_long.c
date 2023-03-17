@@ -167,13 +167,79 @@ void    ft_collectable(t_data *data, t_img *img)
 {
     img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/collectable.xpm", &img->img_width, &img->img_height);
     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->x * 32, data->y * 32);
-    
 }
 
 void    ft_exit(t_data *data, t_img *img)
 {
     img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/exit_closed.xpm", &img->img_width, &img->img_height);
-    mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->x * 32, data->y * 32);       
+    mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->x * 32, data->y * 32);
+}
+
+
+static char	*ft_strcpy(char *dest, const char *src)
+{
+	int	i;
+
+	i = 0;
+	while (src[i] != '\0')
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
+}
+
+static size_t	number_len(int nb)
+{
+	size_t	len;
+
+	len = 0;
+	if (nb <= 0)
+		len++;
+	while (nb)
+	{
+		len++;
+		nb = nb / 10;
+	}
+	return (len);
+}
+
+char	*ft_itoa(int n)
+{
+	char	*s;
+	size_t	len;
+
+	len = number_len(n);
+	s = (char *)malloc(sizeof(char) * (len + 1));
+	if (!s)
+		return (0);
+	if (n == -2147483648)
+		return (ft_strcpy(s, "-2147483648"));
+	if (n < 0)
+	{
+		s[0] = '-';
+		n *= -1;
+	}
+	if (n == 0)
+		s[0] = '0';
+	s[len--] = '\0';
+	while (n)
+	{
+		s[len--] = n % 10 + '0';
+		n = n / 10;
+	}
+	return (s);
+}
+
+void	ft_mov_display(t_data *data, t_img *img)
+{
+	mlx_string_put(data->mlx_ptr, data->win_ptr,
+		data->map_width *32 * 0.6, 10, 0xff0000,
+		"Movements: ");
+    mlx_string_put(data->mlx_ptr, data->win_ptr,
+		data->map_width *32 * 0.9, 10, 0xff0000,
+		ft_itoa(data->player_mov));
 }
 
 void    ft_initial(int key, t_data *data, t_img *img)
@@ -183,46 +249,42 @@ void    ft_initial(int key, t_data *data, t_img *img)
 
     if (key == 119 && data->map[data->player_y - 1][data->player_x] != '1') 
     {
+        data->player_mov++;
         data->player_y--;
         img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/initial.xpm", &img->img_width, &img->img_height);
         mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->player_x * 32, data->player_y * 32);
         img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/empty.xpm", &img->img_width, &img->img_height);
         mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->player_x * 32, (data->player_y + 1) * 32);
-        //data->map[data->player_y + 1][data->player_x] = '0'; INTENTO DE NO CONTAR COLLECTABLE
     }
     if (key == 97 && data->map[data->player_y][data->player_x - 1] != '1')
     {
+        data->player_mov++;
         data->player_x--;
         img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/initial.xpm", &img->img_width, &img->img_height);
         mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->player_x * 32, data->player_y * 32);
         img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/empty.xpm", &img->img_width, &img->img_height);
         mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, (data->player_x + 1) * 32, data->player_y * 32);
-        //data->map[data->player_y][data->player_x + 1] = '0'; INTENTO DE NO CONTAR COLLECTABLE
     }
     if (key == 115 && data->map[data->player_y + 1][data->player_x] != '1')
     {
+        data->player_mov++;
         data->player_y++;
         img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/initial.xpm", &img->img_width, &img->img_height);
         mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->player_x * 32, data->player_y * 32);
         img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/empty.xpm", &img->img_width, &img->img_height);
         mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->player_x * 32, (data->player_y - 1) * 32);
-        //data->map[data->player_y - 1][data->player_x] = '0'; INTENTO DE NO CONTAR COLLECTABLE
     }
     if (key == 100 && data->map[data->player_y][data->player_x + 1] != '1')
     {
+        data->player_mov++;
         data->player_x++;
         img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/initial.xpm", &img->img_width, &img->img_height);
         mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->player_x * 32, data->player_y * 32);
         img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/empty.xpm", &img->img_width, &img->img_height);
         mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, (data->player_x - 1) * 32, data->player_y * 32);
-        // data->map[data->player_y][data->player_x - 1] = '0'; INTENTO DE NO CONTAR COLLECTABLE
     }
     if (data->map[data->player_y][data->player_x] == 'C')
-    {
         data->num_collectable++;
-        printf("cachonditoo\n");
-
-    }
     if(data->num_collectable >= data->num_collectable_map)
     {
         img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/exit_open.xpm", &img->img_width, &img->img_height);
@@ -233,6 +295,8 @@ void    ft_initial(int key, t_data *data, t_img *img)
             exit(0);
         }
     }
+    ft_mov_display(data, img);
+    printf("Movements: %d\n", data->player_mov);
 }
 
 
@@ -278,6 +342,7 @@ void draw(int key, t_data *data, t_img *img)
         data->y++;
         printf("\n");
     }
+    
 }
 
 void	move_up(t_data *data, t_img *img)
@@ -298,7 +363,6 @@ int	handle_keypress(int key, t_data *data, t_img *img)
 		exit (1);
 	}
 	ft_initial(key, data, img);
-    printf("Después: x=%d, y=%d\n", data->player_x, data->player_y);
     // if (key == 97 && data->map[data->player_y - 1][data->player_x] != '1' && data->map[data->player_y - 1][data->player_x] != 'E')
     //     data->player_x--;
     // if (key == 115 && data->map[data->player_y - 1][data->player_x] != '1' && data->map[data->player_y - 1][data->player_x] != 'E')
@@ -344,14 +408,15 @@ void clear_background(int color, t_data *data, t_map **map)
 
 
 
-// int render(t_data *data, t_img *img)
+// int render(int key, t_data *data, t_img *img)
 // {
 //     //render no funciona si modifico datos de las estructuras como data o img... con mlx_put_image_to_window
 
 //     //utilizo data e img como argumentos ya que al pasarlos como variables locales de la función al acceder a ellas a través de un puntro daría seg fault.
 //     //clear_background(WHITE_PIXEL, data, map);
 //     //rectangle(img, 100, 100, 200, 200, data); //prueba rectangulo
-// 	draw(data, img);
+// 	draw(key, data, img);
+//     //mlx_clear_window(data->mlx_ptr, data->win_ptr);
 
 // 	return(0);
 // }
@@ -367,6 +432,7 @@ void    creating_window(t_data *data, t_img *img)
     height = data->map_height * 32;
     data->mlx_ptr = mlx_init();
     data->win_ptr = mlx_new_window(data->mlx_ptr, width, height, "so_long");
+    
 
     
 
@@ -375,7 +441,7 @@ void    creating_window(t_data *data, t_img *img)
     img->addr = mlx_get_data_addr(img->mlx_img, &img->bpp, &img->line_len, &img->endian); //se devuelve un puntero al primer byte de la imagen donde se usa para escribir en ella pixel por pixel
     //clear_background(WHITE_PIXEL, data, map);
     draw(key, data, img);
-    //mlx_loop_hook(data->mlx_ptr, &render, &data);
+    //mlx_loop_hook(data->mlx_ptr, &render, data);
     
 
 
@@ -389,6 +455,7 @@ void    creating_window(t_data *data, t_img *img)
 
 
     mlx_loop(data->mlx_ptr);
+    exit(0);
 
     //mlx_destroy_image(data->mlx_ptr, img->mlx_img);
     //mlx_destroy_display(data->mlx_ptr);
@@ -465,4 +532,4 @@ int main(int argc, char **argv)
     return (0);
 }
 
-// https://medium.com/@benjaminmerchin/42-black-hole-deep-dive-cbc4b343c6b2
+// bugs with collectable repetition + no new image new movements
