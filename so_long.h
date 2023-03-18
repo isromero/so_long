@@ -6,7 +6,7 @@
 /*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 12:19:56 by marvin            #+#    #+#             */
-/*   Updated: 2023/03/08 19:32:54 by isromero         ###   ########.fr       */
+/*   Updated: 2023/03/18 15:33:19 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "mlx.h"
-#include <X11/X.h>
-#include <X11/keysym.h>
+// #include <X11/X.h>
+// #include <X11/keysym.h>
 #include "get_next_line.h"
 
 #define RED_PIXEL 0xFF0000
@@ -64,6 +64,7 @@ typedef struct s_data
     int     door_y;
     int     num_collectable_map;
     int     num_collectable;
+	int		key;
     int     x;
     int     y;
     int     player_x;

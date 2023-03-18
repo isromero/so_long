@@ -29,21 +29,6 @@ void init_img(t_img *img)
     img->img_height = 0;
 }
 
-void init_struct(t_data *data)
-{
-    data->mlx_ptr = 0;
-    data->win_ptr = 0;
-    data-> current_img = 0;
-   	data->map = 0;
-    data->x = 0;
-    data->y = 0;
-    data->player_x = 0;
-    data->player_y = 0;
-	data->player_mov = 0;
-	data->map_width = 0;
-    data->map_height = 0;
-}
-
 //tal vez deba cambiar esta función de validar ya que el return ; hace q con encontrarse uno ya no muestra si no es valido en otros
 void    validating_walls(t_data *data, t_map **map)
 {
@@ -153,25 +138,25 @@ void    parse_objects(t_data *data, t_map **map)
 }
 void    ft_empty(t_data *data, t_img *img)
 {
-    img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/empty.xpm", &img->img_width, &img->img_height);
+    img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "img/empty.xpm", &img->img_width, &img->img_height);
     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->x * 32, data->y * 32);
 }
 
 void    ft_wall(t_data *data, t_img *img)
 {
-    img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/walls.xpm", &img->img_width, &img->img_height);
+    img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "img/walls.xpm", &img->img_width, &img->img_height);
     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->x * 32, data->y * 32);
 }
 
 void    ft_collectable(t_data *data, t_img *img)
 {
-    img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/collectable.xpm", &img->img_width, &img->img_height);
+    img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "img/collectable.xpm", &img->img_width, &img->img_height);
     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->x * 32, data->y * 32);
 }
 
 void    ft_exit(t_data *data, t_img *img)
 {
-    img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/exit_closed.xpm", &img->img_width, &img->img_height);
+    img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "img/exit_closed.xpm", &img->img_width, &img->img_height);
     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->x * 32, data->y * 32);
 }
 
@@ -242,66 +227,133 @@ void	ft_mov_display(t_data *data, t_img *img)
 		ft_itoa(data->player_mov));
 }
 
-void    ft_initial(int key, t_data *data, t_img *img)
+void init_data(t_data *data)
 {
-    img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/initial.xpm", &img->img_width, &img->img_height);
-    mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->player_x * 32, data->player_y * 32);
+    data->mlx_ptr = NULL;
+    data->win_ptr = NULL;
+    data->current_img = 0;
+   	data->map = NULL;
+    data->door_x = 0;
+    data->door_y = 0;
+    data->num_collectable_map = 0;
+    data->num_collectable = 0;
+	data->key = 0;
+    data->x = 0;
+    data->y = 0;
+    data->player_x = 0;
+    data->player_y = 0;
+	data->player_mov = 0;
+	data->map_width = 0;
+	data->map_height = 0;
+}
 
-    if (key == 119 && data->map[data->player_y - 1][data->player_x] != '1') 
+void    ft_initial(int key, t_data *data)
+{
+	t_img img;
+    img.mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "img/initial.xpm", &img.img_width, &img.img_height);
+    mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img.mlx_img, data->player_x * 32, data->player_y * 32);
+
+    if (key == 13 && data->map[data->player_y - 1][data->player_x] != '1') //119
     {
         data->player_mov++;
         data->player_y--;
-        img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/initial.xpm", &img->img_width, &img->img_height);
-        mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->player_x * 32, data->player_y * 32);
-        img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/empty.xpm", &img->img_width, &img->img_height);
-        mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->player_x * 32, (data->player_y + 1) * 32);
-    }
-    if (key == 97 && data->map[data->player_y][data->player_x - 1] != '1')
+        img.mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "img/initial.xpm", &img.img_width, &img.img_height);
+       	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img.mlx_img, data->player_x * 32, data->player_y * 32);
+        img.mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "img/empty.xpm", &img.img_width, &img.img_height);
+        mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img.mlx_img, data->player_x * 32, (data->player_y + 1) * 32);
+		if (data->map[data->player_y][data->player_x] == 'E' && key == 13)
+		{
+			img.mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "img/exit_closed.xpm", &img.img_width, &img.img_height);
+        	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img.mlx_img, data->player_x * 32, (data->player_y) * 32);
+		}
+     }
+    if (key == 0 && data->map[data->player_y][data->player_x - 1] != '1') //97
     {
+		
         data->player_mov++;
         data->player_x--;
-        img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/initial.xpm", &img->img_width, &img->img_height);
-        mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->player_x * 32, data->player_y * 32);
-        img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/empty.xpm", &img->img_width, &img->img_height);
-        mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, (data->player_x + 1) * 32, data->player_y * 32);
+        img.mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/initial.xpm", &img.img_width, &img.img_height);
+        mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img.mlx_img, data->player_x * 32, data->player_y * 32);
+        img.mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/empty.xpm", &img.img_width, &img.img_height);
+        mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img.mlx_img, (data->player_x + 1) * 32, data->player_y * 32);
+		if (data->map[data->player_y][data->player_x] == 'E' && key == 0)
+		{
+			img.mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/exit_closed.xpm", &img.img_width, &img.img_height);
+       		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img.mlx_img, (data->player_x) * 32, data->player_y * 32);
+		}
     }
-    if (key == 115 && data->map[data->player_y + 1][data->player_x] != '1')
+    if (key == 1 && data->map[data->player_y + 1][data->player_x] != '1')
     {
         data->player_mov++;
         data->player_y++;
-        img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/initial.xpm", &img->img_width, &img->img_height);
-        mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->player_x * 32, data->player_y * 32);
-        img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/empty.xpm", &img->img_width, &img->img_height);
-        mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->player_x * 32, (data->player_y - 1) * 32);
+        img.mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/initial.xpm", &img.img_width, &img.img_height);
+        mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img.mlx_img, data->player_x * 32, data->player_y * 32);
+        img.mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/empty.xpm", &img.img_width, &img.img_height);
+        mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img.mlx_img, data->player_x * 32, (data->player_y - 1) * 32);
+		if (data->map[data->player_y][data->player_x] == 'E' && key == 1)
+		{
+			img.mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/exit_closed.xpm", &img.img_width, &img.img_height);
+        	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img.mlx_img, data->player_x * 32, (data->player_y) * 32);
+		}
     }
-    if (key == 100 && data->map[data->player_y][data->player_x + 1] != '1')
+    if (key == 2 && data->map[data->player_y][data->player_x + 1] != '1')
     {
         data->player_mov++;
         data->player_x++;
-        img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/initial.xpm", &img->img_width, &img->img_height);
-        mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->player_x * 32, data->player_y * 32);
-        img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/empty.xpm", &img->img_width, &img->img_height);
-        mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, (data->player_x - 1) * 32, data->player_y * 32);
+        img.mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/initial.xpm", &img.img_width, &img.img_height);
+        mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img.mlx_img, data->player_x * 32, data->player_y * 32);
+        img.mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/empty.xpm", &img.img_width, &img.img_height);
+        mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img.mlx_img, (data->player_x - 1) * 32, data->player_y * 32);
+		if (data->map[data->player_y][data->player_x] == 'E' && key == 2)
+		{
+			img.mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/exit_closed.xpm", &img.img_width, &img.img_height);
+       		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img.mlx_img, (data->player_x) * 32, data->player_y * 32);
+		}
     }
-    if (data->map[data->player_y][data->player_x] == 'C')
-        data->num_collectable++;
-    if(data->num_collectable >= data->num_collectable_map)
+	if (data->map[data->player_y][data->player_x] == 'C')
+	{
+		data->map[data->player_y][data->player_x] = '0';
+       	data->num_collectable++;
+	}
+	if(data->num_collectable_map == data->num_collectable)
     {
-        img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/exit_open.xpm", &img->img_width, &img->img_height);
-        mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img, data->door_x * 32, data->door_y * 32);
-        if(data->map[data->player_y][data->player_x] == 'E')
+        img.mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/exit_open.xpm", &img.img_width, &img.img_height);
+        mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img.mlx_img, data->door_x * 32, data->door_y * 32);
+		if(data->map[data->player_y][data->player_x] == 'E')
         {
             printf("%s\n", "YOU ARE SAFE!");
             exit(0);
-        }
+       	}
     }
-    ft_mov_display(data, img);
+	
+	
+    ft_mov_display(data, &img);
     printf("Movements: %d\n", data->player_mov);
 }
 
+void init_points(t_data *data)
+{
+    data->x = 0;
+    data->y = 0;
+    while (data->y < data->map_height) 
+    {
+        data->x = 0;
+        while (data->x < data->map_width) 
+        {
+            if (data->map[data->y][data->x] == 'C') 
+            {
+                data->num_collectable_map++;
+            }
+            data->x++;
+        }
+       data->y++;
+	}
+}
 
 void draw(int key, t_data *data, t_img *img)
 {
+	data->y = 0;
+	data->x = 0;
     while(data->y < data->map_height)
     {
         data->x = 0;
@@ -312,25 +364,24 @@ void draw(int key, t_data *data, t_img *img)
                 ft_empty(data, img);
                 printf("%c",'0');
             }
-            if (data->map[data->y][data->x] == '1')
+            else if (data->map[data->y][data->x] == '1')
             {
                 ft_wall(data, img);
                 printf("%c",'1');
             }
-            if (data->map[data->y][data->x] == 'C')
+            else if (data->map[data->y][data->x] == 'C')
             {
-                data->num_collectable_map++;
                 printf("%c",'C');
                 ft_collectable(data, img);
             }
-            if (data->map[data->y][data->x] == 'P')
+            else if (data->map[data->y][data->x] == 'P')
             {
                 data->player_y = data->y;
                 data->player_x = data->x;
-                ft_initial(key, data, img);
+                ft_initial(key, data);
                 printf("%c",'P');
             }
-            if (data->map[data->y][data->x] == 'E')
+            else if (data->map[data->y][data->x] == 'E')
             {
                 data->door_x = data->x;
                 data->door_y = data->y;
@@ -342,27 +393,19 @@ void draw(int key, t_data *data, t_img *img)
         data->y++;
         printf("\n");
     }
-    
 }
-
-void	move_up(t_data *data, t_img *img)
+int	handle_keypress(int key, t_data *data)
 {
-	
-	//data->player_mov++;
- }
-
-int	handle_keypress(int key, t_data *data, t_img *img)
-{
-    if (!data)
+    if (!data) //meter exit
         printf("Error: data es un puntero nulo\n");
     if (!data->map)
         printf("Error: data->map es un puntero nulo\n");
-    if (key == XK_Escape) //XK_Escape, 59
-	{
-		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
-		exit (1);
-	}
-	ft_initial(key, data, img);
+    // if (key == 59) //XK_Escape, 59
+	// {
+	// 	mlx_destroy_window(data->mlx_ptr, data->win_ptr);
+	// 	exit (1);
+	// }
+	ft_initial(key, data);
     // if (key == 97 && data->map[data->player_y - 1][data->player_x] != '1' && data->map[data->player_y - 1][data->player_x] != 'E')
     //     data->player_x--;
     // if (key == 115 && data->map[data->player_y - 1][data->player_x] != '1' && data->map[data->player_y - 1][data->player_x] != 'E')
@@ -423,9 +466,8 @@ void clear_background(int color, t_data *data, t_map **map)
 
 
 
-void    creating_window(t_data *data, t_img *img)
+void    creating_window(int key, t_data *data, t_img *img)
 {
-    int key;
     int width = 0;
     width = data->map_width * 32;
     int height = 0;
@@ -440,7 +482,9 @@ void    creating_window(t_data *data, t_img *img)
     img->mlx_img = mlx_new_image(data->mlx_ptr, width, height); //crea una imagen en la memoria de video de la pantalla
     img->addr = mlx_get_data_addr(img->mlx_img, &img->bpp, &img->line_len, &img->endian); //se devuelve un puntero al primer byte de la imagen donde se usa para escribir en ella pixel por pixel
     //clear_background(WHITE_PIXEL, data, map);
+	init_points(data);
     draw(key, data, img);
+	
     //mlx_loop_hook(data->mlx_ptr, &render, data);
     
 
@@ -448,7 +492,7 @@ void    creating_window(t_data *data, t_img *img)
     //movements
 	
     //mlx_loop_hook(data->mlx_ptr, &handle_no_event, data); //espera a recibir un evento
-    mlx_hook(data->win_ptr, KeyPress, KeyPressMask, &handle_keypress, data); //2 = KeyPress, 1<<0= KeyPressMask
+    mlx_key_hook(data->win_ptr, &handle_keypress, data); //2 = KeyPress, 1<<0= KeyPressMask
 	
 	
 	//mlx_hook(data->win_ptr, 2, 1<<0, &handle_keypress, &data);
@@ -462,15 +506,15 @@ void    creating_window(t_data *data, t_img *img)
     //free(data->mlx_ptr);
 }
 
-void    so_long(t_data *data, t_img *img)
+void    so_long(int key, t_data *data, t_img *img)
 {
     // validating_walls(data, map);
     // validating_chars(data, map);
     //parse_objects(data, map);
-    creating_window(data, img);
+    creating_window(key, data, img);
 }
 
-void just_read_and_info(char *filename, t_data *data, t_img *img)
+void just_read_and_info(int key, char *filename, t_data *data, t_img *img)
 {
     int    fd;
     char    *line;
@@ -500,6 +544,7 @@ void just_read_and_info(char *filename, t_data *data, t_img *img)
     data->map = malloc(number_line * sizeof(char *)); // Con esto alojamos a map[y][x] 
     while(y < number_line)
     {
+		
         data->map[y] = malloc(number_col * sizeof(char));
         memset(data->map[y], 0, number_col * sizeof(char));
         y++;
@@ -511,24 +556,25 @@ void just_read_and_info(char *filename, t_data *data, t_img *img)
     y = 0;
     while(((line = get_next_line(fd))) != NULL) //Se seguirá ejecutando hasta que termine el archivo ya que gnl devuelve todo el rato una línea hasta el final
     {
+		
         for (int x = 0; x < number_col; x++) 
-        {
             data->map[y][x] = line[x];
-        }
         free(line);
         y++;
     }
     close(fd);
-    so_long(data, img);
+    so_long(key, data, img);
 }
 
 int main(int argc, char **argv)
 {
+	int key;
+	key = 0;
     t_data  data;
 
     t_img   img;
-    init_struct(&data);
-    just_read_and_info(argv[1], &data, &img);
+	init_data(&data);
+    just_read_and_info(key, argv[1], &data, &img);
     return (0);
 }
 
