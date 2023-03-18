@@ -290,10 +290,10 @@ void    ft_initial(int key, t_data *data)
         mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img.mlx_img, data->player_x * 32, data->player_y * 32);
         img.mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/empty.xpm", &img.img_width, &img.img_height);
         mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img.mlx_img, data->player_x * 32, (data->player_y - 1) * 32);
-		if (data->map[data->player_y][data->player_x] == 'E' && key == 1)
+		if (data->map[data->player_y][data->player_x] == 'E' && key == 1) // DUPLICATED DOORS
 		{
 			img.mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/exit_closed.xpm", &img.img_width, &img.img_height);
-        	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img.mlx_img, data->player_x * 32, (data->player_y) * 32);
+        	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img.mlx_img, data->player_x * 32, (data->player_y) * 32); // change this
 		}
     }
     if (key == 2 && data->map[data->player_y][data->player_x + 1] != '1')
