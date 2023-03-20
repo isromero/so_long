@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: isromero <isromero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 12:19:56 by marvin            #+#    #+#             */
-/*   Updated: 2023/03/18 15:33:19 by isromero         ###   ########.fr       */
+/*   Updated: 2023/03/20 21:08:24 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,23 +17,14 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include "mlx.h"
-// #include <X11/X.h>
-// #include <X11/keysym.h>
+#include <mlx.h>
+#include <X11/X.h>
+#include <X11/keysym.h>
 #include "get_next_line.h"
 
 #define RED_PIXEL 0xFF0000
 #define GREEN_PIXEL 0xFF00
 #define WHITE_PIXEL 0xFFFFFF
-#define TILE_SIZE 32
-
-typedef enum object_type {
-    EMPTY,
-    WALL,
-    COLLECTABLE,
-    EXIT,
-    INITIAL_POSITION
-} object_type_t;
 
 typedef struct s_img
 {
@@ -46,12 +37,6 @@ typedef struct s_img
     int     img_width;
 	int 	img_height;
 } t_img;
-
-
-typedef struct s_map
-{
-    object_type_t type;
-} t_map;
 
 typedef struct s_data
 {
@@ -73,6 +58,35 @@ typedef struct s_data
 	int 	map_width;
 	int 	map_height;
 } t_data;
+
+void init_data(t_data *data);
+void init_points(t_data *data);
+
+
+void    validating_walls(t_data *data);
+void    validating_chars(t_data *data);
+void    ft_empty(t_data *data, t_img *img);
+void    ft_wall(t_data *data, t_img *img);
+void    ft_collectable(t_data *data, t_img *img);
+void    ft_exit(t_data *data, t_img *img);
+
+
+void	ft_mov_display(t_data *data, t_img *img);
+
+
+void    ft_initial(int key, t_data *data);
+
+
+void    draw(int key, t_data *data, t_img *img);
+
+
+int     handle_keypress(int key, t_data *data);
+int     handle_esc_screen(t_data *data);
+
+
+void    creating_window(int key, t_data *data, t_img *img);
+void    so_long(int key, t_data *data, t_img *img);
+void    just_read_and_info(char *filename, t_data *data, t_img *img);
 
 
 #endif
