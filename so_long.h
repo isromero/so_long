@@ -6,7 +6,7 @@
 /*   By: isromero <isromero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 12:19:56 by marvin            #+#    #+#             */
-/*   Updated: 2023/03/20 21:08:24 by isromero         ###   ########.fr       */
+/*   Updated: 2023/03/21 19:03:35 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int     handle_esc_screen(t_data *data);
 
 void    creating_window(int key, t_data *data, t_img *img);
 void    so_long(int key, t_data *data, t_img *img);
-void    just_read_and_info(char *filename, t_data *data, t_img *img);
 
+int    number_lines(t_data *data);
 
 #endif

@@ -78,18 +78,17 @@ void validating_chars(t_data *data)
 
 void validating_rect(t_data *data)
 {
-    char **map;
-    map = NULL;
     int y;
     y = 0;
     //reservar memoria?
     //printf("expectated width: %d\n", data->map_width);
     //EL VALOR DA SEG FAULT PORQUE PREDETERMINADAMENTE MAP[Y] TIENE UN VALOR NO CAMBIABLE?
-    while(strlen(map[y]) < data->map_height)
+    while(y < data->map_height)
     {
-        if(strlen(map[y]) != data->map_width)
+        if(strlen(data->map[y]) != data->map_width)
         {
-            //printf("%ld\n", strlen(map[y]));
+            printf("%d\n", data->map_width);
+            printf("%ld\n", strlen(data->map[y]));
             printf("Map is not a rectangle\n");
             exit(1);
         }
@@ -376,8 +375,6 @@ void    creating_window(int key, t_data *data, t_img *img)
     free(data->mlx_ptr);
 }
 
-
-
 void    so_long(int key, t_data *data, t_img *img)
 {
     validating_rect(data);
@@ -386,50 +383,154 @@ void    so_long(int key, t_data *data, t_img *img)
     creating_window(key, data, img);
 }
 
-void just_read_and_info(char *filename, t_data *data, t_img *img)
+static int	countwords(const char *s, char c)
 {
-    int    fd;
-    char    *line;
-    int   number_line;
-    int   number_col;
-    int     y;
+	int	count;
+
+	count = 0;
+	while (*s)
+	{
+		while (*s && *s == c)
+			s++;
+		if (*s != '\0')
+			count++;
+		while (*s != '\0' && *s != c)
+			s++;
+	}
+	return (count);
+}
+
+static char	*getword(const char *s, char c)
+{
+	int		n;
+	int		i;
+	char	*word;
+
+	i = 0;
+	n = 0;
+	while (s[n] && s[n] != c)
+		n++;
+	word = (char *)malloc(sizeof(char) * (n + 1));
+	if (!word)
+		return (0);
+	while (i < n)
+	{
+		word[i] = s[i];
+		i++;
+	}
+	word[i] = '\0';
+	return (word);
+}
+
+char	**ft_split(char const *s, char c)
+{
+	char	**p;
+	int		i;
+
+	i = 0;
+	if (!s)
+		return (0);
+	p = (char **)malloc(sizeof(char *) * (countwords(s, c) + 1));
+	if (!p)
+		return (0);
+	while (*s != '\0')
+	{
+		while (*s != '\0' && *s == c)
+			s++;
+		if (*s != '\0')
+		{
+			p[i++] = getword(s, c);
+			if (p[i - 1] == NULL)
+				free (p);
+		}
+		while (*s != '\0' && *s != c)
+			s++;
+	}
+	p[i] = NULL;
+	return (p);
+}
+
+char	*ft_strchr2(const char *s, int c)
+{
+	char	*p;
+
+	p = (char *)s;
+	while (*p && *p != (char) c)
+		p++;
+	if (*p == (char) c)
+		return (p);
+	return (0);
+}
+
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	size_t	i;
+	size_t	j;
+	char	*sub;
+
+	i = 0;
+	j = 0;
+	if (!s)
+		return (0);
+	if (len > ft_strlen(s))
+		len = ft_strlen(s);
+	sub = (char *)malloc(sizeof(char) * (len + 1));
+	if (!sub)
+		return (0);
+	while (s[i] != '\0')
+	{	
+		if (i >= start && j < len)
+		{
+			sub[j] = s[i];
+			j++;
+		}
+		i++;
+	}
+	sub[j] = '\0';
+	return (sub);
+}
+
+char	*ft_strtrim(char const *s1, char const *set)
+{
+	size_t	len;
+
+	if (!s1 || !set)
+		return (0);
+	while (*s1 && ft_strchr2(set, *s1))
+		s1++;
+	len = ft_strlen(s1) + 1;
+	while (len && ft_strchr2(set, s1[len - 1]))
+		len--;
+	return (ft_substr(s1, 0, len));
+}
+
+
+char **just_read_and_info(char *filename)
+{
+    int		fd;
+    char	*line;
+    char	*joined_lines;
 
     line = NULL;
-    number_line = 0;
-    y = 0;
+    joined_lines = NULL;
     fd = open(filename, O_RDONLY);
     if (fd < 0)
-        printf("Error al abrir el archivo\n");
-    // Contamos el número de líneas en el archivo
-    while ((line = get_next_line(fd)) != NULL)
+        exit(1);
+   while ((line = get_next_line(fd)))
     {
-        number_col = strlen(line);
-		data->map_width = number_col;
-        number_line++;
+        if (line[0] == '\n')
+            break ;
+        char *trimmed_line= ft_strtrim(line, "\n\t\r\f\v");
+        joined_lines = ft_strjoin(joined_lines, trimmed_line);
+        joined_lines = ft_strjoin(joined_lines, "\n");
         free(line);
+        free(trimmed_line);
     }
-    //Alojamos memoria 
-    data->map = malloc(number_line * sizeof(char *)); // Con esto alojamos a map[y][x] 
-    while(y < number_line)
-    {
-        data->map[y] = malloc(number_col * sizeof(char));
-        memset(data->map[y], 0, number_col * sizeof(char));
-        y++;
-    }
-	data->map_height = number_line;
-    close (fd);
-    fd = open(filename, O_RDONLY);
-
-    y = 0;
-    while(((line = get_next_line(fd))) != NULL) //Se seguirá ejecutando hasta que termine el archivo ya que gnl devuelve todo el rato una línea hasta el final
-    {
-		
-        for (int x = 0; x < number_col; x++) 
-            data->map[y][x] = line[x];
-        free(line);
-        y++;
-    }
+    free(line);
     close(fd);
+    if (!joined_lines || joined_lines[0] == '\0')
+        exit(1);
+    return (ft_split(joined_lines, '\n'));
 }
 
 int main(int argc, char **argv)
@@ -452,9 +553,8 @@ int main(int argc, char **argv)
     }
 
     //tal vez hay que revisar si es archivo .ber
-    
+    data.map = just_read_and_info(argv[1]);
 	init_data(&data);
-    just_read_and_info(argv[1], &data, &img);
     so_long(key, &data, &img);
     return (0);
 }
