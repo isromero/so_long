@@ -6,7 +6,7 @@
 /*   By: isromero <isromero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 19:15:18 by isromero          #+#    #+#             */
-/*   Updated: 2023/03/21 20:27:34 by isromero         ###   ########.fr       */
+/*   Updated: 2023/03/21 21:45:58 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void init_data(t_data *data)
     data->player_x = 0;
     data->player_y = 0;
 	data->player_mov = 0;
-	data->map_width = strlen(data->map[0]);
+	data->map_width = ft_strlen(data->map[0]);
 	data->map_height = map_height(data->map);
 }
 

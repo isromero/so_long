@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/07 16:14:33 by isromero          #+#    #+#             */
-/*   Updated: 2022/10/17 13:32:09 by isromero         ###   ########.fr       */
+/*   Created: 2022/10/26 12:36:11 by marvin            #+#    #+#             */
+/*   Updated: 2022/10/26 12:36:11 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,43 @@
 
 size_t	ft_strlen(const char *s)
 {
-	int	count;
+	size_t	len;
 
-	count = 0;
-	while (s[count] != '\0')
-		count++;
-	return (count);
+	if (!s)
+		return (0);
+	len = 0;
+	while (s[len])
+		len++;
+	return (len);
 }
 
-char	*ft_strchr(char *s, int c)
+char	*ft_strjoin(char *s1, char *s2)
+{
+	char	*p;
+	int		i;
+	int		j;
+
+	if (!s1 && !s2)
+		return (0);
+	p = malloc(ft_strlen(s1) + (ft_strlen(s2)) + 1);
+	if (!p)
+		return (0);
+	i = 0;
+	j = 0;
+	if (s1)
+	{
+		while (s1[i])
+			p[j++] = s1[i++];
+		i = 0;
+	}
+	while (s2[i])
+		p[j++] = s2[i++];
+	p [(ft_strlen(s1) + ft_strlen(s2))] = '\0';
+	free (s1);
+	return (p);
+}
+
+char	*ft_strchr(const char *s, int c)
 {
 	int	i;
 
@@ -38,34 +66,4 @@ char	*ft_strchr(char *s, int c)
 		i++;
 	}
 	return (0);
-}
-
-char	*ft_strjoin(char *s1, char *s2)
-{
-	char	*p;
-	size_t	j;
-	size_t	i;
-
-	j = 0;
-	i = 0;
-	if (!s1)
-	{
-		s1 = (char *)malloc(sizeof(char) * 1);
-		s1[0] = '\0';
-	}
-	if (!s1 || !s2)
-		return (NULL);
-	p = malloc(ft_strlen(s1) + (ft_strlen(s2) + 1));
-	if (!p)
-		return (NULL);
-	while(s1[i] != '\0')
-	{
-		p[i] = s1[i];
-		i++;
-	}
-	while(s2[j] != '\0')
-		p[i++] = s2[j++];
-	p[ft_strlen(s1) + ft_strlen(s2)] = '\0';
-	free (s1);
-	return (p);
 }

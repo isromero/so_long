@@ -6,87 +6,86 @@
 /*   By: isromero <isromero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 12:19:56 by marvin            #+#    #+#             */
-/*   Updated: 2023/03/21 19:03:35 by isromero         ###   ########.fr       */
+/*   Updated: 2023/03/21 22:45:42 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SO_LONG_H
-#define SO_LONG_H
+# define SO_LONG_H
 
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdbool.h>
-#include <mlx.h>
-#include <X11/X.h>
-#include <X11/keysym.h>
-#include "get_next_line.h"
-
-#define RED_PIXEL 0xFF0000
-#define GREEN_PIXEL 0xFF00
-#define WHITE_PIXEL 0xFFFFFF
+# include <stdlib.h>
+# include <string.h>
+# include <stdio.h>
+# include <stdbool.h>
+# include <mlx.h>
+# include <X11/X.h>
+# include <X11/keysym.h>
+# include "get_next_line.h"
+# include "./libft/libft.h"
+# include "./printf/ft_printf.h"
 
 typedef struct s_img
 {
-    void	*mlx_img; //apunta a la imagen que se ha creado
+	void	*mlx_img;
 	void	*wall;
-	char	*addr; //puntero al 1er byte de la imagen en la memoria de la gráfica
-	int		bpp; //bits por pixel
-	int		line_len; //nº de bytes q ocupa cada línea de la imagen en la memoria de la gráfica
-	int		endian; //orden en el que se almacenan bytes en la memoria de la gráfica
-    int     img_width;
-	int 	img_height;
-} t_img;
+	char	*addr;
+	int		bpp;
+	int		line_len;
+	int		endian;
+	int		img_width;
+	int		img_height;
+}	t_img;
 
 typedef struct s_data
 {
-    void    *mlx_ptr;
-    void    *win_ptr;
-    int     current_img;
-    t_img   *img;
-   	char   **map;
-    int     door_x;
-    int     door_y;
-    int     num_collectable_map;
-    int     num_collectable;
+	void	*mlx_ptr;
+	void	*win_ptr;
+	int		current_img;
+	t_img	*img;
+	char	**map;
+	int		door_x;
+	int		door_y;
+	int		num_collectable_map;
+	int		num_collectable;
 	int		key;
-    int     x;
-    int     y;
-    int     player_x;
-    int     player_y;
+	size_t	x;
+	size_t	y;
+	int		player_x;
+	int		player_y;
 	int		player_mov;
-	int 	map_width;
-	int 	map_height;
-} t_data;
+	size_t	map_width;
+	size_t	map_height;
+}	t_data;
 
-void init_data(t_data *data);
-void init_points(t_data *data);
+/*so_long.c*/
 
+/*init.c*/
+int		map_height(char **map);
+void	init_data(t_data *data);
+void	init_points(t_data *data);
 
-void    validating_walls(t_data *data);
-void    validating_chars(t_data *data);
-void    ft_empty(t_data *data, t_img *img);
-void    ft_wall(t_data *data, t_img *img);
-void    ft_collectable(t_data *data, t_img *img);
-void    ft_exit(t_data *data, t_img *img);
+/*movements.c*/
+void	move_up(int key, t_data *data);
+void	move_left(int key, t_data *data);
+void	move_down(int key, t_data *data);
+void	move_right(int key, t_data *data);
+void	ft_move_initial(int key, t_data *data);
 
-
+/*handle_and_windows.c*/
 void	ft_mov_display(t_data *data, t_img *img);
+int		handle_keypress(int key, t_data *data);
+int		handle_esc_screen(t_data *data);
+void	creating_window(int key, t_data *data, t_img *img);
 
+/*draw_objects.c*/
+void	ft_empty(t_data *data, t_img *img);
+void	ft_wall(t_data *data, t_img *img);
+void	ft_collectable(t_data *data, t_img *img);
+void	ft_exit(t_data *data, t_img *img);
+void	draw(int key, t_data *data, t_img *img);
 
-void    ft_initial(int key, t_data *data);
-
-
-void    draw(int key, t_data *data, t_img *img);
-
-
-int     handle_keypress(int key, t_data *data);
-int     handle_esc_screen(t_data *data);
-
-
-void    creating_window(int key, t_data *data, t_img *img);
-void    so_long(int key, t_data *data, t_img *img);
-
-int    number_lines(t_data *data);
-
+/*validating_map.c*/
+void	validating_walls(t_data *data);
+void	validating_chars(t_data *data);
+void	validating_rect(t_data *data);
 #endif
