@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validating_map.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: isromero <isromero@student.42.fr>          +#+  +:+       +#+        */
+/*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 21:57:32 by isromero          #+#    #+#             */
-/*   Updated: 2023/03/21 21:57:54 by isromero         ###   ########.fr       */
+/*   Updated: 2023/03/22 19:01:32 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,7 @@ void validating_rect(t_data *data)
 {
     size_t y;
     y = 0;
-    //reservar memoria?
-    //printf("expectated width: %d\n", data->map_width);
-    //EL VALOR DA SEG FAULT PORQUE PREDETERMINADAMENTE MAP[Y] TIENE UN VALOR NO CAMBIABLE?
+   
     while(y < data->map_height)
     {
         if(ft_strlen(data->map[y]) != data->map_width)

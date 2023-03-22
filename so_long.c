@@ -19,6 +19,8 @@ char    **just_read_and_info(char *filename)
     char    *joined_lines;
     char    *trimmed_line;
 
+    char    **result;
+
     line = NULL;
     joined_lines = NULL;
     fd = open(filename, O_RDONLY);
@@ -30,14 +32,21 @@ char    **just_read_and_info(char *filename)
             break ;
         trimmed_line = ft_strtrim(line, "\n\t\r\f\v");
         joined_lines = ft_strjoin(joined_lines, trimmed_line);
-        joined_lines = ft_strjoin(joined_lines, "\n");
+		joined_lines = ft_strjoin(joined_lines, "\n");
         free(line);
         free(trimmed_line);
     }
     close(fd);
     if (!joined_lines || joined_lines[0] == '\0')
         exit(1);
-    return (ft_split(joined_lines, '\n'));
+    result = ft_split(joined_lines, '\n');
+    free(joined_lines);
+    return (result);
+}
+
+void leaks()
+{
+	system("leaks so_long"); 
 }
 
 int main(int argc, char **argv)
@@ -47,6 +56,7 @@ int main(int argc, char **argv)
 	t_img	img;
 
 	key = 0;
+	atexit(leaks);
 	if(argc == 1)
     {
 		ft_printf("no arguments\n");
@@ -58,11 +68,12 @@ int main(int argc, char **argv)
 		exit(1);
     }
 	data.map = just_read_and_info(argv[1]);
+
 	init_data(&data);
-	validating_rect(&data);
-	validating_walls(&data);
-	validating_chars(&data);
-	creating_window(key, &data, &img);
+	//validating_rect(&data);
+	//validating_walls(&data);
+	//validating_chars(&data);
+	//creating_window(key, &data, &img);
 	return (0);
 	/*tal vez hay que revisar si es archivo .ber*/
 }

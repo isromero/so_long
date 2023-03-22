@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: isromero <isromero@student.42.fr>          +#+  +:+       +#+        */
+/*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 12:19:56 by marvin            #+#    #+#             */
-/*   Updated: 2023/03/21 22:45:42 by isromero         ###   ########.fr       */
+/*   Updated: 2023/03/22 18:59:29 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@
 # include <stdio.h>
 # include <stdbool.h>
 # include <mlx.h>
-# include <X11/X.h>
-# include <X11/keysym.h>
+// # include <X11/X.h>
+// # include <X11/keysym.h>
 # include "get_next_line.h"
 # include "./libft/libft.h"
-# include "./printf/ft_printf.h"
+# include "./ft_printf/ft_printf.h"
 
 typedef struct s_img
 {
@@ -60,7 +60,7 @@ typedef struct s_data
 /*so_long.c*/
 
 /*init.c*/
-int		map_height(char **map);
+size_t	map_height(char **map);
 void	init_data(t_data *data);
 void	init_points(t_data *data);
 

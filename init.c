@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: isromero <isromero@student.42.fr>          +#+  +:+       +#+        */
+/*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 19:15:18 by isromero          #+#    #+#             */
-/*   Updated: 2023/03/21 21:45:58 by isromero         ###   ########.fr       */
+/*   Updated: 2023/03/22 18:58:44 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-int map_height(char **map)
+size_t map_height(char **map)
 {
     int i;
     
@@ -26,7 +26,6 @@ void init_data(t_data *data)
 {
     data->mlx_ptr = NULL;
     data->win_ptr = NULL;
-    data->current_img = 0;
     data->door_x = 0;
     data->door_y = 0;
     data->num_collectable_map = 0;
