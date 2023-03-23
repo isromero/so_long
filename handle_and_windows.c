@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_and_windows.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: isromero <isromero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 22:32:46 by isromero          #+#    #+#             */
-/*   Updated: 2023/03/22 19:42:28 by isromero         ###   ########.fr       */
+/*   Updated: 2023/03/23 15:39:59 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

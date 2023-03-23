@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validating_map.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: isromero <isromero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 21:57:32 by isromero          #+#    #+#             */
-/*   Updated: 2023/03/22 19:01:32 by isromero         ###   ########.fr       */
+/*   Updated: 2023/03/23 17:17:05 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

@@ -70,10 +70,10 @@ int main(int argc, char **argv)
 	data.map = just_read_and_info(argv[1]);
 
 	init_data(&data);
-	//validating_rect(&data);
-	//validating_walls(&data);
-	//validating_chars(&data);
-	//creating_window(key, &data, &img);
+	validating_rect(&data);
+	validating_walls(&data);
+	validating_chars(&data);
+	creating_window(key, &data, &img);
 	return (0);
 	/*tal vez hay que revisar si es archivo .ber*/
 }

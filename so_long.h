@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: isromero <isromero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 12:19:56 by marvin            #+#    #+#             */
-/*   Updated: 2023/03/22 18:59:29 by isromero         ###   ########.fr       */
+/*   Updated: 2023/03/23 17:16:45 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,13 @@ void	ft_empty(t_data *data, t_img *img);
 void	ft_wall(t_data *data, t_img *img);
 void	ft_collectable(t_data *data, t_img *img);
 void	ft_exit(t_data *data, t_img *img);
+void    ft_initial(t_data *data, t_img *img);
 void	draw(int key, t_data *data, t_img *img);
 
 /*validating_map.c*/
 void	validating_walls(t_data *data);
 void	validating_chars(t_data *data);
 void	validating_rect(t_data *data);
+void    validating_path(t_data *data);
+
 #endif
