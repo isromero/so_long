@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: isromero <isromero@student.42.fr>          +#+  +:+       +#+        */
+/*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 12:19:56 by marvin            #+#    #+#             */
-/*   Updated: 2023/03/23 17:16:45 by isromero         ###   ########.fr       */
+/*   Updated: 2023/04/06 19:09:06 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ void	move_right(int key, t_data *data);
 void	ft_move_initial(int key, t_data *data);
 
 /*handle_and_windows.c*/
-void	ft_mov_display(t_data *data, t_img *img);
 int		handle_keypress(int key, t_data *data);
 int		handle_esc_screen(t_data *data);
 void	creating_window(int key, t_data *data, t_img *img);
@@ -89,6 +88,8 @@ void	draw(int key, t_data *data, t_img *img);
 void	validating_walls(t_data *data);
 void	validating_chars(t_data *data);
 void	validating_rect(t_data *data);
-void    validating_path(t_data *data);
+void	find_path(t_data *data);
+void	check_dotber(char *argv);
+
 
 #endif

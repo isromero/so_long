@@ -56,7 +56,7 @@ int main(int argc, char **argv)
 	t_img	img;
 
 	key = 0;
-	atexit(leaks);
+
 	if(argc == 1)
     {
 		ft_printf("no arguments\n");
@@ -70,10 +70,11 @@ int main(int argc, char **argv)
 	data.map = just_read_and_info(argv[1]);
 
 	init_data(&data);
+	check_dotber(argv[1]);
+	find_path(&data);
 	validating_rect(&data);
 	validating_walls(&data);
 	validating_chars(&data);
 	creating_window(key, &data, &img);
 	return (0);
-	/*tal vez hay que revisar si es archivo .ber*/
 }
