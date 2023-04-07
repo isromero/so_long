@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   validating_map.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: isromero <isromero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 21:57:32 by isromero          #+#    #+#             */
-/*   Updated: 2023/04/06 20:42:20 by isromero         ###   ########.fr       */
+/*   Updated: 2023/04/07 19:22:04 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-//tal vez deba cambiar esta función de validar ya que el return ; hace q con encontrarse uno ya no muestra si no es valido en otros
 void    validating_walls(t_data *data)
 {
     size_t     x;
@@ -38,7 +37,7 @@ void    validating_walls(t_data *data)
     }
     while(x < data->map_width)
     {
-        if (data->map[0][x] != '1' || data->map[data->map_height - 1][x] != '1')
+        if (data->map_height > 1 && (data->map[0][x] != '1' || data->map[data->map_height - 1][x] != '1'))
         {
             ft_printf("Not valid walls on the top or/and bottom\n");
             invalid_walls = true;
@@ -70,7 +69,7 @@ void validating_chars(t_data *data)
                 found_e = true;
             else if (data->map[y][x] == 'P')
                 found_p = true;
-			else if (data->map[y][x] != '1' && data->map[y][x] != '0' && data->map[y][x] != 'P' && data->map[y][x] != 'C' && data->map[y][x] != 'E')
+             else if (data->map[y][x] != '1' && data->map[y][x] != '0' && data->map[y][x] != 'P' && data->map[y][x] != 'C' && data->map[y][x] != 'E')
             {
                 ft_printf("Wrong chars\n");
                 exit(1);
@@ -85,9 +84,9 @@ void validating_chars(t_data *data)
         ft_printf("Doesn't have 'C', 'E', 'P'\n");
 		exit(1);
 	}
-    if (found_c == true && found_e == true && found_p == true)
+   
+   else if (found_c == true && found_e == true && found_p == true)
         ft_printf("Valid chars\n");
-  
 }
 
 void validating_rect(t_data *data)
@@ -102,7 +101,6 @@ void validating_rect(t_data *data)
             ft_printf("Map is not a rectangle\n");
             exit(1);
         }
-        
         y++;
     }
     printf("Valid rectangle\n");
@@ -123,63 +121,78 @@ void	check_dotber(char *argv)
 	}
 }
 
-typedef struct s_point
-{
-    size_t  x;
-    size_t  y;
-}   t_point;
-
 void flood_fill(t_data *data, size_t x, size_t y)
 {
-    if (x < 0 || x >= data->map_width || y < 0 || y >= data->map_height || data->map[y][x] != '0')
+    // Verificar si las coordenadas están dentro de la matriz
+    if ((int)x < 0 || (int)y < 0 || x >= data->map_width || y >= data->map_height)
         return;
 
- 	printf("Filling position (%zu, %zu)\n", x, y);
-    data->map[y][x] = '2';
-    printf("Map position (%zu, %zu) updated to %c\n", x, y, data->map[y][x]);
+    // Verificar si la celda actual ya fue visitada
+    if (data->map[y][x] == '2')
+        return ;
 
-    flood_fill(data, x - 1, y);
+    // Verificar si la celda actual es un obstáculo
+    if (data->map[y][x] == '1')
+        return ;
+
+    // Verificar si la celda actual es la puerta
+    if (data->map[y][x] == 'E') {
+        data->map[y][x] = '2';
+        return;
+    }
+
+    // Marcar la celda actual como visitada
+    data->map[y][x] = '2';
+
+    // Continuar la recursión desde las celdas adyacentes
     flood_fill(data, x + 1, y);
-    flood_fill(data, x, y - 1);
+    flood_fill(data, x - 1, y);
     flood_fill(data, x, y + 1);
+    flood_fill(data, x, y - 1);
 }
 
 void find_path(t_data *data)
 {
-    printf("find_path called\n");
 
-    size_t i;
-    size_t j;
-    t_point start;
+    size_t x;
+    size_t y;
+    size_t initial_x;
+    size_t initial_y;
 
-    // Encontramos la posición inicial del jugador
-    for (i = 0; i < data->map_height; i++)
+    x = 0;
+    y = 0;
+    while (y < data->map_height)
     {
-        for (j = 0; j < ft_strlen(data->map[i]); j++)
+        x = 0;
+        while (x < data->map_width)
         {
-            if (data->map[i][j] == 'P')
+            if (data->map[y][x] == 'P')
             {
-                start.x = j;
-                start.y = i;
-                break;
+                initial_x = x;
+                initial_y = y;
             }
+            x++;
         }
+        y++;
     }
-
-    flood_fill(data, start.x, start.y);
-
-    // Verificamos si hay un camino a la salida
-    for (i = 0; i < data->map_height; i++)
-    {	
-        for (j = 0; j < data->map_width; j++)
+    
+    flood_fill(data, initial_x, initial_y);
+    y = 0;
+    while (y < data->map_height)
+    {
+        x = 0;
+        while (x < data->map_width)
         {
-            if (data->map[i][j] == 'E' && data->map[i][j] != '2')
+            if (data->map[y][x] == 'E' && data->map[y][x] != '2')
             {
-                ft_printf("No path to exit\n");
+                printf("error\n");
                 exit(1);
             }
+            x++;
         }
+        y++;
     }
+    data->map[initial_y][initial_x] = 'P';
 }
 
 

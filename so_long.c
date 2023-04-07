@@ -71,10 +71,12 @@ int main(int argc, char **argv)
 
 	init_data(&data);
 	check_dotber(argv[1]);
-	find_path(&data);
 	validating_rect(&data);
-	validating_walls(&data);
+    validating_walls(&data);
 	validating_chars(&data);
+    find_path(&data);
+    free(data.map);
+    data.map = just_read_and_info(argv[1]);
 	creating_window(key, &data, &img);
 	return (0);
 }

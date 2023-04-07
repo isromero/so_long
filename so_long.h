@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: isromero <isromero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 12:19:56 by marvin            #+#    #+#             */
-/*   Updated: 2023/04/06 19:09:06 by isromero         ###   ########.fr       */
+/*   Updated: 2023/04/07 19:01:00 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ typedef struct s_data
 	int		current_img;
 	t_img	*img;
 	char	**map;
-	int		door_x;
-	int		door_y;
+	size_t	door_x;
+	size_t	door_y;
 	int		num_collectable_map;
 	int		num_collectable;
 	int		key;
@@ -52,6 +52,8 @@ typedef struct s_data
 	size_t	y;
 	int		player_x;
 	int		player_y;
+    size_t  initial_position_x;
+    size_t  initial_position_y;
 	int		player_mov;
 	size_t	map_width;
 	size_t	map_height;
@@ -90,6 +92,7 @@ void	validating_chars(t_data *data);
 void	validating_rect(t_data *data);
 void	find_path(t_data *data);
 void	check_dotber(char *argv);
+void    flood_fill(t_data *data, size_t x, size_t y);
 
 
 #endif
