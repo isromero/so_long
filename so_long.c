@@ -12,6 +12,11 @@
 
 #include "so_long.h"
 
+void   leak_check(void)
+{
+    system("leaks so_long");
+}
+
 char    **just_read_and_info(char *filename)
 {
     int     fd;
@@ -51,10 +56,10 @@ void leaks()
 
 int main(int argc, char **argv)
 {
+	atexit(leak_check);
 	int		key;
 	t_data	data;
 	t_img	img;
-
 	key = 0;
 
 	if(argc == 1)
@@ -74,9 +79,18 @@ int main(int argc, char **argv)
 	validating_rect(&data);
     validating_walls(&data);
 	validating_chars(&data);
-    find_path(&data);
+    find_path(&data); // LEAKS 
+	/* 6 (288 bytes) << TOTAL >>
+      1 (48 bytes) ROOT LEAK: 0x7fabc540e400 [48]  length: 34  "1111111111111111111111111111111111"
+      1 (48 bytes) ROOT LEAK: 0x7fabc540e6d0 [48]  length: 34  "1222222222222222222222222222222221"
+      1 (48 bytes) ROOT LEAK: 0x7fabc540e700 [48]  length: 34  "1212212122122222121221222222212121"
+      1 (48 bytes) ROOT LEAK: 0x7fabc540e730 [48]  length: 34  "1212212212121212221221222222212121"
+      1 (48 bytes) ROOT LEAK: 0x7fabc540e760 [48]  length: 34  "1P22222222222222222222222222222221"
+      1 (48 bytes) ROOT LEAK: 0x7fabc540e790 [48]  length: 34  "1111111111111111111111111111111111" 
+	*/
     free(data.map);
     data.map = just_read_and_info(argv[1]);
 	creating_window(key, &data, &img);
+	free(data.map);
 	return (0);
 }

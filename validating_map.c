@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validating_map.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: isromero <isromero@student.42.fr>          +#+  +:+       +#+        */
+/*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 21:57:32 by isromero          #+#    #+#             */
-/*   Updated: 2023/04/07 19:22:04 by isromero         ###   ########.fr       */
+/*   Updated: 2023/05/22 18:03:44 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,8 @@ void flood_fill(t_data *data, size_t x, size_t y)
         return ;
 
     // Verificar si la celda actual es la puerta
-    if (data->map[y][x] == 'E') {
+    if (data->map[y][x] == 'E') 
+	{
         data->map[y][x] = '2';
         return;
     }
