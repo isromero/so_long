@@ -54,6 +54,19 @@ void leaks()
 	system("leaks so_long"); 
 }
 
+void	free_map(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while(data->map[i])
+	{
+		free(data->map[i]);
+		i++;
+	}
+	free(data->map);
+}
+
 int main(int argc, char **argv)
 {
 	atexit(leak_check);
@@ -79,18 +92,10 @@ int main(int argc, char **argv)
 	validating_rect(&data);
     validating_walls(&data);
 	validating_chars(&data);
-    find_path(&data); // LEAKS 
-	/* 6 (288 bytes) << TOTAL >>
-      1 (48 bytes) ROOT LEAK: 0x7fabc540e400 [48]  length: 34  "1111111111111111111111111111111111"
-      1 (48 bytes) ROOT LEAK: 0x7fabc540e6d0 [48]  length: 34  "1222222222222222222222222222222221"
-      1 (48 bytes) ROOT LEAK: 0x7fabc540e700 [48]  length: 34  "1212212122122222121221222222212121"
-      1 (48 bytes) ROOT LEAK: 0x7fabc540e730 [48]  length: 34  "1212212212121212221221222222212121"
-      1 (48 bytes) ROOT LEAK: 0x7fabc540e760 [48]  length: 34  "1P22222222222222222222222222222221"
-      1 (48 bytes) ROOT LEAK: 0x7fabc540e790 [48]  length: 34  "1111111111111111111111111111111111" 
-	*/
-    free(data.map);
+    find_path(&data);
+    free_map(&data);
     data.map = just_read_and_info(argv[1]);
 	creating_window(key, &data, &img);
-	free(data.map);
+	free_map(&data);
 	return (0);
 }
