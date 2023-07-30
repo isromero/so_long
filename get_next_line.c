@@ -92,17 +92,3 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-/*int main(void)
-{
-    int     fd;
-	int		i;
-
-	i = 0;
-    fd = open("./test1.txt", O_RDONLY);
-	while (i < 20)
-	{
-   		printf("%s", get_next_line(fd));
-		i++;
-	}
-	close(fd);
-}*/

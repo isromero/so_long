@@ -6,7 +6,7 @@
 /*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 21:57:32 by isromero          #+#    #+#             */
-/*   Updated: 2023/05/22 18:03:44 by isromero         ###   ########.fr       */
+/*   Updated: 2023/07/30 17:55:00 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,12 @@ void    validating_walls(t_data *data)
     {
         if (data->map[y][0] != '1')
         {
-            ft_printf("Not valid walls on the left\n");
+            ft_printf(RED "Not valid walls on the left\n" RESET);
             invalid_walls = true;
         }
         if (data->map[y][data->map_width - 1] != '1')
         {
-            ft_printf("Not valid walls on the right\n");
+            ft_printf(RED "Not valid walls on the right\n" RESET);
             invalid_walls = true;
         }
         y++;
@@ -39,13 +39,13 @@ void    validating_walls(t_data *data)
     {
         if (data->map_height > 1 && (data->map[0][x] != '1' || data->map[data->map_height - 1][x] != '1'))
         {
-            ft_printf("Not valid walls on the top or/and bottom\n");
+            ft_printf(RED "Not valid walls on the top or/and bottom\n" RESET);
             invalid_walls = true;
         }
         x++;
     }
 	if (!invalid_walls)
-    	ft_printf("Valid walls\n");
+    	ft_printf(GREEN "Valid walls\n" RESET);
 	else
 		exit(1);
 }
@@ -71,7 +71,7 @@ void validating_chars(t_data *data)
                 found_p = true;
              else if (data->map[y][x] != '1' && data->map[y][x] != '0' && data->map[y][x] != 'P' && data->map[y][x] != 'C' && data->map[y][x] != 'E')
             {
-                ft_printf("Wrong chars\n");
+                ft_printf(RED "Wrong chars\n" RESET);
                 exit(1);
             }
             x++;
@@ -81,12 +81,12 @@ void validating_chars(t_data *data)
     }
 	if (found_c != true || found_e != true || found_p != true)
 	{
-        ft_printf("Doesn't have 'C', 'E', 'P'\n");
+        ft_printf(RED "Wrong chars\n" RESET);
 		exit(1);
 	}
    
    else if (found_c == true && found_e == true && found_p == true)
-        ft_printf("Valid chars\n");
+        ft_printf(GREEN "Valid chars\n" RESET);
 }
 
 void validating_rect(t_data *data)
@@ -98,12 +98,12 @@ void validating_rect(t_data *data)
     {
         if(ft_strlen(data->map[y]) != data->map_width)
         {
-            ft_printf("Map is not a rectangle\n");
+            ft_printf(RED "Map is not a rectangle\n" RESET);
             exit(1);
         }
         y++;
     }
-    printf("Valid rectangle\n");
+    ft_printf(GREEN "Valid rectangle\n" RESET);
 }
 
 void	check_dotber(char *argv)
@@ -113,10 +113,10 @@ void	check_dotber(char *argv)
 	len = ft_strlen(argv);
 	
 	if(ft_strncmp(argv + len - 4, ".ber", len) == 0)
-		ft_printf("Valid .ber\n");
+		ft_printf(GREEN "Valid .ber\n" RESET);
 	if(ft_strncmp(argv + len - 4, ".ber", len) != 0)
 	{
-		ft_printf("Map is not .ber\n");
+		ft_printf(RED "Map is not .ber\n" RESET);
 		exit(1);
 	}
 }
@@ -186,7 +186,7 @@ void find_path(t_data *data)
         {
             if (data->map[y][x] == 'E' && data->map[y][x] != '2')
             {
-                printf("error\n");
+                ft_printf(RED "Error\n" RESET);
                 exit(1);
             }
             x++;

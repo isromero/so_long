@@ -12,10 +12,8 @@
 
 #include "so_long.h"
 
-void   leak_check(void)
-{
-    system("leaks so_long");
-}
+// Incluir error de mapa no encontrado???
+// Incluir error de si hay más de un Player
 
 char    **just_read_and_info(char *filename)
 {
@@ -49,10 +47,10 @@ char    **just_read_and_info(char *filename)
     return (result);
 }
 
-void leaks()
-{
-	system("leaks so_long"); 
-}
+// void leaks()
+// {
+// 	system("leaks so_long"); 
+// }
 
 void	free_map(t_data *data)
 {
@@ -69,12 +67,13 @@ void	free_map(t_data *data)
 
 int main(int argc, char **argv)
 {
-	atexit(leak_check);
+	// atexit(leak_check);
 	int		key;
 	t_data	data;
 	t_img	img;
-	key = 0;
 
+   
+	key = 0;
 	if(argc == 1)
     {
 		ft_printf("no arguments\n");
@@ -86,7 +85,6 @@ int main(int argc, char **argv)
 		exit(1);
     }
 	data.map = just_read_and_info(argv[1]);
-
 	init_data(&data);
 	check_dotber(argv[1]);
 	validating_rect(&data);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: isromero <isromero@student.42.fr>          +#+  +:+       +#+        */
+/*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 12:19:56 by marvin            #+#    #+#             */
-/*   Updated: 2023/04/07 19:01:00 by isromero         ###   ########.fr       */
+/*   Updated: 2023/07/30 17:47:33 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,16 @@
 # include <string.h>
 # include <stdio.h>
 # include <stdbool.h>
-# include <mlx.h>
-// # include <X11/X.h>
-// # include <X11/keysym.h>
+# include "mlx.h"
+# include <X11/X.h>
+# include <X11/keysym.h>
 # include "get_next_line.h"
 # include "./libft/libft.h"
 # include "./ft_printf/ft_printf.h"
+
+# define RED     "\033[1;31m"
+# define GREEN   "\033[1;32m"
+# define RESET   "\033[0m"
 
 typedef struct s_img
 {
