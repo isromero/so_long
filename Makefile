@@ -6,29 +6,32 @@
 #    By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/21 20:51:34 by isromero          #+#    #+#              #
-#    Updated: 2023/07/31 18:33:37 by isromero         ###   ########.fr        #
+#    Updated: 2023/07/31 21:32:36 by isromero         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME        = so_long
-CC          = gcc
-SRCS        = src/so_long.c src/init.c src/validating_map.c src/movements.c src/handle_and_windows.c \
-                src/draw_objects.c src/get_next_line.c src/get_next_line_utils.c 
+NAME        =	so_long
+CC          =	gcc
+SRCS        =	src/check_chars.c src/check_path.c src/check_walls.c src/draw_objects.c \
+				src/get_next_line_utils.c src/get_next_line.c src/handle_and_windows.c \
+				src/init.c src/move_player.c src/movements.c src/read_map.c src/so_long.c \
+				src/utils.c src/validating_map.c
 
-LIBFT       = ./src/libft/libft.a
-PRINTF      = ./src/ft_printf/libftprintf.a
 
-CFLAGS      = -Wall -Wextra -Werror
-MLXFLAGS    = -L ./mlx -lmlx -framework OpenGL -framework AppKit -lz
-RM          = rm -f
+LIBFT       =	./src/libft/libft.a
+PRINTF      =	./src/ft_printf/libftprintf.a
 
-OBJ_DIR     = obj
-SRC_DIR     = src
+CFLAGS      =	-Wall -Wextra -Werror
+MLXFLAGS    =	-L ./mlx -lmlx -framework OpenGL -framework AppKit -lz
+RM          =	rm -f
 
-OBJS        = $(addprefix $(OBJ_DIR)/, $(SRCS:$(SRC_DIR)/%.c=%.o))
+OBJ_DIR     =	obj
+SRC_DIR     =	src
+
+OBJS        =	$(addprefix $(OBJ_DIR)/, $(SRCS:$(SRC_DIR)/%.c=%.o))
 
 ifeq ($(shell uname), Linux)
-MLXFLAGS    = -lmlx -Ilmlx -lXext -lX11 -lbsd
+MLXFLAGS    = 	-lmlx -Ilmlx -lXext -lX11 -lbsd
 endif
 
 all: $(NAME)

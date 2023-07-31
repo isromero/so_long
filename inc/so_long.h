@@ -6,7 +6,7 @@
 /*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 12:19:56 by marvin            #+#    #+#             */
-/*   Updated: 2023/07/31 18:25:46 by isromero         ###   ########.fr       */
+/*   Updated: 2023/07/31 21:30:15 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,48 +56,71 @@ typedef struct s_data
 	size_t	y;
 	int		player_x;
 	int		player_y;
-    size_t  initial_position_x;
-    size_t  initial_position_y;
+	size_t	initial_position_x;
+	size_t	initial_position_y;
 	int		player_mov;
 	size_t	map_width;
 	size_t	map_height;
 }	t_data;
 
-/*so_long.c*/
-void	ft_mov_display(t_data *data, t_img *img);
+/* check_chars.c */
+void	check_chars(t_data *data, bool *found_c, bool *found_e, bool *found_p);
 
-/*init.c*/
-size_t	map_height(char **map);
-void	init_data(t_data *data);
-void	init_points(t_data *data);
+/* check_path.c */
+void	flood_fill(t_data *data, size_t x, size_t y);
+void	check_path_not_found(t_data *data);
 
-/*movements.c*/
-void	move_up(int key, t_data *data);
-void	move_left(int key, t_data *data);
-void	move_down(int key, t_data *data);
-void	move_right(int key, t_data *data);
-void	ft_move_initial(int key, t_data *data);
+/* check_walls.c */
+bool	check_walls_left_right(t_data *data, bool invalid_walls);
+bool	check_walls_top_bottom(t_data *data, bool invalid_walls);
 
-/*handle_and_windows.c*/
-int		handle_keypress(int key, t_data *data);
-int		handle_esc_screen(t_data *data);
-void	creating_window(t_data *data, t_img *img);
-
-/*draw_objects.c*/
+/* draw_objects.c */
 void	ft_empty(t_data *data, t_img *img);
 void	ft_wall(t_data *data, t_img *img);
 void	ft_collectable(t_data *data, t_img *img);
 void	ft_exit(t_data *data, t_img *img);
-void    ft_initial(t_data *data, t_img *img);
 void	draw(t_data *data, t_img *img);
 
-/*validating_map.c*/
+/* handle_and_windows.c */
+int		handle_keypress(int key, t_data *data);
+int		handle_esc_screen(t_data *data);
+void	ft_mov_display(t_data *data, t_img *img);
+void	creating_window(t_data *data, t_img *img);
+
+/* init.c */
+size_t	map_height(char **map);
+void	init_data(t_data *data);
+void	init_points(t_data *data);
+
+/* move_player.c */
+void	ft_move_initial(int key, t_data *data);
+void	finish_game(t_data *data, t_img *img);
+
+/* movements.c */
+void	player_above_door(t_data *data, t_img *img, int player_x, int player_y);
+void	move_up(int key, t_data *data);
+void	move_left(int key, t_data *data);
+void	move_down(int key, t_data *data);
+void	move_right(int key, t_data *data);
+
+/* read_map.c */
+char	*read_map(char *filename);
+char	**return_map(char *filename);
+
+/* utils.c */
+void	free_map(t_data *data);
+void	arg_errors(int argc, char **argv);
+
+/* validating_walls.c */
+bool	check_walls_left_right(t_data *data, bool invalid_walls);
+bool	check_walls_top_bottom(t_data *data, bool invalid_walls);
+void	validating_walls(t_data *data);
+
+/* validating_map.c */
 void	validating_walls(t_data *data);
 void	validating_chars(t_data *data);
 void	validating_rect(t_data *data);
-void	find_path(t_data *data);
+void	validating_path(t_data *data);
 void	check_dotber(char *argv);
-void    flood_fill(t_data *data, size_t x, size_t y);
-
 
 #endif

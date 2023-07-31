@@ -6,7 +6,7 @@
 /*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 22:31:11 by isromero          #+#    #+#             */
-/*   Updated: 2023/07/31 18:37:40 by isromero         ###   ########.fr       */
+/*   Updated: 2023/07/31 20:59:13 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ void	ft_collectable(t_data *data, t_img *img)
 
 void	ft_exit(t_data *data, t_img *img)
 {
+	data->door_x = data->x;
+	data->door_y = data->y;
 	img->mlx_img = mlx_xpm_file_to_image(data->mlx_ptr, "./img/exit_closed.xpm",
 			&img->img_width, &img->img_height);
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->mlx_img,
@@ -65,11 +67,7 @@ void	draw(t_data *data, t_img *img)
 				data->player_x = data->x;
 			}
 			else if (data->map[data->y][data->x] == 'E')
-			{
-				data->door_x = data->x;
-				data->door_y = data->y;
 				ft_exit(data, img);
-			}
 			data->x++;
 		}
 		data->y++;

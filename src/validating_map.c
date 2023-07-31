@@ -6,195 +6,100 @@
 /*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 21:57:32 by isromero          #+#    #+#             */
-/*   Updated: 2023/07/31 18:20:19 by isromero         ###   ########.fr       */
+/*   Updated: 2023/07/31 21:29:40 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/so_long.h"
 
-void    validating_walls(t_data *data)
+void	validating_walls(t_data *data)
 {
-    size_t     x;
-    size_t     y;
-	bool       invalid_walls;
-	 
+	bool	invalid_walls;
+
 	invalid_walls = false;
-    x = 0;
-    y = 0;
-    while(y < data->map_height) 
-    {
-        if (data->map[y][0] != '1')
-        {
-            ft_printf(RED "Not valid walls on the left\n" RESET);
-            invalid_walls = true;
-        }
-        if (data->map[y][data->map_width - 1] != '1')
-        {
-            ft_printf(RED "Not valid walls on the right\n" RESET);
-            invalid_walls = true;
-        }
-        y++;
-    }
-    while(x < data->map_width)
-    {
-        if (data->map_height > 1 && (data->map[0][x] != '1' || data->map[data->map_height - 1][x] != '1'))
-        {
-            ft_printf(RED "Not valid walls on the top or/and bottom\n" RESET);
-            invalid_walls = true;
-        }
-        x++;
-    }
+	invalid_walls = check_walls_left_right(data, invalid_walls);
+	invalid_walls = check_walls_top_bottom(data, invalid_walls);
 	if (!invalid_walls)
-    	ft_printf(GREEN "Valid walls\n" RESET);
+		ft_printf(GREEN "Valid walls\n" RESET);
 	else
 		exit(1);
 }
 
-void validating_chars(t_data *data)
+void	validating_chars(t_data *data)
 {
-    size_t x; 
-    size_t y;
-    bool found_c = false, found_e = false, found_p = false;
+	bool	found_c;
+	bool	found_e;
+	bool	found_p;
 
-    x = 0;
-    y = 0;
-    while (y < data->map_height) 
-    {
-        x = 0;
-        while (x < data->map_width) 
-        {
-            if (data->map[y][x] == 'C') 
-                found_c = true;
-            else if (data->map[y][x] == 'E')
-                found_e = true;
-            else if (data->map[y][x] == 'P')
-                found_p = true;
-             else if (data->map[y][x] != '1' && data->map[y][x] != '0' && data->map[y][x] != 'P' && data->map[y][x] != 'C' && data->map[y][x] != 'E')
-            {
-                ft_printf(RED "Wrong chars\n" RESET);
-                exit(1);
-            }
-            x++;
-			
-        }
-        y++;
-    }
+	found_c = false;
+	found_e = false;
+	found_p = false;
+	check_chars(data, &found_c, &found_e, &found_p);
 	if (found_c != true || found_e != true || found_p != true)
 	{
-        ft_printf(RED "Wrong chars\n" RESET);
+		ft_printf(RED "Wrong chars\n" RESET);
 		exit(1);
 	}
-   
-   else if (found_c == true && found_e == true && found_p == true)
-        ft_printf(GREEN "Valid chars\n" RESET);
+	else if (found_c == true && found_e == true && found_p == true)
+		ft_printf(GREEN "Valid chars\n" RESET);
 }
 
-void validating_rect(t_data *data)
+void	validating_rect(t_data *data)
 {
-    size_t y;
-    y = 0;
-   
-    while(y < data->map_height)
-    {
-        if(ft_strlen(data->map[y]) != data->map_width)
-        {
-            ft_printf(RED "Map is not a rectangle\n" RESET);
-            exit(1);
-        }
-        y++;
-    }
-    ft_printf(GREEN "Valid rectangle\n" RESET);
+	size_t	y;
+
+	y = 0;
+	while (y < data->map_height)
+	{
+		if (ft_strlen(data->map[y]) != data->map_width)
+		{
+			ft_printf(RED "Map is not a rectangle\n" RESET);
+			exit(1);
+		}
+		y++;
+	}
+	ft_printf(GREEN "Valid rectangle\n" RESET);
+}
+
+void	validating_path(t_data *data)
+{
+	size_t	x;
+	size_t	y;
+	size_t	initial_x;
+	size_t	initial_y;
+
+	x = 0;
+	y = 0;
+	while (y < data->map_height)
+	{
+		x = 0;
+		while (x < data->map_width)
+		{
+			if (data->map[y][x] == 'P')
+			{
+				initial_x = x;
+				initial_y = y;
+			}
+			x++;
+		}
+		y++;
+	}
+	flood_fill(data, initial_x, initial_y);
+	check_path_not_found(data);
+	data->map[initial_y][initial_x] = 'P';
+	ft_printf(GREEN "Valid path\n" RESET);
 }
 
 void	check_dotber(char *argv)
 {
-	int len;
+	int	len;
 
 	len = ft_strlen(argv);
-	
-	if(ft_strncmp(argv + len - 4, ".ber", len) == 0)
+	if (ft_strncmp(argv + len - 4, ".ber", len) == 0)
 		ft_printf(GREEN "Valid .ber\n" RESET);
-	if(ft_strncmp(argv + len - 4, ".ber", len) != 0)
+	if (ft_strncmp(argv + len - 4, ".ber", len) != 0)
 	{
 		ft_printf(RED "Map is not .ber\n" RESET);
 		exit(1);
 	}
 }
-
-void flood_fill(t_data *data, size_t x, size_t y)
-{
-    // Verificar si las coordenadas están dentro de la matriz
-    if ((int)x < 0 || (int)y < 0 || x >= data->map_width || y >= data->map_height)
-        return;
-
-    // Verificar si la celda actual ya fue visitada
-    if (data->map[y][x] == '2')
-        return ;
-
-    // Verificar si la celda actual es un obstáculo
-    if (data->map[y][x] == '1')
-        return ;
-
-    // Verificar si la celda actual es la puerta
-    if (data->map[y][x] == 'E') 
-	{
-        data->map[y][x] = '2';
-        return;
-    }
-
-    // Marcar la celda actual como visitada
-    data->map[y][x] = '2';
-
-    // Continuar la recursión desde las celdas adyacentes
-    flood_fill(data, x + 1, y);
-    flood_fill(data, x - 1, y);
-    flood_fill(data, x, y + 1);
-    flood_fill(data, x, y - 1);
-}
-
-void find_path(t_data *data)
-{
-
-    size_t x;
-    size_t y;
-    size_t initial_x;
-    size_t initial_y;
-
-    x = 0;
-    y = 0;
-    while (y < data->map_height)
-    {
-        x = 0;
-        while (x < data->map_width)
-        {
-            if (data->map[y][x] == 'P')
-            {
-                initial_x = x;
-                initial_y = y;
-            }
-            x++;
-        }
-        y++;
-    }
-    
-    flood_fill(data, initial_x, initial_y);
-    y = 0;
-    while (y < data->map_height)
-    {
-        x = 0;
-        while (x < data->map_width)
-        {
-            if (data->map[y][x] == 'E' && data->map[y][x] != '2')
-            {
-                ft_printf(RED "Path not found\n" RESET);
-                exit(1);
-            }
-            x++;
-        }
-        y++;
-    }
-    data->map[initial_y][initial_x] = 'P';
-	ft_printf(GREEN "Valid path\n" RESET);
-}
-
-

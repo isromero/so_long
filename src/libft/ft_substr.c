@@ -6,7 +6,7 @@
 /*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 17:42:34 by isromero          #+#    #+#             */
-/*   Updated: 2022/09/30 16:52:55 by isromero         ###   ########.fr       */
+/*   Updated: 2023/07/31 20:08:56 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	if (!sub)
 		return (0);
 	while (s[i] != '\0')
-	{	
+	{
 		if (i >= start && j < len)
 		{
 			sub[j] = s[i];
