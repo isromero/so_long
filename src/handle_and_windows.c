@@ -6,11 +6,11 @@
 /*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 22:32:46 by isromero          #+#    #+#             */
-/*   Updated: 2023/07/31 18:10:33 by isromero         ###   ########.fr       */
+/*   Updated: 2023/07/31 18:37:31 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "../inc/so_long.h"
 
 int	handle_keypress(int key, t_data *data)
 {

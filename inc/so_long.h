@@ -6,7 +6,7 @@
 /*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 12:19:56 by marvin            #+#    #+#             */
-/*   Updated: 2023/07/31 17:52:37 by isromero         ###   ########.fr       */
+/*   Updated: 2023/07/31 18:25:46 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@
 # include "mlx.h"
 # include <X11/X.h>
 # include <X11/keysym.h>
-# include "get_next_line.h"
-# include "./libft/libft.h"
-# include "./ft_printf/ft_printf.h"
+# include "../inc/get_next_line.h"
+# include "../src/libft/libft.h"
+# include "../src/ft_printf/ft_printf.h"
 
 # define RED     "\033[1;31m"
 # define GREEN   "\033[1;32m"

@@ -6,11 +6,11 @@
 /*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 19:15:18 by isromero          #+#    #+#             */
-/*   Updated: 2023/03/22 18:58:44 by isromero         ###   ########.fr       */
+/*   Updated: 2023/07/31 18:20:04 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "../inc/so_long.h"
 
 size_t map_height(char **map)
 {

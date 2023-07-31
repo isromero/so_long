@@ -6,11 +6,11 @@
 /*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 21:57:32 by isromero          #+#    #+#             */
-/*   Updated: 2023/07/31 17:19:46 by isromero         ###   ########.fr       */
+/*   Updated: 2023/07/31 18:20:19 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "../inc/so_long.h"
 
 void    validating_walls(t_data *data)
 {

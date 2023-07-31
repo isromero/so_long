@@ -6,55 +6,53 @@
 #    By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/21 20:51:34 by isromero          #+#    #+#              #
-#    Updated: 2023/07/31 18:14:23 by isromero         ###   ########.fr        #
+#    Updated: 2023/07/31 18:33:37 by isromero         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME		=	so_long
-CC			=	gcc
-SRCS		=	so_long.c init.c validating_map.c movements.c handle_and_windows.c draw_objects.c get_next_line.c get_next_line_utils.c 
+NAME        = so_long
+CC          = gcc
+SRCS        = src/so_long.c src/init.c src/validating_map.c src/movements.c src/handle_and_windows.c \
+                src/draw_objects.c src/get_next_line.c src/get_next_line_utils.c 
 
-LIBFT		=	libft/libft.a
-PRINTF		=	ft_printf/libftprintf.a
+LIBFT       = ./src/libft/libft.a
+PRINTF      = ./src/ft_printf/libftprintf.a
 
-CFLAGS		=	-Wall -Wextra -Werror
-MLXFLAGS	=	-L ./mlx -lmlx -framework OpenGL -framework AppKit -lz
-RM			=	rm -f
+CFLAGS      = -Wall -Wextra -Werror
+MLXFLAGS    = -L ./mlx -lmlx -framework OpenGL -framework AppKit -lz
+RM          = rm -f
 
-OBJS		=	$(SRCS:%.c=%.o)
-OBJ_DIR 	= 	obj
+OBJ_DIR     = obj
+SRC_DIR     = src
 
-$(OBJ_DIR)/%.o: %.c
+OBJS        = $(addprefix $(OBJ_DIR)/, $(SRCS:$(SRC_DIR)/%.c=%.o))
+
+ifeq ($(shell uname), Linux)
+MLXFLAGS    = -lmlx -Ilmlx -lXext -lX11 -lbsd
+endif
+
+all: $(NAME)
+
+$(NAME): $(OBJS)
+	@make -C src/libft >/dev/null 2>&1
+	@make -C src/ft_printf
+	@make clean -C src/libft >/dev/null 2>&1
+	@make clean -C src/ft_printf 
+	$(CC) $(OBJS) $(LIBFT) $(PRINTF) $(MLXFLAGS) $(CFLAGS) -o $(NAME) >/dev/null 2>&1
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) -Imlx -c $< -o $@
 
-OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:%.c=%.o))
-
-ifeq ($(shell uname), Linux)
-MLXFLAGS	= -lmlx -Ilmlx -lXext -lX11 -lbsd
-endif
-
-all:		$(NAME)
-
-$(NAME):	$(OBJS)
-			@make -C libft >/dev/null 2>&1
-			@make -C ft_printf
-			@make clean -C libft >/dev/null 2>&1
-			@make clean -C ft_printf 
-			$(CC) $(OBJS) $(LIBFT) $(PRINTF) $(MLXFLAGS) $(CFLAGS) -o $(NAME) >/dev/null 2>&1
-
-%o:			%.c
-			$(CC) $(CFLAGS) -Imlx -c $< -o $@
-
 clean:
-			@$(RM) -r $(OBJ_DIR) >/dev/null 2>&1
+	@$(RM) -r $(OBJ_DIR) >/dev/null 2>&1
 
-fclean:		clean
-			@$(RM) $(NAME) >/dev/null 2>&1
-			@$(RM) *.out >/dev/null 2>&1
-			@make fclean -C libft/ >/dev/null 2>&1
-			@make fclean -C ft_printf/ >/dev/null 2>&1
+fclean: clean
+	@$(RM) $(NAME) >/dev/null 2>&1
+	@$(RM) *.out >/dev/null 2>&1
+	@make fclean -C src/libft/ >/dev/null 2>&1
+	@make fclean -C src/ft_printf/ >/dev/null 2>&1
 
-re:			fclean all
+re: fclean all
 
-.PHONY:		all clean fclean re
+.PHONY: all clean fclean re

@@ -18,7 +18,7 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <limits.h>
-# include "./libft/libft.h"
+# include "../src/libft/libft.h"
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42

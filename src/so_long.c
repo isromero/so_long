@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "../inc/so_long.h"
 
 // Incluir error de mapa no encontrado???
 // Incluir error de si hay más de un Player
