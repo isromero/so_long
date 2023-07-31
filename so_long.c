@@ -68,20 +68,25 @@ void	free_map(t_data *data)
 int main(int argc, char **argv)
 {
 	// atexit(leak_check);
-	int		key;
 	t_data	data;
 	t_img	img;
+	int		file;
 
-   
-	key = 0;
+	file = open(argv[1], O_RDONLY);
+	if (file == -1)
+	{
+		ft_printf(RED "Error: File '%s' not found\n" RESET, argv[1]);
+		exit(1);
+	}
 	if(argc == 1)
     {
-		ft_printf("no arguments\n");
+		ft_printf(RED "Error: Not valid arguments\n" RESET);
+		ft_printf(RED "Try: [./so_long] [maps/.ber]\n" RESET);
 		exit(1);
     }
 	if(argc > 2)
     {
-		ft_printf("the first file is the valid one\n");
+		ft_printf(RED "Error: The first file is the valid one\n" RESET);
 		exit(1);
     }
 	data.map = just_read_and_info(argv[1]);
@@ -93,7 +98,7 @@ int main(int argc, char **argv)
     find_path(&data);
     free_map(&data);
     data.map = just_read_and_info(argv[1]);
-	creating_window(key, &data, &img);
+	creating_window(&data, &img);
 	free_map(&data);
 	return (0);
 }

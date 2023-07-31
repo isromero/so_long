@@ -6,7 +6,7 @@
 #    By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/21 20:51:34 by isromero          #+#    #+#              #
-#    Updated: 2023/07/30 17:37:31 by isromero         ###   ########.fr        #
+#    Updated: 2023/07/31 18:14:23 by isromero         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,12 +20,19 @@ PRINTF		=	ft_printf/libftprintf.a
 CFLAGS		=	-Wall -Wextra -Werror
 MLXFLAGS	=	-L ./mlx -lmlx -framework OpenGL -framework AppKit -lz
 RM			=	rm -f
+
 OBJS		=	$(SRCS:%.c=%.o)
+OBJ_DIR 	= 	obj
+
+$(OBJ_DIR)/%.o: %.c
+	@mkdir -p $(OBJ_DIR)
+	$(CC) $(CFLAGS) -Imlx -c $< -o $@
+
+OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:%.c=%.o))
 
 ifeq ($(shell uname), Linux)
 MLXFLAGS	= -lmlx -Ilmlx -lXext -lX11 -lbsd
 endif
-
 
 all:		$(NAME)
 
@@ -40,7 +47,7 @@ $(NAME):	$(OBJS)
 			$(CC) $(CFLAGS) -Imlx -c $< -o $@
 
 clean:
-			@$(RM) $(OBJS) >/dev/null 2>&1
+			@$(RM) -r $(OBJ_DIR) >/dev/null 2>&1
 
 fclean:		clean
 			@$(RM) $(NAME) >/dev/null 2>&1

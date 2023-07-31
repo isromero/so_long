@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_objects.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: isromero <isromero@student.42.fr>          +#+  +:+       +#+        */
+/*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 22:31:11 by isromero          #+#    #+#             */
-/*   Updated: 2023/04/07 19:28:45 by isromero         ###   ########.fr       */
+/*   Updated: 2023/07/31 17:33:58 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	ft_exit(t_data *data, t_img *img)
 		data->x * 32, data->y * 32);
 }
 
-void	draw(int key, t_data *data, t_img *img)
+void	draw(t_data *data, t_img *img)
 {
 	data->y = 0;
 	data->x = 0;
@@ -54,37 +54,24 @@ void	draw(int key, t_data *data, t_img *img)
 		while (data->x < data->map_width)
 		{
 			if (data->map[data->y][data->x] == '0')
-			{
 				ft_empty(data, img);
-				ft_printf("%c", '0');
-			}
 			else if (data->map[data->y][data->x] == '1')
-			{
 				ft_wall(data, img);
-				ft_printf("%c", '1');
-			}
 			else if (data->map[data->y][data->x] == 'C')
-			{
-				ft_printf("%c", 'C');
 				ft_collectable(data, img);
-			}
 			else if (data->map[data->y][data->x] == 'P')
 			{
 				data->player_y = data->y;
 				data->player_x = data->x;
-				ft_move_initial(key, data);
-				ft_printf("%c", 'P');
 			}
 			else if (data->map[data->y][data->x] == 'E')
 			{
 				data->door_x = data->x;
 				data->door_y = data->y;
 				ft_exit(data, img);
-				ft_printf("%c", 'E');
 			}
 			data->x++;
 		}
 		data->y++;
-		ft_printf("\n");
 	}
 }

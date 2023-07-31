@@ -6,7 +6,7 @@
 /*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 12:19:56 by marvin            #+#    #+#             */
-/*   Updated: 2023/07/30 17:47:33 by isromero         ###   ########.fr       */
+/*   Updated: 2023/07/31 17:52:37 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ typedef struct s_data
 }	t_data;
 
 /*so_long.c*/
+void	ft_mov_display(t_data *data, t_img *img);
 
 /*init.c*/
 size_t	map_height(char **map);
@@ -80,7 +81,7 @@ void	ft_move_initial(int key, t_data *data);
 /*handle_and_windows.c*/
 int		handle_keypress(int key, t_data *data);
 int		handle_esc_screen(t_data *data);
-void	creating_window(int key, t_data *data, t_img *img);
+void	creating_window(t_data *data, t_img *img);
 
 /*draw_objects.c*/
 void	ft_empty(t_data *data, t_img *img);
@@ -88,7 +89,7 @@ void	ft_wall(t_data *data, t_img *img);
 void	ft_collectable(t_data *data, t_img *img);
 void	ft_exit(t_data *data, t_img *img);
 void    ft_initial(t_data *data, t_img *img);
-void	draw(int key, t_data *data, t_img *img);
+void	draw(t_data *data, t_img *img);
 
 /*validating_map.c*/
 void	validating_walls(t_data *data);

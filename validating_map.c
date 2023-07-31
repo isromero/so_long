@@ -6,7 +6,7 @@
 /*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 21:57:32 by isromero          #+#    #+#             */
-/*   Updated: 2023/07/30 17:55:00 by isromero         ###   ########.fr       */
+/*   Updated: 2023/07/31 17:19:46 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,7 +186,7 @@ void find_path(t_data *data)
         {
             if (data->map[y][x] == 'E' && data->map[y][x] != '2')
             {
-                ft_printf(RED "Error\n" RESET);
+                ft_printf(RED "Path not found\n" RESET);
                 exit(1);
             }
             x++;
@@ -194,6 +194,7 @@ void find_path(t_data *data)
         y++;
     }
     data->map[initial_y][initial_x] = 'P';
+	ft_printf(GREEN "Valid path\n" RESET);
 }
 
 

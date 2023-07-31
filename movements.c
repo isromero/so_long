@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movements.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: isromero <isromero@student.42.fr>          +#+  +:+       +#+        */
+/*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 22:29:58 by isromero          #+#    #+#             */
-/*   Updated: 2023/04/07 19:31:12 by isromero         ###   ########.fr       */
+/*   Updated: 2023/07/31 18:10:23 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,5 +130,6 @@ void    ft_move_initial(int key, t_data *data)
 			exit(0);
 		}
 	}
+	ft_mov_display(data, &img);
 	ft_printf("Movements: %d\n", data->player_mov);
 }
