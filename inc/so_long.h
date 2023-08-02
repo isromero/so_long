@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: isromero <isromero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 12:19:56 by marvin            #+#    #+#             */
-/*   Updated: 2023/07/31 21:30:15 by isromero         ###   ########.fr       */
+/*   Updated: 2023/08/02 20:21:13 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@
 # include "../src/libft/libft.h"
 # include "../src/ft_printf/ft_printf.h"
 
-# define RED     "\033[1;31m"
-# define GREEN   "\033[1;32m"
-# define RESET   "\033[0m"
+# define RED "\033[1;31m"
+# define GREEN "\033[1;32m"
+# define RESET "\033[0m"
 
 typedef struct s_img
 {
@@ -64,7 +64,8 @@ typedef struct s_data
 }	t_data;
 
 /* check_chars.c */
-void	check_chars(t_data *data, bool *found_c, bool *found_e, bool *found_p);
+bool	all_chars(char character);
+void	check_chars(t_data *data, bool *found_c, int *found_e, int *found_p);
 
 /* check_path.c */
 void	flood_fill(t_data *data, size_t x, size_t y);

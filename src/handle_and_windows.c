@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_and_windows.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: isromero <isromero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 22:32:46 by isromero          #+#    #+#             */
-/*   Updated: 2023/07/31 20:37:53 by isromero         ###   ########.fr       */
+/*   Updated: 2023/08/02 20:16:01 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	handle_keypress(int key, t_data *data)
 {
-	if (key == 53 || key == 9) //XK_Escape, 59
+	if (key == 53 || key == 9)
 	{
 		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
 		exit (1);

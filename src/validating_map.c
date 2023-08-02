@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validating_map.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: isromero <isromero@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 21:57:32 by isromero          #+#    #+#             */
-/*   Updated: 2023/07/31 21:29:40 by isromero         ###   ########.fr       */
+/*   Updated: 2023/08/02 20:23:15 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,19 @@ void	validating_walls(t_data *data)
 void	validating_chars(t_data *data)
 {
 	bool	found_c;
-	bool	found_e;
-	bool	found_p;
+	int		found_e;
+	int		found_p;
 
 	found_c = false;
-	found_e = false;
-	found_p = false;
+	found_e = 0;
+	found_p = 0;
 	check_chars(data, &found_c, &found_e, &found_p);
-	if (found_c != true || found_e != true || found_p != true)
+	if (found_c != true || found_e != 1 || found_p != 1)
 	{
 		ft_printf(RED "Wrong chars\n" RESET);
 		exit(1);
 	}
-	else if (found_c == true && found_e == true && found_p == true)
+	else if (found_c == true && found_e >= 1 && found_p >= 1)
 		ft_printf(GREEN "Valid chars\n" RESET);
 }
 
