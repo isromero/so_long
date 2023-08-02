@@ -52,6 +52,11 @@ Replace `maps/map.ber` with the location of the map file that you want to try.
 
 - The player must collect all items ('C') before reaching the exit ('E').
 
+## Preview
+![Preview game](./resources/preview.png)
+
+![Preview 2 game](./resources/preview2.png)
+
 ## Additional Resources
 
 - [Minilibx Documentation](https://github.com/42Paris/minilibx-linux)
