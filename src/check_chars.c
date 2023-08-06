@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_chars.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: isromero <isromero@student.42.fr>          +#+  +:+       +#+        */
+/*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 21:24:10 by isromero          #+#    #+#             */
-/*   Updated: 2023/08/02 20:21:38 by isromero         ###   ########.fr       */
+/*   Updated: 2023/08/06 13:59:51 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,16 @@ bool	all_chars(char character)
 
 void	check_chars(t_data *data, bool *found_c, int *found_e, int *found_p)
 {
-	size_t	x; 
+	size_t	x;
 	size_t	y;
 
 	y = 0;
-	while (y < data->map_height) 
+	while (y < data->map_height)
 	{
 		x = 0;
-		while (x < data->map_width) 
+		while (x < data->map_width)
 		{
-			if (data->map[y][x] == 'C') 
+			if (data->map[y][x] == 'C')
 				*found_c = true;
 			else if (data->map[y][x] == 'E')
 				*found_e += 1;

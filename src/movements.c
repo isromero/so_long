@@ -6,7 +6,7 @@
 /*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 22:29:58 by isromero          #+#    #+#             */
-/*   Updated: 2023/07/31 20:39:06 by isromero         ###   ########.fr       */
+/*   Updated: 2023/08/06 13:58:45 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	move_up(int key, t_data *data)
 {
 	t_img	img;
 
-	if ((key == 119 || key == 13) 
+	if ((key == 119 || key == 13)
 		&& data->map[data->player_y - 1][data->player_x] != '1')
 	{
 		data->player_mov++;

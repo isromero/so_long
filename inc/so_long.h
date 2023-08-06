@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: isromero <isromero@student.42.fr>          +#+  +:+       +#+        */
+/*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 12:19:56 by marvin            #+#    #+#             */
-/*   Updated: 2023/08/02 20:21:13 by isromero         ###   ########.fr       */
+/*   Updated: 2023/08/06 13:40:48 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,10 @@
 # include <stdio.h>
 # include <stdbool.h>
 # include "mlx.h"
-# include <X11/X.h>
-# include <X11/keysym.h>
+/* Comment the below line if you are in Mac */
+// # include <X11/X.h>
+// # include <X11/keysym.h>
+/* Comment the above line if you are in Mac */
 # include "../inc/get_next_line.h"
 # include "../src/libft/libft.h"
 # include "../src/ft_printf/ft_printf.h"

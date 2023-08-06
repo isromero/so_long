@@ -6,7 +6,7 @@
 /*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 22:31:11 by isromero          #+#    #+#             */
-/*   Updated: 2023/07/31 20:59:13 by isromero         ###   ########.fr       */
+/*   Updated: 2023/08/06 13:47:10 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	draw(t_data *data, t_img *img)
 			{
 				data->player_y = data->y;
 				data->player_x = data->x;
+				ft_move_initial(0, data);
 			}
 			else if (data->map[data->y][data->x] == 'E')
 				ft_exit(data, img);

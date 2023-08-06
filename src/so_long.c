@@ -12,14 +12,8 @@
 
 #include "../inc/so_long.h"
 
-// void leaks()
-// {
-// 	system("leaks so_long"); 
-// }
-
 int	main(int argc, char **argv)
 {
-	// atexit(leak_check);
 	t_data	data;
 	t_img	img;
 

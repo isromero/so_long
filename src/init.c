@@ -6,7 +6,7 @@
 /*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 19:15:18 by isromero          #+#    #+#             */
-/*   Updated: 2023/07/31 20:21:30 by isromero         ###   ########.fr       */
+/*   Updated: 2023/08/06 13:59:00 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,12 @@ void	init_points(t_data *data)
 {
 	data->x = 0;
 	data->y = 0;
-	while (data->y < data->map_height) 
+	while (data->y < data->map_height)
 	{
 		data->x = 0;
-		while (data->x < data->map_width) 
+		while (data->x < data->map_width)
 		{
-			if (data->map[data->y][data->x] == 'C') 
+			if (data->map[data->y][data->x] == 'C')
 			{
 				data->num_collectable_map++;
 			}

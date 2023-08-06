@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_and_windows.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: isromero <isromero@student.42.fr>          +#+  +:+       +#+        */
+/*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 22:32:46 by isromero          #+#    #+#             */
-/*   Updated: 2023/08/02 20:16:01 by isromero         ###   ########.fr       */
+/*   Updated: 2023/08/06 13:56:55 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,11 @@ void	ft_mov_display(t_data *data, t_img *img)
 		i += 32;
 	}
 	mlx_string_put(data->mlx_ptr, data->win_ptr,
-		data->map_width / 2, data->map_height * 34, 0xff0000,
+		data->map_width / 2, data->map_height * 32, 0xff0000,
 		"MOVEMENTS ");
 	movements_str = ft_itoa(data->player_mov);
 	mlx_string_put(data->mlx_ptr, data->win_ptr,
-		data->map_width * 30, data->map_height * 34, 0xff0000,
+		data->map_width * 30, data->map_height * 32, 0xff0000,
 		movements_str);
 	free(movements_str);
 }

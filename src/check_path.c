@@ -6,7 +6,7 @@
 /*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 21:03:07 by isromero          #+#    #+#             */
-/*   Updated: 2023/07/31 21:33:11 by isromero         ###   ########.fr       */
+/*   Updated: 2023/08/06 14:00:01 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	flood_fill(t_data *data, size_t x, size_t y)
 		return ;
 	if (data->map[y][x] == '1')
 		return ;
-	if (data->map[y][x] == 'E') 
+	if (data->map[y][x] == 'E')
 	{
 		data->map[y][x] = '2';
 		return ;
