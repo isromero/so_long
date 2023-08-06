@@ -1,4 +1,4 @@
-# Project so_long - 42Cursus
+# so_long
 
 This is the "so_long" project of 42Cursus, which involves creating a 2D game in C using the minilibx graphic library.
 
@@ -8,7 +8,7 @@ The objective of the project is to create a simple 2D game using the minilibx gr
 
 ## Requirements
 
-- Any operating system (this project was tested on macOS and Linux).
+- MacOS or Linux
 - `gcc` (or a C-compatible compiler).
 - [Minilibx](https://github.com/42Paris/minilibx-linux) - Make sure to follow the installation instructions for minilibx on your operating system.
 
